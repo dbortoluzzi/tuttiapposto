@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.android.application'
+apply plugin: 'dagger.hilt.android.plugin'
+
+buildscript {
+    ext.hilt_version = '2.35'
+}
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        applicationId "it.dbortoluzzi.cleanarchitecturesample"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':usecases')
+    implementation project(':data')
+    implementation project(':domain')
+
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
+
+    implementation 'com.google.dagger:hilt-android:2.35'
+    kapt 'com.google.dagger:hilt-compiler:2.35'
+
+    // For instrumentation tests
+    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.35'
+    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.35'
+
+    // For local unit tests
+    testImplementation 'com.google.dagger:hilt-android-testing:2.35'
+    kaptTest 'com.google.dagger:hilt-compiler:2.35'
+}
+
+kapt {
+    correctErrorTypes true
+}

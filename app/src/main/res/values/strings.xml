@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TuttiAPPosto</string>
+    <string name="request_new_location">Request new location</string>
+</resources>
