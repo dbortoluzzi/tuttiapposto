@@ -7,6 +7,7 @@ apply plugin: 'dagger.hilt.android.plugin'
 
 buildscript {
     ext.hilt_version = '2.35'
+    ext.material_version = '1.3.0'
 }
 
 android {
@@ -44,16 +45,18 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
 
-    implementation 'com.google.dagger:hilt-android:2.35'
-    kapt 'com.google.dagger:hilt-compiler:2.35'
+    implementation "com.google.android.material:material:$material_version"
+
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // For instrumentation tests
-    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.35'
-    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.35'
+    androidTestImplementation  "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-compiler:$hilt_version"
 
     // For local unit tests
-    testImplementation 'com.google.dagger:hilt-android-testing:2.35'
-    kaptTest 'com.google.dagger:hilt-compiler:2.35'
+    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
 }
 
 kapt {
