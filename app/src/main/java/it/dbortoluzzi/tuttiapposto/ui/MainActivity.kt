@@ -1,35 +1,25 @@
 package it.dbortoluzzi.tuttiapposto.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
-import it.dbortoluzzi.data.DeviceLocationSource
-import it.dbortoluzzi.data.LocationPersistenceSource
-import it.dbortoluzzi.tuttiapposto.framework.FakeLocationSource
-import it.dbortoluzzi.tuttiapposto.framework.InMemoryLocationPersistenceSource
-import it.dbortoluzzi.data.LocationsRepository
-import it.dbortoluzzi.usecases.GetLocations
-import it.dbortoluzzi.usecases.RequestNewLocation
+import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityMainBinding
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), MainPresenter.View {
-    @Inject
-    lateinit var locationsAdapter: LocationsAdapter
+class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var persistence: LocationPersistenceSource
-
-    @Inject
-    lateinit var deviceLocation: DeviceLocationSource
-
-    @Inject
-    lateinit var locationsRepository: LocationsRepository
-
-    @Inject
-    lateinit var presenter: MainPresenter
-
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,19 +28,76 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recycler.adapter = locationsAdapter
+        navController = findNavController(R.id.main_nav_host) //Initialising navController
 
-        binding.newLocationBtn.setOnClickListener { presenter.newLocationClicked() }
+        appBarConfiguration = AppBarConfiguration.Builder(R.id.homeFragment, R.id.locationFragment,
+                R.id.dashboardFragment) //Pass the ids of fragments from nav_graph which you d'ont want to show back button in toolbar
+                .setOpenableLayout(binding.mainDrawerLayout) //Pass the drawer layout id from activity xml
+                .build()
 
-        presenter.onCreate()
+        setSupportActionBar(binding.mainToolbar) //Set toolbar
+
+        setupActionBarWithNavController(navController, appBarConfiguration) //Setup toolbar with back button and drawer icon according to appBarConfiguration
+
+        visibilityNavElements(navController) //If you want to hide drawer or bottom navigation configure that in this function
     }
 
-    override fun onDestroy() {
-        presenter.onDestroy()
-        super.onDestroy()
+    private fun visibilityNavElements(navController: NavController) {
+
+        //Listen for the change in fragment (navigation) and hide or show drawer or bottom navigation accordingly if required
+        //Modify this according to your need
+        //If you want you can implement logic to deselect(styling) the bottom navigation menu item when drawer item selected using listener
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                else -> showBothNavigation()
+            }
+        }
+
     }
 
-    override fun renderLocations(locations: List<Location>) {
-        locationsAdapter.items = locations
+    private fun hideBothNavigation() { //Hide both drawer and bottom navigation bar
+        binding.mainBottomNavigationView.visibility = View.GONE
+        binding.mainNavigationView.visibility = View.GONE
+        binding.mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED) //To lock navigation drawer so that it don't respond to swipe gesture
+    }
+
+    private fun hideBottomNavigation() { //Hide bottom navigation
+        binding.mainBottomNavigationView.visibility = View.GONE
+        binding.mainNavigationView.visibility = View.VISIBLE
+        binding.mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED) //To unlock navigation drawer
+
+        binding.mainNavigationView.setupWithNavController(navController) //Setup Drawer navigation with navController
+    }
+
+    private fun showBothNavigation() {
+        binding.mainBottomNavigationView.visibility = View.VISIBLE
+        binding.mainNavigationView.visibility = View.VISIBLE
+        binding.mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        setupNavControl() //To configure navController with drawer and bottom navigation
+    }
+
+    private fun setupNavControl() {
+        binding.mainNavigationView.setupWithNavController(navController) //Setup Drawer navigation with navController
+        binding.mainBottomNavigationView.setupWithNavController(navController) //Setup Bottom navigation with navController
+    }
+
+    fun exitApp() { //To exit the application call this function from fragment
+        this.finishAffinity()
+    }
+
+    override fun onSupportNavigateUp(): Boolean { //Setup appBarConfiguration for back arrow
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+    }
+
+    override fun onBackPressed() {
+        when { //If drawer layout is open close that on back pressed
+            binding.mainDrawerLayout.isDrawerOpen(GravityCompat.START) -> {
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
+            }
+            else -> {
+                super.onBackPressed() //If drawer is already in closed condition then go back
+            }
+        }
     }
 }

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TuttiAPPosto</string>
     <string name="request_new_location">New</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="home">Home</string>
+    <string name="location">Location</string>
 </resources>
