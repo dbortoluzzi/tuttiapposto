@@ -1,13 +1,12 @@
 package it.dbortoluzzi.tuttiapposto.ui
 
 import android.view.LayoutInflater
-import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
-import dagger.hilt.android.AndroidEntryPoint
-import kotlin.properties.Delegates
+import androidx.recyclerview.widget.RecyclerView
 import it.dbortoluzzi.data.databinding.ViewLocationItemBinding
+import it.dbortoluzzi.tuttiapposto.ui.data.Location
 import javax.inject.Inject
-import javax.inject.Singleton
+import kotlin.properties.Delegates
 
 class LocationsAdapter @Inject constructor(): RecyclerView.Adapter<LocationsAdapter.ViewHolder>() {
 

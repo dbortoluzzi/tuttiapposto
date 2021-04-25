@@ -1,21 +1,18 @@
-package it.dbortoluzzi.tuttiapposto.framework
+package it.dbortoluzzi.tuttiapposto.di
 
-import android.app.Activity
 import androidx.fragment.app.Fragment
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.FragmentComponent
-import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.android.scopes.FragmentScoped
 import dagger.hilt.components.SingletonComponent
 import it.dbortoluzzi.data.DeviceLocationSource
 import it.dbortoluzzi.data.LocationPersistenceSource
 import it.dbortoluzzi.data.LocationsRepository
-import it.dbortoluzzi.tuttiapposto.ui.MainActivity
-import it.dbortoluzzi.tuttiapposto.ui.MainPresenter
+import it.dbortoluzzi.tuttiapposto.framework.FakeLocationSource
+import it.dbortoluzzi.tuttiapposto.framework.InMemoryLocationPersistenceSource
 import it.dbortoluzzi.tuttiapposto.ui.fragments.LocationsFragment
 import it.dbortoluzzi.usecases.GetLocations
 import it.dbortoluzzi.usecases.RequestNewLocation

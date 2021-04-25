@@ -6,17 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.components.FragmentComponent
-import dagger.hilt.android.scopes.FragmentScoped
 import it.dbortoluzzi.data.DeviceLocationSource
 import it.dbortoluzzi.data.LocationPersistenceSource
 import it.dbortoluzzi.data.LocationsRepository
 import it.dbortoluzzi.data.databinding.FragmentLocationsBinding
-import it.dbortoluzzi.tuttiapposto.ui.Location
 import it.dbortoluzzi.tuttiapposto.ui.LocationsAdapter
-import it.dbortoluzzi.tuttiapposto.ui.MainPresenter
+import it.dbortoluzzi.tuttiapposto.ui.LocationPresenter
+import it.dbortoluzzi.tuttiapposto.ui.data.Location
 import javax.inject.Inject
 
 /**
@@ -24,7 +21,7 @@ import javax.inject.Inject
  */
 
 @AndroidEntryPoint
-class LocationsFragment: Fragment(), MainPresenter.View {
+class LocationsFragment: Fragment(), LocationPresenter.View {
     @Inject
     lateinit var locationsAdapter: LocationsAdapter
 
@@ -38,7 +35,7 @@ class LocationsFragment: Fragment(), MainPresenter.View {
     lateinit var locationsRepository: LocationsRepository
 
     @Inject
-    lateinit var presenter: MainPresenter
+    lateinit var presenter: LocationPresenter
 
     private lateinit var binding: FragmentLocationsBinding
 
