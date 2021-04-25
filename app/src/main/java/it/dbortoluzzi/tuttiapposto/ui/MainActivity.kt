@@ -1,7 +1,10 @@
 package it.dbortoluzzi.tuttiapposto.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -11,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityMainBinding
@@ -21,25 +25,41 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mAuth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // TODO: move to DI
+        mAuth = FirebaseAuth.getInstance()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        navController = findNavController(R.id.main_nav_host) //Initialising navController
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if(currentUser == null){
+            val intent = Intent(applicationContext , LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }else{
+            // TODO: put the user to savedInstance to remember the user logged
 
-        appBarConfiguration = AppBarConfiguration.Builder(R.id.homeFragment, R.id.locationFragment,
-                R.id.dashboardFragment) //Pass the ids of fragments from nav_graph which you d'ont want to show back button in toolbar
-                .setOpenableLayout(binding.mainDrawerLayout) //Pass the drawer layout id from activity xml
-                .build()
+            // TODO: add message
+            Toast.makeText(applicationContext , "Login Successfully " , Toast.LENGTH_SHORT).show()
 
-        setSupportActionBar(binding.mainToolbar) //Set toolbar
+            navController = findNavController(R.id.main_nav_host) //Initialising navController
 
-        setupActionBarWithNavController(navController, appBarConfiguration) //Setup toolbar with back button and drawer icon according to appBarConfiguration
+            appBarConfiguration = AppBarConfiguration.Builder(R.id.homeFragment, R.id.locationFragment,
+                    R.id.dashboardFragment) //Pass the ids of fragments from nav_graph which you d'ont want to show back button in toolbar
+                    .setOpenableLayout(binding.mainDrawerLayout) //Pass the drawer layout id from activity xml
+                    .build()
 
-        visibilityNavElements(navController) //If you want to hide drawer or bottom navigation configure that in this function
+            setSupportActionBar(binding.mainToolbar) //Set toolbar
+
+            setupActionBarWithNavController(navController, appBarConfiguration) //Setup toolbar with back button and drawer icon according to appBarConfiguration
+
+            visibilityNavElements(navController) //If you want to hide drawer or bottom navigation configure that in this function
+        }
     }
 
     private fun visibilityNavElements(navController: NavController) {
@@ -50,6 +70,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
+//                R.id.dashboardFragment -> hideBothNavigation()
                 else -> showBothNavigation()
             }
         }
@@ -82,10 +103,6 @@ class MainActivity : AppCompatActivity() {
         binding.mainBottomNavigationView.setupWithNavController(navController) //Setup Bottom navigation with navController
     }
 
-    fun exitApp() { //To exit the application call this function from fragment
-        this.finishAffinity()
-    }
-
     override fun onSupportNavigateUp(): Boolean { //Setup appBarConfiguration for back arrow
         return NavigationUI.navigateUp(navController, appBarConfiguration)
     }
@@ -99,5 +116,13 @@ class MainActivity : AppCompatActivity() {
                 super.onBackPressed() //If drawer is already in closed condition then go back
             }
         }
+    }
+
+    // TODO: move to presenter
+    fun logout(item: MenuItem) {
+        FirebaseAuth.getInstance().signOut()
+        val startIntent = Intent(applicationContext, LoginActivity::class.java)
+        startActivity(startIntent)
+        finish()
     }
 }
