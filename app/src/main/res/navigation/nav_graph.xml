@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <!--In the label field of fragment you can give the name that you want to show in the toolbar-->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.LocationsFragment"
+        android:label="@string/location"
+        tools:layout="@layout/fragment_locations" />
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.DashboardFragment"
+        android:label="@string/dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+</navigation>

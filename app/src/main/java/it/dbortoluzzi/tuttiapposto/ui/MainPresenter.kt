@@ -1,6 +1,7 @@
 package it.dbortoluzzi.tuttiapposto.ui
 
 import android.util.Log
+import it.dbortoluzzi.tuttiapposto.ui.fragments.LocationsFragment
 import it.dbortoluzzi.usecases.GetLocations
 import it.dbortoluzzi.usecases.RequestNewLocation
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 import it.dbortoluzzi.domain.Location as DomainLocation
 
 class MainPresenter @Inject constructor(
-        private var view: MainActivity?,
+        private var view: LocationsFragment?,
         private val getLocations: GetLocations,
         private val requestNewLocation: RequestNewLocation
 ) {
