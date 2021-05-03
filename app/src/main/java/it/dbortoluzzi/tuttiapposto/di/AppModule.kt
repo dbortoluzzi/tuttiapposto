@@ -13,7 +13,7 @@ import it.dbortoluzzi.data.LocationPersistenceSource
 import it.dbortoluzzi.data.LocationsRepository
 import it.dbortoluzzi.tuttiapposto.framework.FakeLocationSource
 import it.dbortoluzzi.tuttiapposto.framework.InMemoryLocationPersistenceSource
-import it.dbortoluzzi.tuttiapposto.ui.fragments.LocationsFragment
+import it.dbortoluzzi.tuttiapposto.ui.LocationPresenter
 import it.dbortoluzzi.usecases.GetLocations
 import it.dbortoluzzi.usecases.RequestNewLocation
 import javax.inject.Singleton
@@ -56,8 +56,8 @@ object FragmentModule {
 
     @Provides
     @FragmentScoped
-    fun bindFragment(fragment: Fragment): LocationsFragment {
-        return fragment as LocationsFragment
+    fun bindFragment(fragment: Fragment): LocationPresenter.View {
+        return fragment as LocationPresenter.View
     }
 }
 

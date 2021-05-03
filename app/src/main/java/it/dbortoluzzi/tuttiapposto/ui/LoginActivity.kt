@@ -7,9 +7,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.databinding.ActivityLoginBinding
-import java.util.logging.Logger
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     lateinit var mAuth: FirebaseAuth
