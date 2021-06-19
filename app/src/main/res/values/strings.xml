@@ -5,4 +5,8 @@
     <string name="home">Home</string>
     <string name="location">Location</string>
     <string name="logout">Logout</string>
+
+    <string name="login_error">Errore nel login</string>
+    <string name="email_error">Errore nel campo email</string>
+    <string name="password_error">Errore nel campo password</string>
 </resources>

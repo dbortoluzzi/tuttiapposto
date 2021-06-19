@@ -5,15 +5,17 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
+import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityLoginBinding
+import it.dbortoluzzi.domain.User
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseMvpActivity<LoginActivity, LoginPresenter>(), LoginPresenter.View {
 
-    lateinit var mAuth: FirebaseAuth
+    @Inject
+    override lateinit var mPresenter: LoginPresenter
 
     private lateinit var binding: ActivityLoginBinding
 
@@ -23,54 +25,45 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // TODO: get from service
-        mAuth = FirebaseAuth.getInstance()
-
         binding.LoginBtn.setOnClickListener {
             val email = binding.LoginEmail.text.toString().trim()
             val password = binding.LoginPassword.text.toString().trim()
 
             if (TextUtils.isEmpty(email)) {
-                // TODO: add message
-                binding.LoginEmail.error = "Enter Email"
+                binding.LoginEmail.error = getString(R.string.email_error)
                 return@setOnClickListener
             }
 
             if (TextUtils.isEmpty(password)) {
-                // TODO: add message
-                binding.LoginPassword.error = "Enter Password"
+                binding.LoginPassword.error = getString(R.string.password_error)
                 return@setOnClickListener
             }
 
-            loginUser(email, password)
+            mPresenter.loginBtnClicked(email, password)
         }
 
-        binding.LoginRegisterBtn.setOnClickListener {
-            val registerActivity = Intent(applicationContext, RegisterActivity::class.java)
-            startActivity(registerActivity)
-            finish()
-        }
+        binding.LoginRegisterBtn.setOnClickListener { navigateToRegisterUser() }
 
-    }
-
-    private fun loginUser(email: String, password: String) {
-        // TODO: add LOADING
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val startIntent = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(startIntent)
-                        finish()
-                    } else {
-                        Log.e(TAG,"Error in login", task.exception)
-                        // TODO: add error message
-                        Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                    }
-                }
     }
 
     companion object {
         private val TAG = "LoginActivity"
+    }
+
+    override fun userLogged(user: User) {
+        val startIntent = Intent(applicationContext, MainActivity::class.java)
+        startActivity(startIntent)
+        finish()
+    }
+
+    override fun userNotLogged(errorMessage: String) {
+        Log.e(TAG,"Error in login: $errorMessage")
+        Toast.makeText(this, getString(R.string.login_error), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun navigateToRegisterUser() {
+        val registerActivity = Intent(applicationContext, RegisterActivity::class.java)
+        startActivity(registerActivity)
+        finish()
     }
 }

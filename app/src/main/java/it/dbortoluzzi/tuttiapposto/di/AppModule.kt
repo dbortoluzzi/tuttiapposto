@@ -1,20 +1,25 @@
 package it.dbortoluzzi.tuttiapposto.di
 
+import android.app.Activity
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.android.scopes.FragmentScoped
 import dagger.hilt.components.SingletonComponent
-import it.dbortoluzzi.data.DeviceLocationSource
-import it.dbortoluzzi.data.LocationPersistenceSource
-import it.dbortoluzzi.data.LocationsRepository
+import it.dbortoluzzi.data.*
 import it.dbortoluzzi.tuttiapposto.framework.FakeLocationSource
+import it.dbortoluzzi.tuttiapposto.framework.FirebaseAuthenticationSource
 import it.dbortoluzzi.tuttiapposto.framework.InMemoryLocationPersistenceSource
 import it.dbortoluzzi.tuttiapposto.ui.LocationPresenter
+import it.dbortoluzzi.tuttiapposto.ui.LoginPresenter
 import it.dbortoluzzi.usecases.GetLocations
+import it.dbortoluzzi.usecases.Login
 import it.dbortoluzzi.usecases.RequestNewLocation
 import javax.inject.Singleton
 
@@ -22,6 +27,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
+    /*Sources*/
     @Provides
     @Singleton
     fun locationPersistenceSource(): LocationPersistenceSource = InMemoryLocationPersistenceSource()
@@ -33,21 +39,43 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun authenticationSource(firebaseAuth: FirebaseAuth): AuthenticationSource = FirebaseAuthenticationSource(firebaseAuth)
+
+    /*Repositories*/
+    @Provides
+    @Singleton
     fun locationsRepository(persistence: LocationPersistenceSource, deviceLocationSource: DeviceLocationSource): LocationsRepository {
         return LocationsRepository(persistence, deviceLocationSource)
     }
 
+    @Provides
+    @Singleton
+    fun usersRepository(authenticationSource: AuthenticationSource): UsersRepository {
+        return UsersRepository(authenticationSource)
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+class FireBaseModule {
+
+    @Provides
+    @Singleton
+    fun provideFireBaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
 }
 
 @InstallIn(ActivityComponent::class)
 @Module
 object ActivityModule {
 
-//    @Provides
-//    fun bindActivity(activity: Activity): MainActivity {
-//        return activity as MainActivity
-//    }
-
+    @Provides
+    fun bindLoginActivity(activity: Activity): LoginPresenter.View {
+        return activity as LoginPresenter.View
+    }
 }
 
 @InstallIn(FragmentComponent::class)
@@ -56,7 +84,7 @@ object FragmentModule {
 
     @Provides
     @FragmentScoped
-    fun bindFragment(fragment: Fragment): LocationPresenter.View {
+    fun bindLocationFragment(fragment: Fragment): LocationPresenter.View {
         return fragment as LocationPresenter.View
     }
 }
@@ -72,5 +100,9 @@ class UseCasesModule {
     @Provides
     @Singleton
     fun requestNewLocation(locationsRepository: LocationsRepository): RequestNewLocation = RequestNewLocation(locationsRepository)
+
+    @Provides
+    @Singleton
+    fun login(usersRepository: UsersRepository): Login = Login(usersRepository)
 
 }
