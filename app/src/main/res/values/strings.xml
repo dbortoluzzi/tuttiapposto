@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name">TuttiAPPosto</string>
+
+<!--    Buttons-->
     <string name="request_new_location">New</string>
     <string name="dashboard">Dashboard</string>
     <string name="home">Home</string>
     <string name="location">Location</string>
     <string name="logout">Logout</string>
 
+<!--    Login-->
     <string name="login_error">Errore nel login</string>
     <string name="email_error">Errore nel campo email</string>
     <string name="password_error">Errore nel campo password</string>
+
+<!--    Registration-->
+    <string name="registration_error">Errore nella registrazione</string>
 </resources>

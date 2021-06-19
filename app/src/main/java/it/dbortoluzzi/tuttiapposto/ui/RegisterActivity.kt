@@ -3,25 +3,27 @@ package it.dbortoluzzi.tuttiapposto.ui
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityRegisterBinding
+import it.dbortoluzzi.domain.User
+import javax.inject.Inject
 
-class RegisterActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class RegisterActivity : BaseMvpActivity<RegisterActivity, RegisterPresenter>(), RegisterPresenter.View {
+
+    @Inject
+    override lateinit var mPresenter: RegisterPresenter
 
     private lateinit var binding: ActivityRegisterBinding
-
-    lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // TODO: add to DI
-        mAuth = FirebaseAuth.getInstance();
 
         binding.RegisterBtn.setOnClickListener {
             val loginIntent = Intent(applicationContext, LoginActivity::class.java)
@@ -34,28 +36,31 @@ class RegisterActivity : AppCompatActivity() {
 
 
             if (TextUtils.isEmpty(email)) {
-                binding.RegisterEmail.error = "Enter Email"
+                binding.RegisterEmail.error = getString(R.string.email_error)
                 return@setOnClickListener
             }
             if (TextUtils.isEmpty(password)) {
-                binding.RegisterPassword.error = "Enter Password"
+                binding.RegisterPassword.error = getString(R.string.password_error)
                 return@setOnClickListener
             }
-            createUser(email, password)
+
+            mPresenter.registerBtnClicked(email, password)
         }
     }
 
-    fun createUser(email: String, password: String) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val Intent = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(Intent)
-                        finish()
-                    } else {
-                        Toast.makeText(this, "Authentication failed.${task.exception}", Toast.LENGTH_SHORT).show()
-                    }
-                }
+    override fun userRegistered(user: User) {
+        val Intent = Intent(applicationContext, MainActivity::class.java)
+        startActivity(Intent)
+        finish()
+    }
+
+    override fun userNotRegistered(errorMessage: String) {
+        Log.e(TAG,"Error in register: $errorMessage")
+        Toast.makeText(this, getString(R.string.registration_error), Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private val TAG = "RegisterActivity"
     }
 }
 

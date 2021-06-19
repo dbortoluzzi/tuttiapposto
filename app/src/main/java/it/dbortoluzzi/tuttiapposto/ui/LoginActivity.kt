@@ -46,10 +46,6 @@ class LoginActivity : BaseMvpActivity<LoginActivity, LoginPresenter>(), LoginPre
 
     }
 
-    companion object {
-        private val TAG = "LoginActivity"
-    }
-
     override fun userLogged(user: User) {
         val startIntent = Intent(applicationContext, MainActivity::class.java)
         startActivity(startIntent)
@@ -65,5 +61,9 @@ class LoginActivity : BaseMvpActivity<LoginActivity, LoginPresenter>(), LoginPre
         val registerActivity = Intent(applicationContext, RegisterActivity::class.java)
         startActivity(registerActivity)
         finish()
+    }
+
+    companion object {
+        private val TAG = "LoginActivity"
     }
 }

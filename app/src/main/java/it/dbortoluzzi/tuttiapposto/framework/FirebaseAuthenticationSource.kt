@@ -24,6 +24,15 @@ class FirebaseAuthenticationSource @Inject constructor(
         }
     }
 
+    override suspend fun register(mail: String, password: String): ServiceResult<String> {
+        val firebaseUser = registerUserFromAuthWithEmailAndPassword(mail, password)
+        return when(firebaseUser) {
+            is Success -> Success(firebaseUser.data.uid)
+            is Error -> Error(firebaseUser.exception)
+            else -> throw NotImplementedError()
+        }
+    }
+
     suspend fun registerUserFromAuthWithEmailAndPassword(email: String, password: String): ServiceResult<FirebaseUser> {
         try {
             return when(val resultDocumentSnapshot = mAuth.createUserWithEmailAndPassword(email, password).await()) {
