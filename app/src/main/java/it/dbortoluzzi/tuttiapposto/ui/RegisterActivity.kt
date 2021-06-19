@@ -46,6 +46,10 @@ class RegisterActivity : BaseMvpActivity<RegisterActivity, RegisterPresenter>(),
 
             mPresenter.registerBtnClicked(email, password)
         }
+
+        binding.RegisterLoginBtn.setOnClickListener {
+            navigateToLogin()
+        }
     }
 
     override fun userRegistered(user: User) {
@@ -57,6 +61,12 @@ class RegisterActivity : BaseMvpActivity<RegisterActivity, RegisterPresenter>(),
     override fun userNotRegistered(errorMessage: String) {
         Log.e(TAG,"Error in register: $errorMessage")
         Toast.makeText(this, getString(R.string.registration_error), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun navigateToLogin() {
+        val Intent = Intent(applicationContext, LoginActivity::class.java)
+        startActivity(Intent)
+        finish()
     }
 
     companion object {

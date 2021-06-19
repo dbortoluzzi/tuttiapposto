@@ -26,11 +26,20 @@ class UsersRepository(
             is ServiceResult.Error -> ServiceResult.Error(result.exception)
         }
     }
+
+    suspend fun logout(): ServiceResult<Boolean> {
+        return authenticationSource.logout()
+    }
+
+    fun getCurrentUser(): ServiceResult<User> {
+        return authenticationSource.getCurrentUser()
+    }
 }
 
 interface AuthenticationSource {
 
     suspend fun login(mail: String, password: String): ServiceResult<String>
     suspend fun register(mail: String, password: String): ServiceResult<String>
-    suspend fun getCurrentUser(): ServiceResult<User>
+    suspend fun logout(): ServiceResult<Boolean>
+    fun getCurrentUser(): ServiceResult<User>
 }

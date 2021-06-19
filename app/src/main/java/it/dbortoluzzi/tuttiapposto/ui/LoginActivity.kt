@@ -49,6 +49,7 @@ class LoginActivity : BaseMvpActivity<LoginActivity, LoginPresenter>(), LoginPre
     override fun userLogged(user: User) {
         val startIntent = Intent(applicationContext, MainActivity::class.java)
         startActivity(startIntent)
+        Toast.makeText(applicationContext , getString(R.string.login_success) , Toast.LENGTH_SHORT).show()
         finish()
     }
 

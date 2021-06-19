@@ -1,5 +1,6 @@
 package it.dbortoluzzi.tuttiapposto.ui
 
+import android.os.Bundle
 import android.util.Log
 import it.dbortoluzzi.tuttiapposto.ui.data.Location
 import it.dbortoluzzi.tuttiapposto.ui.data.toPresentationModel
@@ -26,7 +27,7 @@ class LocationPresenter @Inject constructor(
         fun renderLocations(locations: List<Location>)
     }
 
-    override fun onAttachView() {
+    override fun onAttachView(savedInstanceState: Bundle?) {
         GlobalScope.launch(Dispatchers.Main) {
             val locations = withContext(Dispatchers.IO) { getLocations() }
             view?.renderLocations(locations.map(DomainLocation::toPresentationModel))

@@ -22,9 +22,6 @@ class LoginPresenter @Inject constructor(
         fun navigateToRegisterUser()
     }
 
-    override fun onAttachView() {
-    }
-
     fun loginBtnClicked(email: String, password: String) {
         GlobalScope.launch(Dispatchers.IO) {
             val serviceResult: ServiceResult<User> = login(email, password)

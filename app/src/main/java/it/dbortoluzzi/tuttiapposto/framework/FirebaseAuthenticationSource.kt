@@ -33,6 +33,15 @@ class FirebaseAuthenticationSource @Inject constructor(
         }
     }
 
+    override suspend fun logout(): ServiceResult<Boolean> {
+        return try {
+            mAuth.signOut()
+            ServiceResult.Success(true)
+        }catch (e: Exception) {
+            ServiceResult.Success(false)
+        }
+    }
+
     suspend fun registerUserFromAuthWithEmailAndPassword(email: String, password: String): ServiceResult<FirebaseUser> {
         try {
             return when(val resultDocumentSnapshot = mAuth.createUserWithEmailAndPassword(email, password).await()) {
@@ -73,7 +82,7 @@ class FirebaseAuthenticationSource @Inject constructor(
         }
     }
 
-    override suspend fun getCurrentUser(): ServiceResult<User> {
+    override fun getCurrentUser(): ServiceResult<User> {
         val currentUser: FirebaseUser? = mAuth.currentUser
         return if (currentUser != null) Success(convertToUser(currentUser)) else Error("no user logged")
     }

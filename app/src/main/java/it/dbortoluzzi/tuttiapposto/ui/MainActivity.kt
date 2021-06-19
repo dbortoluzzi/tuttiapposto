@@ -2,10 +2,11 @@ package it.dbortoluzzi.tuttiapposto.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -18,48 +19,51 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityMainBinding
+import it.dbortoluzzi.domain.User
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresenter.View {
+
+    @Inject
+    override lateinit var mPresenter: MainPresenter
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mAuth : FirebaseAuth
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: move to DI
-        mAuth = FirebaseAuth.getInstance()
-
+    override fun initializeView() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if(currentUser == null){
-            val intent = Intent(applicationContext , LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }else{
-            // TODO: put the user to savedInstance to remember the user logged
+    override fun initializeWhenUserIsNotLogged() {
+        val intent = Intent(applicationContext , LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
-            // TODO: add message
-            Toast.makeText(applicationContext , "Login Successfully " , Toast.LENGTH_SHORT).show()
-
-            navController = findNavController(R.id.main_nav_host) //Initialising navController
-
-            appBarConfiguration = AppBarConfiguration.Builder(R.id.homeFragment, R.id.locationFragment,
-                    R.id.dashboardFragment) //Pass the ids of fragments from nav_graph which you d'ont want to show back button in toolbar
-                    .setOpenableLayout(binding.mainDrawerLayout) //Pass the drawer layout id from activity xml
-                    .build()
-
-            setSupportActionBar(binding.mainToolbar) //Set toolbar
-
-            setupActionBarWithNavController(navController, appBarConfiguration) //Setup toolbar with back button and drawer icon according to appBarConfiguration
-
-            visibilityNavElements(navController) //If you want to hide drawer or bottom navigation configure that in this function
+    override fun initializeWhenUserIsLogged(currentUser: User) {
+        navController = findNavController(R.id.main_nav_host) //Initialising navController
+        val headerNavigationView = binding.mainNavigationView.getHeaderView(0)
+        val navUserTextView = headerNavigationView.findViewById<TextView>(R.id.nav_user);
+        val userStr = if (currentUser.displayName?.isNotEmpty() == true) {
+            currentUser.displayName
+        } else {
+            currentUser.email
         }
+        navUserTextView.text = userStr
+
+        appBarConfiguration = AppBarConfiguration.Builder(R.id.homeFragment, R.id.locationFragment,
+                R.id.dashboardFragment) //Pass the ids of fragments from nav_graph which you d'ont want to show back button in toolbar
+                .setOpenableLayout(binding.mainDrawerLayout) //Pass the drawer layout id from activity xml
+                .build()
+
+        setSupportActionBar(binding.mainToolbar) //Set toolbar
+
+        setupActionBarWithNavController(navController, appBarConfiguration) //Setup toolbar with back button and drawer icon according to appBarConfiguration
+
+        visibilityNavElements(navController) //If you want to hide drawer or bottom navigation configure that in this function
     }
 
     private fun visibilityNavElements(navController: NavController) {
@@ -74,7 +78,6 @@ class MainActivity : AppCompatActivity() {
                 else -> showBothNavigation()
             }
         }
-
     }
 
     private fun hideBothNavigation() { //Hide both drawer and bottom navigation bar
@@ -118,11 +121,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: move to presenter
-    fun logout(item: MenuItem) {
-        FirebaseAuth.getInstance().signOut()
+    override fun logout(item: MenuItem) {
+        mPresenter.logoutBtnClicked()
+    }
+
+    override fun logoutSuccess() {
         val startIntent = Intent(applicationContext, LoginActivity::class.java)
         startActivity(startIntent)
+        Toast.makeText(this, getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    override fun logoutError(errorMessage: String) {
+        Log.e(TAG,"Error in logout: $errorMessage")
+        Toast.makeText(this, getString(R.string.logout_error), Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private val TAG = "MainActivity"
     }
 }

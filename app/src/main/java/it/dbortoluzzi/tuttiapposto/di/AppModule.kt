@@ -18,11 +18,9 @@ import it.dbortoluzzi.tuttiapposto.framework.FirebaseAuthenticationSource
 import it.dbortoluzzi.tuttiapposto.framework.InMemoryLocationPersistenceSource
 import it.dbortoluzzi.tuttiapposto.ui.LocationPresenter
 import it.dbortoluzzi.tuttiapposto.ui.LoginPresenter
+import it.dbortoluzzi.tuttiapposto.ui.MainPresenter
 import it.dbortoluzzi.tuttiapposto.ui.RegisterPresenter
-import it.dbortoluzzi.usecases.GetLocations
-import it.dbortoluzzi.usecases.Login
-import it.dbortoluzzi.usecases.Register
-import it.dbortoluzzi.usecases.RequestNewLocation
+import it.dbortoluzzi.usecases.*
 import javax.inject.Singleton
 
 @Module
@@ -83,6 +81,11 @@ object ActivityModule {
     fun bindRegisterActivity(activity: Activity): RegisterPresenter.View {
         return activity as RegisterPresenter.View
     }
+
+    @Provides
+    fun bindMainActivity(activity: Activity): MainPresenter.View {
+        return activity as MainPresenter.View
+    }
 }
 
 @InstallIn(FragmentComponent::class)
@@ -115,4 +118,12 @@ class UseCasesModule {
     @Provides
     @Singleton
     fun register(usersRepository: UsersRepository): Register = Register(usersRepository)
+
+    @Provides
+    @Singleton
+    fun logout(usersRepository: UsersRepository): Logout = Logout(usersRepository)
+
+    @Provides
+    @Singleton
+    fun getUser(usersRepository: UsersRepository): GetUser = GetUser(usersRepository)
 }

@@ -14,9 +14,7 @@ class RegisterPresenter @Inject constructor(
     interface View : BaseMvpView {
         fun userRegistered(user: User)
         fun userNotRegistered(errorMessage: String)
-    }
-
-    override fun onAttachView() {
+        fun navigateToLogin()
     }
 
     fun registerBtnClicked(email: String, password: String) {

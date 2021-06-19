@@ -8,11 +8,18 @@
     <string name="location">Location</string>
     <string name="logout">Logout</string>
 
-<!--    Login-->
-    <string name="login_error">Errore nel login</string>
+<!--    Common-->
     <string name="email_error">Errore nel campo email</string>
-    <string name="password_error">Errore nel campo password</string>
+    <string name="password_error">Errore nel campo password.</string>
+
+<!--    Login-->
+    <string name="login_error">Errore nel login.</string>
+    <string name="login_success">Login effettuato con successo.</string>
 
 <!--    Registration-->
-    <string name="registration_error">Errore nella registrazione</string>
+    <string name="registration_error">Errore nella registrazione.</string>
+
+<!--    Logout-->
+    <string name="logout_success">Logout effettuato con successo.</string>
+    <string name="logout_error">Errore nel logout.</string>
 </resources>
