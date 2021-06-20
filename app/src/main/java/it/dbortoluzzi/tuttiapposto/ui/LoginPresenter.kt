@@ -1,6 +1,5 @@
 package it.dbortoluzzi.tuttiapposto.ui
 
-import android.util.Log
 import it.dbortoluzzi.domain.User
 import it.dbortoluzzi.domain.util.ServiceResult
 import it.dbortoluzzi.usecases.Login
@@ -12,9 +11,6 @@ class LoginPresenter @Inject constructor(
         private val login: Login,
 ) : BaseMvpPresenterImpl<LoginPresenter.View>(mView){
 
-    init {
-        Log.i(TAG, "init object")
-    }
 
     interface View : BaseMvpView {
         fun userLogged(user: User)
@@ -22,7 +18,7 @@ class LoginPresenter @Inject constructor(
         fun navigateToRegisterUser()
     }
 
-    fun loginBtnClicked(email: String, password: String) {
+    fun doLogin(email: String, password: String) {
         GlobalScope.launch(Dispatchers.IO) {
             val serviceResult: ServiceResult<User> = login(email, password)
             GlobalScope.launch(Dispatchers.Main) {

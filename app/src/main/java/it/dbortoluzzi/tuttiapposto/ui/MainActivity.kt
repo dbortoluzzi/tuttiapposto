@@ -15,7 +15,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityMainBinding
@@ -32,18 +31,23 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
 
-    override fun initializeView() {
+    override fun onInitializeView() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 
-    override fun initializeWhenUserIsNotLogged() {
+    override fun onInitializeWhenUserIsNotLogged() {
         val intent = Intent(applicationContext , LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-    override fun initializeWhenUserIsLogged(currentUser: User) {
+    override fun onInitializeWhenUserIsLogged(currentUser: User, savedInstanceState: Bundle?) {
+        // TODO: remove and put into saveInstance method
+        savedInstanceState.also {
+            it?.putSerializable(LoginActivity.USER_DATA, currentUser)
+        }
+
         navController = findNavController(R.id.main_nav_host) //Initialising navController
         val headerNavigationView = binding.mainNavigationView.getHeaderView(0)
         val navUserTextView = headerNavigationView.findViewById<TextView>(R.id.nav_user);
@@ -121,18 +125,22 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
         }
     }
 
-    override fun logout(item: MenuItem) {
-        mPresenter.logoutBtnClicked()
+    override fun getUserFromIntent(): User? {
+        return intent?.getSerializableExtra(LoginActivity.USER_DATA) as User?
     }
 
-    override fun logoutSuccess() {
+    override fun onLogout(item: MenuItem) {
+        mPresenter.doLogout()
+    }
+
+    override fun onLogoutSuccess() {
         val startIntent = Intent(applicationContext, LoginActivity::class.java)
         startActivity(startIntent)
         Toast.makeText(this, getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
         finish()
     }
 
-    override fun logoutError(errorMessage: String) {
+    override fun onLogoutError(errorMessage: String) {
         Log.e(TAG,"Error in logout: $errorMessage")
         Toast.makeText(this, getString(R.string.logout_error), Toast.LENGTH_SHORT).show()
     }

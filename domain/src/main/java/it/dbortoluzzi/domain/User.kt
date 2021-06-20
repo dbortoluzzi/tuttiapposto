@@ -1,4 +1,5 @@
 package it.dbortoluzzi.domain
 
-data class User(val email: String, val displayName: String?) {
-}
+import java.io.Serializable
+
+data class User(val email: String, val displayName: String?) : Serializable

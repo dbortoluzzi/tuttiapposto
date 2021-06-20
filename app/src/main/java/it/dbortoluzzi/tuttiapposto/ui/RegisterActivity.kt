@@ -44,26 +44,26 @@ class RegisterActivity : BaseMvpActivity<RegisterActivity, RegisterPresenter>(),
                 return@setOnClickListener
             }
 
-            mPresenter.registerBtnClicked(email, password)
+            mPresenter.doRegister(email, password)
         }
 
         binding.RegisterLoginBtn.setOnClickListener {
-            navigateToLogin()
+            onNavigateToLogin()
         }
     }
 
-    override fun userRegistered(user: User) {
+    override fun onUserRegistered(user: User) {
         val Intent = Intent(applicationContext, MainActivity::class.java)
         startActivity(Intent)
         finish()
     }
 
-    override fun userNotRegistered(errorMessage: String) {
+    override fun onUserNotRegistered(errorMessage: String) {
         Log.e(TAG,"Error in register: $errorMessage")
         Toast.makeText(this, getString(R.string.registration_error), Toast.LENGTH_SHORT).show()
     }
 
-    override fun navigateToLogin() {
+    override fun onNavigateToLogin() {
         val Intent = Intent(applicationContext, LoginActivity::class.java)
         startActivity(Intent)
         finish()

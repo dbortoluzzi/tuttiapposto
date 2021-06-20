@@ -13,6 +13,6 @@
         android:id="@+id/navLogout"
         android:title="@string/logout"
         android:icon="@drawable/outline_logout"
-        android:onClick="logout"/>
+        android:onClick="onLogout"/>
 
 </menu>

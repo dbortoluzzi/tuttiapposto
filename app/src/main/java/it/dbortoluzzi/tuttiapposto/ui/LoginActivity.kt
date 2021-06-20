@@ -39,7 +39,7 @@ class LoginActivity : BaseMvpActivity<LoginActivity, LoginPresenter>(), LoginPre
                 return@setOnClickListener
             }
 
-            mPresenter.loginBtnClicked(email, password)
+            mPresenter.doLogin(email, password)
         }
 
         binding.LoginRegisterBtn.setOnClickListener { navigateToRegisterUser() }
@@ -48,6 +48,7 @@ class LoginActivity : BaseMvpActivity<LoginActivity, LoginPresenter>(), LoginPre
 
     override fun userLogged(user: User) {
         val startIntent = Intent(applicationContext, MainActivity::class.java)
+        startIntent.putExtra(USER_DATA, user)
         startActivity(startIntent)
         Toast.makeText(applicationContext , getString(R.string.login_success) , Toast.LENGTH_SHORT).show()
         finish()
@@ -66,5 +67,6 @@ class LoginActivity : BaseMvpActivity<LoginActivity, LoginPresenter>(), LoginPre
 
     companion object {
         private val TAG = "LoginActivity"
+        val USER_DATA = "${TAG}_USER_DATA"
     }
 }

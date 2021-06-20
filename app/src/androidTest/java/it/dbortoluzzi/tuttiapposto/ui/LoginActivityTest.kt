@@ -1,8 +1,7 @@
 package it.dbortoluzzi.tuttiapposto.ui
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -40,10 +39,10 @@ class LoginActivityTest {
             check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         }
         onView(withId(R.id.LoginEmail)).run {
-            perform(typeText("danieleb88@gmail.com"))
+            perform(typeText("danieleb88@gmail.com"), closeSoftKeyboard())
         }
         onView(withId(R.id.LoginPassword)).run {
-            perform(typeText("123456"))
+            perform(typeText("123456"), closeSoftKeyboard())
         }
         onView(withId(R.id.LoginBtn)).run {
             perform(click())

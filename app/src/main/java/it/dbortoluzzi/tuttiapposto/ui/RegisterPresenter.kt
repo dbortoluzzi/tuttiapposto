@@ -12,18 +12,18 @@ class RegisterPresenter @Inject constructor(
 ) : BaseMvpPresenterImpl<RegisterPresenter.View>(mView){
 
     interface View : BaseMvpView {
-        fun userRegistered(user: User)
-        fun userNotRegistered(errorMessage: String)
-        fun navigateToLogin()
+        fun onUserRegistered(user: User)
+        fun onUserNotRegistered(errorMessage: String)
+        fun onNavigateToLogin()
     }
 
-    fun registerBtnClicked(email: String, password: String) {
+    fun doRegister(email: String, password: String) {
         GlobalScope.launch(Dispatchers.IO) {
             val serviceResult: ServiceResult<User> = register(email, password)
             GlobalScope.launch(Dispatchers.Main) {
                 when (serviceResult) {
-                    is ServiceResult.Success -> view?.userRegistered(serviceResult.data)
-                    is ServiceResult.Error -> view?.userNotRegistered(serviceResult.exception.message?:"error")
+                    is ServiceResult.Success -> view?.onUserRegistered(serviceResult.data)
+                    is ServiceResult.Error -> view?.onUserNotRegistered(serviceResult.exception.message?:"error")
                 }
             }
         }
