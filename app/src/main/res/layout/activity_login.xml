@@ -52,7 +52,9 @@
     <Button
         android:id="@+id/LoginBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:textStyle="bold"
+        app:autoSizeTextType="uniform"
         android:layout_marginTop="150dp"
         android:text="@string/login" />
 
