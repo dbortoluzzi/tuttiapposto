@@ -9,15 +9,23 @@
     <string name="logout">Logout</string>
 
 <!--    Common-->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
     <string name="email_error">Errore nel campo email</string>
     <string name="password_error">Errore nel campo password.</string>
 
 <!--    Login-->
+    <string name="login">Login</string>
+    <string name="login_welcome_text">Benvenuti in TuttiAPPosto</string>
     <string name="login_error">Errore nel login.</string>
     <string name="login_success">Login effettuato con successo.</string>
+    <string name="login_register_message">Clicca qui per la registrazione</string>
 
 <!--    Registration-->
+    <string name="registration">Registrati</string>
+    <string name="registration_welcome_text">Effettua la tua registrazione</string>
     <string name="registration_error">Errore nella registrazione.</string>
+    <string name="registration_login_message">Clicca qui per tornare al login</string>
 
 <!--    Logout-->
     <string name="logout_success">Logout effettuato con successo.</string>

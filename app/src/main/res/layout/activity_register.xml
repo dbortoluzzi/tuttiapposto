@@ -1,49 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="RegiSter">
+    android:orientation="vertical"
+    tools:context="it.dbortoluzzi.tuttiapposto.ui.RegisterActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:text="@string/registration_welcome_text"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_height="100dp"
+        app:autoSizeTextType="uniform"
+        android:layout_marginTop="50dp" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/RegisterEmailWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:hint="@string/email">
+
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/RegisterEmail"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
         android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress|textPersonName" />
+        style="@style/AppTheme.Text.Inverted"
+        android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/RegisterPassword"
-        android:layout_width="wrap_content"
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/RegisterPasswordWrapper"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="105dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        android:hint="@string/password">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/RegisterPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            style="@style/AppTheme.Text.Inverted"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/RegisterBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="193dp"
-        android:text="Register " />
+        android:layout_marginTop="150dp"
+        android:text="@string/registration" />
 
     <Button
+        style="@style/AppTheme.Button.Inverted"
         android:id="@+id/RegisterLoginBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="195dp"
-        android:text="Login " />
-</RelativeLayout>
+        android:text="@string/registration_login_message" />
+</LinearLayout>
