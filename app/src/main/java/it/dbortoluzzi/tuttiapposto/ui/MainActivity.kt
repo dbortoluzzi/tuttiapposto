@@ -27,34 +27,40 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
     @Inject
     override lateinit var mPresenter: MainPresenter
 
+    var currentUser: User? = null
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
 
-    override fun onInitializeView() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        currentUser = retrieveUser(savedInstanceState)
+        if(currentUser == null){
+            initializeWhenUserIsNotLogged()
+        }else{
+            initializeWhenUserIsLogged()
+        }
     }
 
-    override fun onInitializeWhenUserIsNotLogged() {
+    override fun initializeWhenUserIsNotLogged() {
         val intent = Intent(applicationContext , LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-    override fun onInitializeWhenUserIsLogged(currentUser: User, savedInstanceState: Bundle?) {
-        // TODO: remove and put into saveInstance method
-        savedInstanceState.also {
-            it?.putSerializable(LoginActivity.USER_DATA, currentUser)
-        }
-
+    override fun initializeWhenUserIsLogged() {
         navController = findNavController(R.id.main_nav_host) //Initialising navController
         val headerNavigationView = binding.mainNavigationView.getHeaderView(0)
         val navUserTextView = headerNavigationView.findViewById<TextView>(R.id.nav_user);
-        val userStr = if (currentUser.displayName?.isNotEmpty() == true) {
-            currentUser.displayName
+        val userStr = if (currentUser!!.displayName?.isNotEmpty() == true) {
+            currentUser!!.displayName
         } else {
-            currentUser.email
+            currentUser!!.email
         }
         navUserTextView.text = userStr
 
@@ -68,6 +74,19 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
         setupActionBarWithNavController(navController, appBarConfiguration) //Setup toolbar with back button and drawer icon according to appBarConfiguration
 
         visibilityNavElements(navController) //If you want to hide drawer or bottom navigation configure that in this function
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) { // Here You have to save count value
+        super.onSaveInstanceState(outState)
+        outState.apply {
+            putSerializable(LoginActivity.USER_DATA, currentUser)
+        }
+    }
+
+    private fun retrieveUser(savedInstanceState: Bundle?): User? {
+        return intent?.getSerializableExtra(LoginActivity.USER_DATA) as User?
+                ?: savedInstanceState?.getSerializable(LoginActivity.USER_DATA) as User?
+                ?: mPresenter.getCurrentUserLogged()
     }
 
     private fun visibilityNavElements(navController: NavController) {
@@ -125,22 +144,18 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
         }
     }
 
-    override fun getUserFromIntent(): User? {
-        return intent?.getSerializableExtra(LoginActivity.USER_DATA) as User?
-    }
-
     override fun onLogout(item: MenuItem) {
         mPresenter.doLogout()
     }
 
-    override fun onLogoutSuccess() {
+    override fun logoutSuccess() {
         val startIntent = Intent(applicationContext, LoginActivity::class.java)
         startActivity(startIntent)
         Toast.makeText(this, getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
         finish()
     }
 
-    override fun onLogoutError(errorMessage: String) {
+    override fun logoutError(errorMessage: String) {
         Log.e(TAG,"Error in logout: $errorMessage")
         Toast.makeText(this, getString(R.string.logout_error), Toast.LENGTH_SHORT).show()
     }

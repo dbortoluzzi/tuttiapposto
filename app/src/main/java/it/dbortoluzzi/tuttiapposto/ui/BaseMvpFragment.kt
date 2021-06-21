@@ -14,7 +14,7 @@ abstract class BaseMvpFragment<in V : BaseMvpView, T : BaseMvpPresenter<V>>
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?) : View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        presenter.onAttachView(savedInstanceState)
+        presenter.onAttachView()
         return view;
     }
 

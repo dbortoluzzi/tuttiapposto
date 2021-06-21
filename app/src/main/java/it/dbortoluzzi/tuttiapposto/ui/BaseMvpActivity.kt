@@ -10,7 +10,7 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter.onAttachView(savedInstanceState)
+        mPresenter.onAttachView()
     }
 
     override fun context(): Context = this
