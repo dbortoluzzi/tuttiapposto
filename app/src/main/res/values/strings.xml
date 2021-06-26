@@ -16,6 +16,8 @@
     <string name="mandatory_error">Campo obbligatorio.</string>
     <string name="save">Salva</string>
     <string name="back">Indietro</string>
+    <string name="select_one_value">Seleziona un valore</string>
+    <string name="company">Ente di navigazione</string>
 
 <!--    Login-->
     <string name="login">Login</string>

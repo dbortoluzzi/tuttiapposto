@@ -29,7 +29,7 @@
         app:autoSizeTextType="uniform"
         android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@+id/welcomeText"
-        android:text="Reset"/>
+        android:text="Reset configurazione"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

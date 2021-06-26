@@ -138,4 +138,8 @@ class UseCasesModule {
     @Provides
     @Singleton
     fun getUser(usersRepository: UsersRepository): GetUser = GetUser(usersRepository)
+
+    @Provides
+    @Singleton
+    fun getCompanies(companiesRepository: CompaniesRepository): GetCompanies = GetCompanies(companiesRepository)
 }

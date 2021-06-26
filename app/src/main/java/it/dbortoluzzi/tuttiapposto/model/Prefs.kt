@@ -8,7 +8,7 @@ class Prefs (context: Context) {
 
     private val preferences: SharedPreferences = context.getSharedPreferences("tuttiapposto", Context.MODE_PRIVATE)
 
-    var company: String?
+    var companyUId: String?
         get() = preferences.getString(APP_COMPANY, null)
         set(value) = preferences.edit().putString(APP_COMPANY, value).apply()
 
@@ -16,6 +16,10 @@ class Prefs (context: Context) {
 
 object PrefsValidator {
     fun isConfigured(prefs: Prefs): Boolean {
-        return prefs.company != null && prefs.company?.isNotEmpty() == true
+        return prefs.companyUId != null && prefs.companyUId?.isNotEmpty() == true
+    }
+
+    fun resetPrefs(prefs: Prefs) {
+        prefs.companyUId = null
     }
 }

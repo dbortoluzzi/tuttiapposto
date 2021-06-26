@@ -1,23 +1,42 @@
 package it.dbortoluzzi.tuttiapposto.ui.presenters
 
+import it.dbortoluzzi.domain.Company
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
+import it.dbortoluzzi.usecases.GetCompanies
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class OptionsPresenter @Inject constructor(
-        mView: View?
+        mView: View?,
+        private val getCompanies: GetCompanies
 ) : BaseMvpPresenterImpl<OptionsPresenter.View>(mView){
 
     interface View : BaseMvpView {
-        fun getCompany(): String
+        fun getCompanySelected(): String
         fun onSuccessSave()
+        fun renderCompanies(companies: List<Company>)
+    }
+
+    override fun onAttachView() {
+        GlobalScope.launch(Dispatchers.Main) {
+            val companies = withContext(Dispatchers.IO) { getCompanies() }
+            view?.renderCompanies(companies)
+        }
     }
 
     fun doSaveOptions() {
         // TODO:
-        prefs.company = view?.getCompany()
+        prefs.companyUId = view?.getCompanySelected()
         view?.onSuccessSave()
+    }
+
+    fun getPrefCompany(): String? {
+        return prefs.companyUId
     }
 
     companion object {

@@ -20,6 +20,7 @@ import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityMainBinding
 import it.dbortoluzzi.domain.User
 import it.dbortoluzzi.tuttiapposto.di.prefs
+import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpActivity
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
 import javax.inject.Inject
@@ -155,6 +156,7 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
     }
 
     override fun logoutSuccess() {
+        PrefsValidator.resetPrefs(prefs)
         val startIntent = Intent(applicationContext, LoginActivity::class.java)
         startActivity(startIntent)
         Toast.makeText(this, getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
