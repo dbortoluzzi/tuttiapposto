@@ -20,6 +20,7 @@ class DashboardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentDashboardBinding.inflate(layoutInflater)
         return binding.root
     }

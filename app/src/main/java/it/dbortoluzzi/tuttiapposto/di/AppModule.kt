@@ -9,17 +9,17 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.FragmentComponent
-import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.android.scopes.FragmentScoped
 import dagger.hilt.components.SingletonComponent
 import it.dbortoluzzi.data.*
 import it.dbortoluzzi.tuttiapposto.framework.FakeLocationSource
 import it.dbortoluzzi.tuttiapposto.framework.FirebaseAuthenticationSource
+import it.dbortoluzzi.tuttiapposto.framework.FirebaseCompanySource
 import it.dbortoluzzi.tuttiapposto.framework.InMemoryLocationPersistenceSource
-import it.dbortoluzzi.tuttiapposto.ui.LocationPresenter
-import it.dbortoluzzi.tuttiapposto.ui.LoginPresenter
-import it.dbortoluzzi.tuttiapposto.ui.MainPresenter
-import it.dbortoluzzi.tuttiapposto.ui.RegisterPresenter
+import it.dbortoluzzi.tuttiapposto.ui.presenters.LocationPresenter
+import it.dbortoluzzi.tuttiapposto.ui.presenters.LoginPresenter
+import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
+import it.dbortoluzzi.tuttiapposto.ui.presenters.RegisterPresenter
 import it.dbortoluzzi.usecases.*
 import javax.inject.Singleton
 
@@ -41,6 +41,10 @@ class AppModule {
     @Singleton
     fun authenticationSource(firebaseAuth: FirebaseAuth): AuthenticationSource = FirebaseAuthenticationSource(firebaseAuth)
 
+    @Provides
+    @Singleton
+    fun companySource(firebaseFirestore: FirebaseFirestore): CompanyPersistenceSource = FirebaseCompanySource(firebaseFirestore)
+
     /*Repositories*/
     @Provides
     @Singleton
@@ -52,6 +56,12 @@ class AppModule {
     @Singleton
     fun usersRepository(authenticationSource: AuthenticationSource): UsersRepository {
         return UsersRepository(authenticationSource)
+    }
+
+    @Provides
+    @Singleton
+    fun companiesRepository(companyPersistenceSource: CompanyPersistenceSource): CompaniesRepository {
+        return CompaniesRepository(companyPersistenceSource)
     }
 }
 

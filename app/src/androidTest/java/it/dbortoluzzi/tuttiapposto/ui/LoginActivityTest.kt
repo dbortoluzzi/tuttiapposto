@@ -9,6 +9,7 @@ import androidx.test.rule.ActivityTestRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import it.dbortoluzzi.data.R
+import it.dbortoluzzi.tuttiapposto.ui.activities.LoginActivity
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

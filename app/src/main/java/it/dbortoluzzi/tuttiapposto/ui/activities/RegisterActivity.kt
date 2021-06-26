@@ -1,4 +1,4 @@
-package it.dbortoluzzi.tuttiapposto.ui
+package it.dbortoluzzi.tuttiapposto.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityRegisterBinding
 import it.dbortoluzzi.domain.User
+import it.dbortoluzzi.tuttiapposto.ui.BaseMvpActivity
+import it.dbortoluzzi.tuttiapposto.ui.presenters.RegisterPresenter
 import javax.inject.Inject
 
 @AndroidEntryPoint

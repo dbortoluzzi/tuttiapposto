@@ -1,13 +1,15 @@
-package it.dbortoluzzi.tuttiapposto.ui
+package it.dbortoluzzi.tuttiapposto.ui.presenters
 
 import it.dbortoluzzi.domain.User
 import it.dbortoluzzi.domain.util.ServiceResult
+import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
+import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.Register
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class RegisterPresenter @Inject constructor(
-        mView: RegisterPresenter.View?,
+        mView: View?,
         private val register: Register,
 ) : BaseMvpPresenterImpl<RegisterPresenter.View>(mView){
 

@@ -10,10 +10,10 @@ import it.dbortoluzzi.data.DeviceLocationSource
 import it.dbortoluzzi.data.LocationPersistenceSource
 import it.dbortoluzzi.data.LocationsRepository
 import it.dbortoluzzi.data.databinding.FragmentLocationsBinding
+import it.dbortoluzzi.tuttiapposto.model.Location
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
-import it.dbortoluzzi.tuttiapposto.ui.LocationsAdapter
-import it.dbortoluzzi.tuttiapposto.ui.LocationPresenter
-import it.dbortoluzzi.tuttiapposto.ui.data.Location
+import it.dbortoluzzi.tuttiapposto.ui.activities.LocationsAdapter
+import it.dbortoluzzi.tuttiapposto.ui.presenters.LocationPresenter
 import javax.inject.Inject
 
 /**

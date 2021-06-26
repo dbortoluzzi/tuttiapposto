@@ -12,15 +12,15 @@
         android:theme="@style/AppTheme">
         <uses-library android:name="android.test.runner"
             android:required="false" />
-        <activity android:name="it.dbortoluzzi.tuttiapposto.ui.MainActivity">
+        <activity android:name="it.dbortoluzzi.tuttiapposto.ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="it.dbortoluzzi.tuttiapposto.ui.LoginActivity" />
-        <activity android:name="it.dbortoluzzi.tuttiapposto.ui.RegisterActivity" />
+        <activity android:name="it.dbortoluzzi.tuttiapposto.ui.activities.LoginActivity" />
+        <activity android:name="it.dbortoluzzi.tuttiapposto.ui.activities.RegisterActivity" />
     </application>
 
 </manifest>

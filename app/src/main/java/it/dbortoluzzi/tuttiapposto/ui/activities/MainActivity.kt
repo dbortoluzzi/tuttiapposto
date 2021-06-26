@@ -1,4 +1,4 @@
-package it.dbortoluzzi.tuttiapposto.ui
+package it.dbortoluzzi.tuttiapposto.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,6 +19,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityMainBinding
 import it.dbortoluzzi.domain.User
+import it.dbortoluzzi.tuttiapposto.di.prefs
+import it.dbortoluzzi.tuttiapposto.ui.BaseMvpActivity
+import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -64,7 +67,10 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
         }
         navUserTextView.text = userStr
 
-        appBarConfiguration = AppBarConfiguration.Builder(R.id.homeFragment, R.id.locationFragment,
+        appBarConfiguration = AppBarConfiguration.Builder(
+                R.id.homeFragment,
+                R.id.homeNoConfigFragment,
+                R.id.locationFragment,
                 R.id.dashboardFragment) //Pass the ids of fragments from nav_graph which you d'ont want to show back button in toolbar
                 .setOpenableLayout(binding.mainDrawerLayout) //Pass the drawer layout id from activity xml
                 .build()
@@ -162,5 +168,7 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
 
     companion object {
         private val TAG = "MainActivity"
+
+        fun isConfigured() = prefs.company != null && prefs.company?.isNotEmpty() == true
     }
 }
