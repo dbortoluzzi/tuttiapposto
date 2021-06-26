@@ -168,7 +168,5 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
 
     companion object {
         private val TAG = "MainActivity"
-
-        fun isConfigured() = prefs.company != null && prefs.company?.isNotEmpty() == true
     }
 }

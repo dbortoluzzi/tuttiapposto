@@ -3,6 +3,7 @@ package it.dbortoluzzi.tuttiapposto.ui.presenters
 import android.view.MenuItem
 import it.dbortoluzzi.domain.User
 import it.dbortoluzzi.domain.util.ServiceResult
+import it.dbortoluzzi.tuttiapposto.model.Prefs
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.GetUser
@@ -15,7 +16,7 @@ import javax.inject.Inject
 class MainPresenter @Inject constructor(
         mView: View?,
         private val logout: Logout,
-        private val getUser: GetUser,
+        private val getUser: GetUser
 ) : BaseMvpPresenterImpl<MainPresenter.View>(mView){
 
     interface View : BaseMvpView {

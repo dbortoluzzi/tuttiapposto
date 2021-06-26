@@ -13,8 +13,10 @@ import androidx.navigation.fragment.findNavController
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentHomeNoconfigBinding
 import it.dbortoluzzi.tuttiapposto.di.prefs
+import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.activities.LoginActivity
 import it.dbortoluzzi.tuttiapposto.ui.activities.MainActivity
+import it.dbortoluzzi.tuttiapposto.ui.activities.OptionsActivity
 
 class HomeNoConfigFragment : Fragment() {
 
@@ -27,23 +29,22 @@ class HomeNoConfigFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentHomeNoconfigBinding.inflate(layoutInflater)
 
-        val navController = findNavController()
-        navController.apply {
-            if (MainActivity.isConfigured()) {
-                navigate(R.id.homeFragment)
-            }
-        }
-
         binding.firstConfigBtn.setOnClickListener {
-            prefs.company = "Pippo"
-
-            navController.apply {
-                navigate(R.id.homeFragment)
-            }
+            val startIntent = Intent(context, OptionsActivity::class.java)
+            startActivity(startIntent)
         }
 
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
 
+        val navController = findNavController()
+        navController.apply {
+            if (PrefsValidator.isConfigured(prefs)) {
+                navigate(R.id.homeFragment)
+            }
+        }
+    }
 }

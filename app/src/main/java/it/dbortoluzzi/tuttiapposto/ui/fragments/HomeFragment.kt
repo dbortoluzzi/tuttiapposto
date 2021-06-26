@@ -11,15 +11,24 @@ import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentDashboardBinding
 import it.dbortoluzzi.data.databinding.FragmentHomeBinding
 import it.dbortoluzzi.tuttiapposto.di.prefs
+import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.activities.MainActivity
-
-/**
- * DashboardFragment
- */
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+
+    override fun onResume() {
+        super.onResume()
+
+        // TODO: fix ui effect
+        val navController = findNavController()
+        navController.apply {
+            if (!PrefsValidator.isConfigured(prefs)) {
+                navigate(R.id.homeNoConfigFragment)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,12 +37,6 @@ class HomeFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        val navController = findNavController()
-        navController.apply {
-            if (!MainActivity.isConfigured()) {
-                navigate(R.id.homeNoConfigFragment)
-            }
-        }
 
         binding.resetBtn.setOnClickListener {
             prefs.company = null

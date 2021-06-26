@@ -16,10 +16,7 @@ import it.dbortoluzzi.tuttiapposto.framework.FakeLocationSource
 import it.dbortoluzzi.tuttiapposto.framework.FirebaseAuthenticationSource
 import it.dbortoluzzi.tuttiapposto.framework.FirebaseCompanySource
 import it.dbortoluzzi.tuttiapposto.framework.InMemoryLocationPersistenceSource
-import it.dbortoluzzi.tuttiapposto.ui.presenters.LocationPresenter
-import it.dbortoluzzi.tuttiapposto.ui.presenters.LoginPresenter
-import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
-import it.dbortoluzzi.tuttiapposto.ui.presenters.RegisterPresenter
+import it.dbortoluzzi.tuttiapposto.ui.presenters.*
 import it.dbortoluzzi.usecases.*
 import javax.inject.Singleton
 
@@ -95,6 +92,11 @@ object ActivityModule {
     @Provides
     fun bindMainActivity(activity: Activity): MainPresenter.View {
         return activity as MainPresenter.View
+    }
+
+    @Provides
+    fun bindOptionActivity(activity: Activity): OptionsPresenter.View {
+        return activity as OptionsPresenter.View
     }
 }
 
