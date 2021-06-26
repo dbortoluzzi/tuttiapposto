@@ -2,7 +2,6 @@ package it.dbortoluzzi.tuttiapposto.ui.fragments
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import it.dbortoluzzi.data.DeviceLocationSource
 import it.dbortoluzzi.data.LocationPersistenceSource
 import it.dbortoluzzi.data.LocationsRepository
 import it.dbortoluzzi.data.databinding.FragmentLocationsBinding
+import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.LocationsAdapter
 import it.dbortoluzzi.tuttiapposto.ui.LocationPresenter
 import it.dbortoluzzi.tuttiapposto.ui.data.Location
@@ -21,7 +21,7 @@ import javax.inject.Inject
  */
 
 @AndroidEntryPoint
-class LocationsFragment: Fragment(), LocationPresenter.View {
+class LocationsFragment: BaseMvpFragment<LocationsFragment, LocationPresenter>(), LocationPresenter.View {
     @Inject
     lateinit var locationsAdapter: LocationsAdapter
 
@@ -35,7 +35,7 @@ class LocationsFragment: Fragment(), LocationPresenter.View {
     lateinit var locationsRepository: LocationsRepository
 
     @Inject
-    lateinit var presenter: LocationPresenter
+    override lateinit var presenter: LocationPresenter
 
     private lateinit var binding: FragmentLocationsBinding
 
@@ -43,6 +43,7 @@ class LocationsFragment: Fragment(), LocationPresenter.View {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
 
         binding = FragmentLocationsBinding.inflate(layoutInflater)
 
@@ -50,15 +51,7 @@ class LocationsFragment: Fragment(), LocationPresenter.View {
 
         binding.newLocationBtn.setOnClickListener { presenter.newLocationClicked() }
 
-        presenter.onCreate()
-
         return binding.root
-
-    }
-
-    override fun onDestroy() {
-        presenter.onDestroy()
-        super.onDestroy()
     }
 
     override fun renderLocations(locations: List<Location>) {

@@ -9,4 +9,10 @@
         android:icon="@drawable/ic_dashboard"
         android:title="@string/dashboard" />
 
+    <item
+        android:id="@+id/navLogout"
+        android:title="@string/logout"
+        android:icon="@drawable/outline_logout"
+        android:onClick="onLogout"/>
+
 </menu>

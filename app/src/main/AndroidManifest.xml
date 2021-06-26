@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:name = "it.dbortoluzzi.tuttiapposto.di.App"
         android:theme="@style/AppTheme">
+        <uses-library android:name="android.test.runner"
+            android:required="false" />
         <activity android:name="it.dbortoluzzi.tuttiapposto.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,6 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="it.dbortoluzzi.tuttiapposto.ui.LoginActivity" />
+        <activity android:name="it.dbortoluzzi.tuttiapposto.ui.RegisterActivity" />
     </application>
 
 </manifest>

@@ -1,8 +1,12 @@
 package it.dbortoluzzi.tuttiapposto.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -14,9 +18,16 @@ import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityMainBinding
+import it.dbortoluzzi.domain.User
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresenter.View {
+
+    @Inject
+    override lateinit var mPresenter: MainPresenter
+
+    var currentUser: User? = null
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
@@ -28,7 +39,30 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        currentUser = retrieveUser(savedInstanceState)
+        if(currentUser == null){
+            initializeWhenUserIsNotLogged()
+        }else{
+            initializeWhenUserIsLogged()
+        }
+    }
+
+    override fun initializeWhenUserIsNotLogged() {
+        val intent = Intent(applicationContext , LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    override fun initializeWhenUserIsLogged() {
         navController = findNavController(R.id.main_nav_host) //Initialising navController
+        val headerNavigationView = binding.mainNavigationView.getHeaderView(0)
+        val navUserTextView = headerNavigationView.findViewById<TextView>(R.id.nav_user);
+        val userStr = if (currentUser!!.displayName?.isNotEmpty() == true) {
+            currentUser!!.displayName
+        } else {
+            currentUser!!.email
+        }
+        navUserTextView.text = userStr
 
         appBarConfiguration = AppBarConfiguration.Builder(R.id.homeFragment, R.id.locationFragment,
                 R.id.dashboardFragment) //Pass the ids of fragments from nav_graph which you d'ont want to show back button in toolbar
@@ -42,6 +76,19 @@ class MainActivity : AppCompatActivity() {
         visibilityNavElements(navController) //If you want to hide drawer or bottom navigation configure that in this function
     }
 
+    override fun onSaveInstanceState(outState: Bundle) { // Here You have to save count value
+        super.onSaveInstanceState(outState)
+        outState.apply {
+            putSerializable(LoginActivity.USER_DATA, currentUser)
+        }
+    }
+
+    private fun retrieveUser(savedInstanceState: Bundle?): User? {
+        return intent?.getSerializableExtra(LoginActivity.USER_DATA) as User?
+                ?: savedInstanceState?.getSerializable(LoginActivity.USER_DATA) as User?
+                ?: mPresenter.getCurrentUserLogged()
+    }
+
     private fun visibilityNavElements(navController: NavController) {
 
         //Listen for the change in fragment (navigation) and hide or show drawer or bottom navigation accordingly if required
@@ -50,10 +97,10 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
+//                R.id.dashboardFragment -> hideBothNavigation()
                 else -> showBothNavigation()
             }
         }
-
     }
 
     private fun hideBothNavigation() { //Hide both drawer and bottom navigation bar
@@ -82,10 +129,6 @@ class MainActivity : AppCompatActivity() {
         binding.mainBottomNavigationView.setupWithNavController(navController) //Setup Bottom navigation with navController
     }
 
-    fun exitApp() { //To exit the application call this function from fragment
-        this.finishAffinity()
-    }
-
     override fun onSupportNavigateUp(): Boolean { //Setup appBarConfiguration for back arrow
         return NavigationUI.navigateUp(navController, appBarConfiguration)
     }
@@ -99,5 +142,25 @@ class MainActivity : AppCompatActivity() {
                 super.onBackPressed() //If drawer is already in closed condition then go back
             }
         }
+    }
+
+    override fun onLogout(item: MenuItem) {
+        mPresenter.doLogout()
+    }
+
+    override fun logoutSuccess() {
+        val startIntent = Intent(applicationContext, LoginActivity::class.java)
+        startActivity(startIntent)
+        Toast.makeText(this, getString(R.string.logout_success), Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
+    override fun logoutError(errorMessage: String) {
+        Log.e(TAG,"Error in logout: $errorMessage")
+        Toast.makeText(this, getString(R.string.logout_error), Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private val TAG = "MainActivity"
     }
 }

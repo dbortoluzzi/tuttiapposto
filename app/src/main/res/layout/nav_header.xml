@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="192dp"
-    android:background="?attr/colorPrimaryDark"
+    android:background="?attr/colorPrimary"
     android:gravity="center" >
 
     <!--You can add the navigation drawer header contents here-->
@@ -12,8 +12,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/nav_user"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
-        android:textSize="20sp"/>
+        android:gravity="bottom"
+        android:textSize="24sp" />
 
 </LinearLayout>

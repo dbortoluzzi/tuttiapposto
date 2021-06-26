@@ -6,7 +6,7 @@ import it.dbortoluzzi.domain.Location
 class GetLocations(private val locationsRepository: LocationsRepository) {
 
     init{
-        System.out.println("INIT")
+        println("INIT")
     }
 
     operator fun invoke(): List<Location> = locationsRepository.getSavedLocations()
