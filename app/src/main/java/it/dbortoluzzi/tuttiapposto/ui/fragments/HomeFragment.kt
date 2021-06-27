@@ -35,16 +35,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.resetBtn.setOnClickListener {
-            prefs.companyUId = null
-
-            val navController = findNavController()
-            navController.apply {
-                navigate(R.id.homeNoConfigFragment)
-            }
-
-        }
-
         return binding.root
     }
 
