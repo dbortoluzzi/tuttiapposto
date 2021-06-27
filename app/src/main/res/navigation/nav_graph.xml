@@ -12,6 +12,23 @@
         android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.HomeFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home" >
+
+        <action android:id="@+id/action_home_to_no_config"
+            app:destination="@id/homeNoConfigFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/homeFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeNoConfigFragment"
+        android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.HomeNoConfigFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home_noconfig" >
+
+        <action android:id="@+id/action_no_config_to_hone"
+            app:destination="@id/homeFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/homeNoConfigFragment"/>
     </fragment>
 
     <fragment

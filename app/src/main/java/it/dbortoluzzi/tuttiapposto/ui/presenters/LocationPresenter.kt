@@ -1,8 +1,10 @@
-package it.dbortoluzzi.tuttiapposto.ui
+package it.dbortoluzzi.tuttiapposto.ui.presenters
 
 import android.util.Log
-import it.dbortoluzzi.tuttiapposto.ui.data.Location
-import it.dbortoluzzi.tuttiapposto.ui.data.toPresentationModel
+import it.dbortoluzzi.tuttiapposto.model.Location
+import it.dbortoluzzi.tuttiapposto.model.toPresentationModel
+import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
+import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.GetLocations
 import it.dbortoluzzi.usecases.RequestNewLocation
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +15,7 @@ import javax.inject.Inject
 import it.dbortoluzzi.domain.Location as DomainLocation
 
 class LocationPresenter @Inject constructor(
-        mView: LocationPresenter.View?,
+        mView: View?,
         private val getLocations: GetLocations,
         private val requestNewLocation: RequestNewLocation
 ) : BaseMvpPresenterImpl<LocationPresenter.View>(mView){

@@ -1,4 +1,4 @@
-package it.dbortoluzzi.tuttiapposto.ui.data
+package it.dbortoluzzi.tuttiapposto.model
 
 import java.math.RoundingMode
 import java.text.DecimalFormat

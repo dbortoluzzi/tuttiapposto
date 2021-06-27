@@ -7,12 +7,18 @@
     <string name="home">Home</string>
     <string name="location">Location</string>
     <string name="logout">Logout</string>
+    <string name="options">Opzioni</string>
 
 <!--    Common-->
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="email_error">Errore nel campo email</string>
     <string name="password_error">Errore nel campo password.</string>
+    <string name="mandatory_error">Campo obbligatorio.</string>
+    <string name="save">Salva</string>
+    <string name="back">Indietro</string>
+    <string name="select_one_value">Seleziona un valore</string>
+    <string name="company">Ente di navigazione</string>
 
 <!--    Login-->
     <string name="login">Login</string>
@@ -30,4 +36,11 @@
 <!--    Logout-->
     <string name="logout_success">Logout effettuato con successo.</string>
     <string name="logout_error">Errore nel logout.</string>
+
+<!--    Home-->
+    <string name="home_no_config_welcome_text">Per iniziare ad utilizzare il servizio, devi innanzitutto effettuare la prima configurazione.</string>
+    <string name="home_first_config">Prima configurazione</string>
+
+<!--    Opzioni-->
+    <string name="options_welcome_text">Opzioni dell\'applicazione</string>
 </resources>

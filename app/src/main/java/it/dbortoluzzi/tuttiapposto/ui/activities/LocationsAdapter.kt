@@ -1,10 +1,10 @@
-package it.dbortoluzzi.tuttiapposto.ui
+package it.dbortoluzzi.tuttiapposto.ui.activities
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import it.dbortoluzzi.data.databinding.ViewLocationItemBinding
-import it.dbortoluzzi.tuttiapposto.ui.data.Location
+import it.dbortoluzzi.tuttiapposto.model.Location
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
