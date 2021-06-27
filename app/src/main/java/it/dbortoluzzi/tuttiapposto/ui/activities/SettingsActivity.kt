@@ -4,28 +4,27 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
-import it.dbortoluzzi.data.databinding.ActivityOptionsBinding
+import it.dbortoluzzi.data.databinding.ActivitySettingsBinding
 import it.dbortoluzzi.domain.Company
 import it.dbortoluzzi.tuttiapposto.framework.SpinnerItem
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpActivity
-import it.dbortoluzzi.tuttiapposto.ui.presenters.OptionsPresenter
+import it.dbortoluzzi.tuttiapposto.ui.presenters.SettingsPresenter
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class OptionsActivity : BaseMvpActivity<OptionsActivity, OptionsPresenter>(), OptionsPresenter.View {
+class SettingsActivity : BaseMvpActivity<SettingsActivity, SettingsPresenter>(), SettingsPresenter.View {
 
     @Inject
-    override lateinit var mPresenter: OptionsPresenter
+    override lateinit var mPresenter: SettingsPresenter
 
-    private lateinit var binding: ActivityOptionsBinding
+    private lateinit var binding: ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityOptionsBinding.inflate(layoutInflater)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.saveBtn.setOnClickListener {

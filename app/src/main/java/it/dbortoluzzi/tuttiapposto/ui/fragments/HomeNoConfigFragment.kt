@@ -6,17 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentHomeNoconfigBinding
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
-import it.dbortoluzzi.tuttiapposto.ui.activities.LoginActivity
-import it.dbortoluzzi.tuttiapposto.ui.activities.MainActivity
-import it.dbortoluzzi.tuttiapposto.ui.activities.OptionsActivity
+import it.dbortoluzzi.tuttiapposto.ui.activities.SettingsActivity
 
 class HomeNoConfigFragment : Fragment() {
 
@@ -30,7 +26,7 @@ class HomeNoConfigFragment : Fragment() {
         binding = FragmentHomeNoconfigBinding.inflate(layoutInflater)
 
         binding.firstConfigBtn.setOnClickListener {
-            val startIntent = Intent(context, OptionsActivity::class.java)
+            val startIntent = Intent(context, SettingsActivity::class.java)
             startActivity(startIntent)
         }
 

@@ -21,7 +21,7 @@
         </activity>
         <activity android:name="it.dbortoluzzi.tuttiapposto.ui.activities.LoginActivity" />
         <activity android:name="it.dbortoluzzi.tuttiapposto.ui.activities.RegisterActivity" />
-        <activity android:name="it.dbortoluzzi.tuttiapposto.ui.activities.OptionsActivity" />
+        <activity android:name="it.dbortoluzzi.tuttiapposto.ui.activities.SettingsActivity" />
     </application>
 
 </manifest>

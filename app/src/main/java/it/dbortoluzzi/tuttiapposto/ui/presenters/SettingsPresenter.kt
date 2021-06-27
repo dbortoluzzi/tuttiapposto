@@ -11,10 +11,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class OptionsPresenter @Inject constructor(
+class SettingsPresenter @Inject constructor(
         mView: View?,
         private val getCompanies: GetCompanies
-) : BaseMvpPresenterImpl<OptionsPresenter.View>(mView){
+) : BaseMvpPresenterImpl<SettingsPresenter.View>(mView){
 
     interface View : BaseMvpView {
         fun getCompanySelected(): String
@@ -30,7 +30,6 @@ class OptionsPresenter @Inject constructor(
     }
 
     fun doSaveOptions() {
-        // TODO:
         prefs.companyUId = view?.getCompanySelected()
         view?.onSuccessSave()
     }

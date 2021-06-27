@@ -10,9 +10,16 @@
         android:title="@string/dashboard" />
 
     <item
+        android:id="@+id/activityOptions"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/options"
+        android:onClick="onSettingsClicked"/>
+
+
+    <item
         android:id="@+id/navLogout"
         android:title="@string/logout"
         android:icon="@drawable/outline_logout"
-        android:onClick="onLogout"/>
+        android:onClick="onLogoutClicked"/>
 
 </menu>

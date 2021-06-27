@@ -95,8 +95,8 @@ object ActivityModule {
     }
 
     @Provides
-    fun bindOptionActivity(activity: Activity): OptionsPresenter.View {
-        return activity as OptionsPresenter.View
+    fun bindSettingsActivity(activity: Activity): SettingsPresenter.View {
+        return activity as SettingsPresenter.View
     }
 }
 

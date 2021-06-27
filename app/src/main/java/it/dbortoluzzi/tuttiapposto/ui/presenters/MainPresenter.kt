@@ -24,7 +24,8 @@ class MainPresenter @Inject constructor(
         fun logoutError(errorMessage: String)
         fun initializeWhenUserIsLogged()
         fun initializeWhenUserIsNotLogged()
-        fun onLogout(item: MenuItem)
+        fun onLogoutClicked(item: MenuItem)
+        fun onSettingsClicked(item: MenuItem)
     }
 
     override fun onAttachView() {

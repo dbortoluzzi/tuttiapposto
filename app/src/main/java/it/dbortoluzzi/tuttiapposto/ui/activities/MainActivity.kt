@@ -151,8 +151,13 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
         }
     }
 
-    override fun onLogout(item: MenuItem) {
+    override fun onLogoutClicked(item: MenuItem) {
         mPresenter.doLogout()
+    }
+
+    override fun onSettingsClicked(item: MenuItem) {
+        val startIntent = Intent(applicationContext, SettingsActivity::class.java)
+        startActivity(startIntent)
     }
 
     override fun logoutSuccess() {
