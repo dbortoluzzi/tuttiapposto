@@ -18,7 +18,7 @@ class FirebaseCompanySource @Inject constructor(
 
     override suspend fun getActiveCompanies(): ServiceResult<List<Company>> {
         try {
-            return when(val resultDocumentSnapshot = db.collection("Company").get().await()) {
+            return when(val resultDocumentSnapshot = db.collection(COLLECTION).get().await()) {
                 is Success -> {
                     val companies = resultDocumentSnapshot.data!!
                                         .toObjects(FirebaseCompany::class.java)
@@ -39,6 +39,7 @@ class FirebaseCompanySource @Inject constructor(
 
     companion object {
         private val TAG = "FirebaseCompanySource"
+        private val COLLECTION = "Companies"
     }
 
 }
