@@ -7,8 +7,9 @@ import java.io.Serializable
 data class FirebaseCompany(
         @DocumentId
         val uID: String = "",
+        val active: Boolean = false,
         val vatNumber: String? = null,
         val denomination: String = "") : Serializable
 
-fun FirebaseCompany.toObject() = Company(this.uID, this.vatNumber, this.denomination)
+fun FirebaseCompany.toObject() = Company(this.uID, this.active, this.vatNumber, this.denomination)
 
