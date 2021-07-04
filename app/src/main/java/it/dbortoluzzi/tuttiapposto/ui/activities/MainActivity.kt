@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -23,9 +22,10 @@ import it.dbortoluzzi.domain.User
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpActivity
-import it.dbortoluzzi.tuttiapposto.ui.inflate
+import it.dbortoluzzi.tuttiapposto.ui.fragments.HomeFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresenter.View {
@@ -171,6 +171,11 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
     override fun onSettingsClicked(item: MenuItem) {
         val startIntent = Intent(applicationContext, SettingsActivity::class.java)
         startActivity(startIntent)
+    }
+
+    override fun onFilterClicked(item: MenuItem) {
+        binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
+        navController.navigate(R.id.filterAvailabilitiesFragment)
     }
 
     override fun logoutSuccess() {

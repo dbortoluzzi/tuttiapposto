@@ -17,6 +17,23 @@
             app:destination="@id/homeNoConfigFragment"
             app:popUpToInclusive="true"
             app:popUpTo="@id/homeFragment"/>
+
+        <action android:id="@+id/action_home_to_filter"
+            app:destination="@id/filterAvailabilitiesFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/homeFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/filterAvailabilitiesFragment"
+        android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.FilterAvailabilitiesFragment"
+        android:label="@string/filter"
+        tools:layout="@layout/fragment_filter_availabilities" >
+
+        <action android:id="@+id/action_filter_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/filterAvailabilitiesFragment"/>
     </fragment>
 
     <fragment

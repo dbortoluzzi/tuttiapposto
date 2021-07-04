@@ -7,15 +7,15 @@
     android:layout_height="match_parent"
     tools:context="it.dbortoluzzi.tuttiapposto.ui.fragments.HomeFragment">
 
-    <fragment
-        android:id="@+id/main_nav_host"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/availabilityFragment"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.AvailabilityFragment">
-    </fragment>
+    </androidx.fragment.app.FragmentContainerView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

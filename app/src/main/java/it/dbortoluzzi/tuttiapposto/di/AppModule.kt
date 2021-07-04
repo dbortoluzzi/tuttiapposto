@@ -174,6 +174,12 @@ object FragmentModule {
     fun bindAvailabilityFragment(fragment: Fragment): AvailabilityPresenter.View {
         return fragment as AvailabilityPresenter.View
     }
+
+    @Provides
+    @FragmentScoped
+    fun bindFilterAvailabilities(fragment: Fragment): FilterAvailabilitiesPresenter.View {
+        return fragment as FilterAvailabilitiesPresenter.View
+    }
 }
 
 @Module

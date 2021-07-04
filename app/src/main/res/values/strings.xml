@@ -50,4 +50,5 @@
 <!--    Opzioni-->
     <string name="options_welcome_text">Opzioni dell\'applicazione</string>
     <string name="filter">Filtra</string>
+    <string name="search">Cerca</string>
 </resources>

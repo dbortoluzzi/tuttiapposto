@@ -31,6 +31,7 @@ class MainPresenter @Inject constructor(
         fun initializeWhenUserIsNotLogged()
         fun onLogoutClicked(item: MenuItem)
         fun onSettingsClicked(item: MenuItem)
+        fun onFilterClicked(item: MenuItem)
     }
 
     override fun onAttachView() {
