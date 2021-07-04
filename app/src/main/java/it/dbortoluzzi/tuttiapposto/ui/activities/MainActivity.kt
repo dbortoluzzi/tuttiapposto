@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -22,6 +23,7 @@ import it.dbortoluzzi.domain.User
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpActivity
+import it.dbortoluzzi.tuttiapposto.ui.inflate
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
 import javax.inject.Inject
 
@@ -44,15 +46,15 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
         setContentView(binding.root)
 
         currentUser = retrieveUser(savedInstanceState)
-        if(currentUser == null){
+        if (currentUser == null) {
             initializeWhenUserIsNotLogged()
-        }else{
+        } else {
             initializeWhenUserIsLogged()
         }
     }
 
     override fun initializeWhenUserIsNotLogged() {
-        val intent = Intent(applicationContext , LoginActivity::class.java)
+        val intent = Intent(applicationContext, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -80,6 +82,10 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
 
         setupActionBarWithNavController(navController, appBarConfiguration) //Setup toolbar with back button and drawer icon according to appBarConfiguration
 
+        // to use custom menu, but now it's commented
+//        binding.mainToolbar.inflateMenu(R.menu.drawer_navigation)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+
         visibilityNavElements(navController) //If you want to hide drawer or bottom navigation configure that in this function
     }
 
@@ -98,15 +104,22 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
 
     private fun visibilityNavElements(navController: NavController) {
 
-        //Listen for the change in fragment (navigation) and hide or show drawer or bottom navigation accordingly if required
-        //Modify this according to your need
-        //If you want you can implement logic to deselect(styling) the bottom navigation menu item when drawer item selected using listener
-
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-//                R.id.dashboardFragment -> hideBothNavigation()
-                else -> showBothNavigation()
+                R.id.homeFragment -> {
+                    binding.mainNavigationView.menu.findItem(R.id.action_filter).apply {
+                        isVisible = true
+//                        setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+//                        setShowAsActionFlags(SHOW_AS_ACTION_ALWAYS)// TODO: it doesn'work!
+                    }
+                }
+                else -> {
+                    binding.mainNavigationView.menu.findItem(R.id.action_filter).apply {
+                        isVisible = false
+                    }
+                }
             }
+            showBothNavigation()
         }
     }
 
@@ -169,7 +182,7 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
     }
 
     override fun logoutError(errorMessage: String) {
-        Log.e(TAG,"Error in logout: $errorMessage")
+        Log.e(TAG, "Error in logout: $errorMessage")
         Toast.makeText(this, getString(R.string.logout_error), Toast.LENGTH_SHORT).show()
     }
 

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/outline_filter_list"
+        android:title="@string/filter"
+        android:visible="true"/>
+
 
     <!--Each item id should be same as in the nav_graph fragment id-->
-
     <item
         android:id="@+id/dashboardFragment"
         android:icon="@drawable/ic_dashboard"
