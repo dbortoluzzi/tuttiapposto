@@ -32,7 +32,7 @@ class AvailabilitiesAdapter @Inject constructor(): RecyclerView.Adapter<Availabi
                 binding.tableName.text = availability.tableName
                 binding.roomName.text = availability.roomName
 
-                if (availabilityNumber > 10) {
+                if (availabilityNumber > 5) {
                     binding.availabilityNumber.text = "$availabilityNumber ${itemView.context.getString(R.string.a_lot_of_tables)}"
                 } else if (availabilityNumber >= 2){
                     binding.availabilityNumber.text = "${itemView.context.getString(R.string.only_tables)} $availabilityNumber"

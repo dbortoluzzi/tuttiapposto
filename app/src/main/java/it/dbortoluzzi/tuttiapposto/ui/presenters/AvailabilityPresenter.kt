@@ -23,11 +23,15 @@ class AvailabilityPresenter @Inject constructor(
 
     interface View : BaseMvpView {
         fun renderAvailableTables(availabilities: List<Availability>)
+        fun showProgressBar()
+        fun hideProgressBar()
     }
 
     override fun onAttachView() {
         if (PrefsValidator.isConfigured(prefs)) {
             GlobalScope.launch(Dispatchers.Main) {
+                view?.showProgressBar();
+
                 val companyId = prefs.companyUId!!
                 // TODO: change
                 val buildingId = "VTdqvUGCKLWKq0SFkTHx"
@@ -38,6 +42,7 @@ class AvailabilityPresenter @Inject constructor(
 
                 val availabilities = withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate) }
                 view?.renderAvailableTables(availabilities.map { it.toPresentationModel("ROOM NAME")})
+                view?.hideProgressBar();
             }
         }
     }

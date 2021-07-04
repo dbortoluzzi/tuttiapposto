@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
-import it.dbortoluzzi.data.databinding.FragmentAvailabiltiesBinding
+import it.dbortoluzzi.data.databinding.FragmentAvailabilitiesBinding
 import it.dbortoluzzi.tuttiapposto.model.Availability
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.activities.AvailabilitiesAdapter
@@ -25,7 +25,7 @@ class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPr
     @Inject
     override lateinit var presenter: AvailabilityPresenter
 
-    private lateinit var binding: FragmentAvailabiltiesBinding
+    private lateinit var binding: FragmentAvailabilitiesBinding
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +33,7 @@ class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPr
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        binding = FragmentAvailabiltiesBinding.inflate(layoutInflater)
+        binding = FragmentAvailabilitiesBinding.inflate(layoutInflater)
 
         binding.recycler.adapter = availabilitiesAdapter
 
@@ -44,6 +44,16 @@ class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPr
 
     override fun renderAvailableTables(availabilities: List<Availability>) {
         availabilitiesAdapter.items = availabilities
+    }
+
+    override fun showProgressBar() {
+        binding.recycler.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressBar() {
+        binding.recycler.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
     }
 
 }

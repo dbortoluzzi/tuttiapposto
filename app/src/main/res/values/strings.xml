@@ -40,10 +40,13 @@
 <!--    Home-->
     <string name="home_no_config_welcome_text">Per iniziare ad utilizzare il servizio, devi innanzitutto effettuare la prima configurazione.</string>
     <string name="home_first_config">Prima configurazione</string>
+    <string name="book_new_table">Prenota</string>
 
-<!--    Opzioni-->
-    <string name="options_welcome_text">Opzioni dell\'applicazione</string>
+<!--    Availabilities-->
     <string name="a_lot_of_tables">posti</string>
     <string name="only_tables">solo</string>
     <string name="last_table">ultimo!</string>
+
+<!--    Opzioni-->
+    <string name="options_welcome_text">Opzioni dell\'applicazione</string>
 </resources>
