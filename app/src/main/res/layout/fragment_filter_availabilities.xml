@@ -4,30 +4,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="it.dbortoluzzi.tuttiapposto.ui.activities.MainActivity"
+    tools:context="it.dbortoluzzi.tuttiapposto.ui.fragments.AvailabilityFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/RegisterEmailWrapper"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/view_location_item"/>
+        android:hint="@string/email"
+        android:layout_margin="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/RegisterEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            style="@style/AppTheme.Text.Inverted"
+            android:inputType="textEmailAddress"
+            android:text="CAMPO DI TEST"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/newLocationBtn"
+        android:id="@+id/filter_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/request_new_location"
+        android:text="@string/search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
         app:icon="@drawable/ic_location"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
