@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentAvailabilitiesBinding
 import it.dbortoluzzi.tuttiapposto.model.Availability
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
@@ -14,7 +16,7 @@ import it.dbortoluzzi.tuttiapposto.ui.presenters.AvailabilityPresenter
 import javax.inject.Inject
 
 /**
- * LocationFragment
+ * AvailabilityFragment
  */
 
 @AndroidEntryPoint
@@ -38,6 +40,8 @@ class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPr
         binding.recycler.adapter = availabilitiesAdapter
 
         binding.newBookingBtn.setOnClickListener { presenter.newBookingClicked()}
+
+        binding.filterAvailabilityBtn.setOnClickListener { findNavController().navigate(R.id.filterAvailabilitiesFragment)}
 
         return binding.root
     }

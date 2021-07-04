@@ -22,7 +22,6 @@ import it.dbortoluzzi.domain.User
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpActivity
-import it.dbortoluzzi.tuttiapposto.ui.fragments.HomeFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
 import javax.inject.Inject
 
@@ -109,8 +108,6 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
                 R.id.homeFragment -> {
                     binding.mainNavigationView.menu.findItem(R.id.action_filter).apply {
                         isVisible = true
-//                        setShowAsAction(SHOW_AS_ACTION_ALWAYS)
-//                        setShowAsActionFlags(SHOW_AS_ACTION_ALWAYS)// TODO: it doesn'work!
                     }
                 }
                 else -> {

@@ -4,7 +4,6 @@ import android.view.MenuItem
 import it.dbortoluzzi.domain.User
 import it.dbortoluzzi.domain.util.ServiceResult
 import it.dbortoluzzi.tuttiapposto.di.prefs
-import it.dbortoluzzi.tuttiapposto.model.Prefs
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.GetAvailableTables
@@ -15,7 +14,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
-import kotlin.math.log
 
 class MainPresenter @Inject constructor(
         mView: View?,

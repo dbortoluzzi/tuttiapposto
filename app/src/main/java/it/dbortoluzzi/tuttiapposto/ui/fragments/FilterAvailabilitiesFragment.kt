@@ -5,15 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import dagger.hilt.android.AndroidEntryPoint
+import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentFilterAvailabilitiesBinding
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.FilterAvailabilitiesPresenter
+import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
 import javax.inject.Inject
 
 /**
- * LocationFragment
+ * FilterAvailabilitiesFragment
  */
 
 @AndroidEntryPoint
@@ -38,7 +41,7 @@ class FilterAvailabilitiesFragment: BaseMvpFragment<FilterAvailabilitiesFragment
     }
 
     override fun goToAvailabilitiesPage() {
-        parentFragmentManager.popBackStack()
+        findNavController().navigate(R.id.homeFragment)
     }
 
 }

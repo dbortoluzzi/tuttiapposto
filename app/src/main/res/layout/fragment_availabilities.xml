@@ -23,22 +23,38 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
         android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/view_location_item"/>
+        tools:listitem="@layout/view_location_item" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/newBookingBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/book_new_table"
+        android:contentDescription="@string/book_new_table"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
+        app:fabSize="auto"
+        android:src="@drawable/outline_add"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/filterAvailabilityBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/filter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:icon="@drawable/ic_location"/>
+        android:layout_margin="16dp"
+        android:backgroundTint="@android:color/darker_gray"
+        app:backgroundTint="@android:color/darker_gray"
+        app:fabSize="auto"
+        android:src="@drawable/outline_filter_list"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
