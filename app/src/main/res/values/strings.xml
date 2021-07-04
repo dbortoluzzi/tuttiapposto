@@ -43,4 +43,7 @@
 
 <!--    Opzioni-->
     <string name="options_welcome_text">Opzioni dell\'applicazione</string>
+    <string name="a_lot_of_tables">posti</string>
+    <string name="only_tables">solo</string>
+    <string name="last_table">ultimo!</string>
 </resources>

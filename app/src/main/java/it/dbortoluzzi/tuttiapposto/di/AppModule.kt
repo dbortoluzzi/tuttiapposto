@@ -168,6 +168,12 @@ object FragmentModule {
     fun bindLocationFragment(fragment: Fragment): LocationPresenter.View {
         return fragment as LocationPresenter.View
     }
+
+    @Provides
+    @FragmentScoped
+    fun bindAvailabilityFragment(fragment: Fragment): AvailabilityPresenter.View {
+        return fragment as AvailabilityPresenter.View
+    }
 }
 
 @Module
