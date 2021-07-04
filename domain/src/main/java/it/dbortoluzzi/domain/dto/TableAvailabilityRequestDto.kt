@@ -1,9 +1,9 @@
-package it.dbortoluzzi.data.dto
+package it.dbortoluzzi.domain.dto
 
 import java.io.Serializable
 import java.util.*
 
-data class TableAvailableRequestDto(
+data class TableAvailabilityRequestDto(
         val companyId: String = "",
         val buildingId: String? = null,
         val roomId: String? = null,

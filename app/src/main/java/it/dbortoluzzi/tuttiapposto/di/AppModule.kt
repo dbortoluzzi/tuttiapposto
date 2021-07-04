@@ -20,10 +20,12 @@ import it.dbortoluzzi.tuttiapposto.framework.*
 import it.dbortoluzzi.tuttiapposto.ui.presenters.*
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants
 import it.dbortoluzzi.usecases.*
+import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -32,7 +34,7 @@ class AppModule {
 
     /* Retrofit */
     @Provides
-    fun provideBaseUrl() = Constants.BASE_URL
+    fun provideBaseUrl() = if (BuildConfig.DEBUG) {Constants.DEV_BASE_URL} else {Constants.PROD_BASE_URL}
 
     @Singleton
     @Provides
@@ -41,10 +43,14 @@ class AppModule {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .readTimeout(Constants.READ_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
+                .writeTimeout(Constants.WRITE_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
                 .build()
     } else {
         OkHttpClient
                 .Builder()
+                .readTimeout(Constants.READ_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
+                .writeTimeout(Constants.WRITE_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
                 .build()
     }
 

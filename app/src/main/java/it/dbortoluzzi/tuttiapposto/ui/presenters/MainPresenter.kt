@@ -39,6 +39,7 @@ class MainPresenter @Inject constructor(
         val roomId = "B29tSJlDqC6J6OG9Jcug"
 
         GlobalScope.launch(Dispatchers.IO) {
+            // TODO: only for tests!
             val serviceResult = getAvailableTables(prefs.companyUId!!, buildingId, roomId, Date(), Date())
             val a = 2
 //            GlobalScope.launch(Dispatchers.Main) {

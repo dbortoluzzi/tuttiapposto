@@ -1,20 +1,20 @@
 package it.dbortoluzzi.data
 
-import it.dbortoluzzi.data.dto.TableAvailableRequestDto
+import it.dbortoluzzi.domain.dto.TableAvailabilityRequestDto
 import it.dbortoluzzi.domain.Table
+import it.dbortoluzzi.domain.dto.TableAvailabilityResponseDto
 import it.dbortoluzzi.domain.util.ServiceResult
-import java.util.*
 
 class TablesRepository(
     private val tablePersistenceSource: TablePersistenceSource
 ) {
 
-    suspend fun findAvailableTables(tableAvailableRequestDto: TableAvailableRequestDto): ServiceResult<List<Table>> = tablePersistenceSource.getAvailableTables(tableAvailableRequestDto)
+    suspend fun findAvailableTables(tableAvailabilityRequestDto: TableAvailabilityRequestDto): ServiceResult<List<TableAvailabilityResponseDto>> = tablePersistenceSource.getAvailableTables(tableAvailabilityRequestDto)
 
 }
 
 interface TablePersistenceSource {
 
-    suspend fun getAvailableTables(tableAvailableRequestDto: TableAvailableRequestDto): ServiceResult<List<Table>>
+    suspend fun getAvailableTables(tableAvailabilityRequestDto: TableAvailabilityRequestDto): ServiceResult<List<TableAvailabilityResponseDto>>
 
 }
