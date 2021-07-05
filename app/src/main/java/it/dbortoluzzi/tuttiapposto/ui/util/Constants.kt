@@ -8,4 +8,7 @@ object Constants {
 
     val READ_SECONDS_TIMEOUT_RETROFIT = 10L
     val WRITE_SECONDS_TIMEOUT_RETROFIT = 10L
+
+    const val HEADER_CACHE_CONTROL = "Cache-Control"
+    const val HEADER_PRAGMA = "Pragma"
 }

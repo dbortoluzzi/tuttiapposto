@@ -1,6 +1,9 @@
 package it.dbortoluzzi.tuttiapposto.di
 
 import android.app.Activity
+import android.content.Context
+import android.net.ConnectivityManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,10 +19,13 @@ import it.dbortoluzzi.data.*
 import it.dbortoluzzi.tuttiapposto.api.ApiHelper
 import it.dbortoluzzi.tuttiapposto.api.ApiHelperImpl
 import it.dbortoluzzi.tuttiapposto.api.ApiService
+import it.dbortoluzzi.tuttiapposto.api.interceptor.NetworkInterceptor
+import it.dbortoluzzi.tuttiapposto.api.interceptor.OfflineCacheInterceptor
 import it.dbortoluzzi.tuttiapposto.framework.*
 import it.dbortoluzzi.tuttiapposto.ui.presenters.*
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants
 import it.dbortoluzzi.usecases.*
+import okhttp3.Cache
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -38,20 +44,32 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient() = if (BuildConfig.DEBUG) {
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .readTimeout(Constants.READ_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
-                .writeTimeout(Constants.WRITE_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
-                .build()
-    } else {
-        OkHttpClient
-                .Builder()
-                .readTimeout(Constants.READ_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
-                .writeTimeout(Constants.WRITE_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
-                .build()
+    fun provideOkHttpClient() : OkHttpClient {
+        val networkInterceptor = NetworkInterceptor()
+        val offlineCacheInterceptor = OfflineCacheInterceptor()
+
+        if (BuildConfig.DEBUG) {
+            val loggingInterceptor = HttpLoggingInterceptor()
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+            return OkHttpClient.Builder()
+                    .cache(cache())
+                    .addInterceptor(loggingInterceptor)
+                    .addInterceptor(offlineCacheInterceptor)
+                    .addNetworkInterceptor(networkInterceptor) // only used when network is on
+                    .readTimeout(Constants.READ_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
+                    .writeTimeout(Constants.WRITE_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
+                    .build()
+        } else {
+            return OkHttpClient
+                    .Builder()
+                    .cache(cache())
+                    .addNetworkInterceptor(networkInterceptor) // only used when network is on
+                    .addInterceptor(offlineCacheInterceptor)
+                    .readTimeout(Constants.READ_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
+                    .writeTimeout(Constants.WRITE_SECONDS_TIMEOUT_RETROFIT, TimeUnit.SECONDS)
+                    .build()
+        }
     }
 
     @Singleton
@@ -217,4 +235,9 @@ class UseCasesModule {
     @Provides
     @Singleton
     fun getAvailableTables(tablesRepository: TablesRepository): GetAvailableTables = GetAvailableTables(tablesRepository)
+}
+
+private fun cache(): Cache? {
+    val cacheSize = 5 * 1024 * 1024.toLong()
+    return BaseApp.instance?.applicationContext?.let { Cache(it.cacheDir, cacheSize) }
 }
