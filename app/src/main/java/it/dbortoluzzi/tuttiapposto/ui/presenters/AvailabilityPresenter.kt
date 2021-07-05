@@ -1,5 +1,6 @@
 package it.dbortoluzzi.tuttiapposto.ui.presenters
 
+import it.dbortoluzzi.tuttiapposto.di.App
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.model.Availability
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
@@ -25,24 +26,29 @@ class AvailabilityPresenter @Inject constructor(
         fun renderAvailableTables(availabilities: List<Availability>)
         fun showProgressBar()
         fun hideProgressBar()
+        fun showNetworkError()
     }
 
     override fun onAttachView() {
         if (PrefsValidator.isConfigured(prefs)) {
-            GlobalScope.launch(Dispatchers.Main) {
-                view?.showProgressBar();
+            if (App.isNetworkConnected()) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    view?.showProgressBar();
 
-                val companyId = prefs.companyUId!!
-                // TODO: change
-                val buildingId = "VTdqvUGCKLWKq0SFkTHx"
-                val roomId = "B29tSJlDqC6J6OG9Jcug"
+                    val companyId = prefs.companyUId!!
+                    // TODO: changeh
+                    val buildingId = "VTdqvUGCKLWKq0SFkTHx"
+                    val roomId = "B29tSJlDqC6J6OG9Jcug"
 
-                val startDate = Date()
-                val endDate = Date(startDate.time + 3600)
+                    val startDate = Date()
+                    val endDate = Date(startDate.time + 3600)
 
-                val availabilities = withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate) }
-                view?.renderAvailableTables(availabilities.map { it.toPresentationModel("ROOM NAME")})
-                view?.hideProgressBar();
+                    val availabilities = withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate) }
+                    view?.renderAvailableTables(availabilities.map { it.toPresentationModel("ROOM NAME")/*TODO*/ })
+                    view?.hideProgressBar();
+                }
+            } else {
+                    view?.showNetworkError()
             }
         }
     }

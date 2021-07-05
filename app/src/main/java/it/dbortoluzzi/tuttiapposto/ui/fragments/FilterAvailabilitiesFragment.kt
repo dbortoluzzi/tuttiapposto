@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentFilterAvailabilitiesBinding
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
+import it.dbortoluzzi.tuttiapposto.ui.activities.MainActivity
 import it.dbortoluzzi.tuttiapposto.ui.presenters.FilterAvailabilitiesPresenter
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
 import javax.inject.Inject
@@ -42,6 +43,9 @@ class FilterAvailabilitiesFragment: BaseMvpFragment<FilterAvailabilitiesFragment
 
     override fun goToAvailabilitiesPage() {
         findNavController().navigate(R.id.homeFragment)
+        if (activity is MainPresenter.View) {
+            (activity as MainPresenter.View).closeNavigationDrawer()
+        }
     }
 
 }

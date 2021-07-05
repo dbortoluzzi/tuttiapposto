@@ -188,6 +188,11 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
         Toast.makeText(this, getString(R.string.logout_error), Toast.LENGTH_SHORT).show()
     }
 
+
+    override fun closeNavigationDrawer() {
+        binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
+    }
+
     companion object {
         private val TAG = "MainActivity"
     }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
@@ -58,6 +59,10 @@ class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPr
     override fun hideProgressBar() {
         binding.recycler.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
+    }
+
+    override fun showNetworkError() {
+        Toast.makeText(context() , getString(R.string.network_not_connected), Toast.LENGTH_LONG).show()
     }
 
 }

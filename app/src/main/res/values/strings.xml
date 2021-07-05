@@ -19,8 +19,10 @@
     <string name="back">Indietro</string>
     <string name="select_one_value">Seleziona un valore</string>
     <string name="company">Ente di navigazione</string>
+    <string name="network_not_connected">Per favore collegare il dispositivo alla rete internet</string>
 
-<!--    Login-->
+
+    <!--    Login-->
     <string name="login">Login</string>
     <string name="login_welcome_text">Benvenuti in TuttiAPPosto</string>
     <string name="login_error">Errore nel login.</string>
@@ -38,7 +40,7 @@
     <string name="logout_error">Errore nel logout.</string>
 
 <!--    Home-->
-    <string name="home_no_config_welcome_text">Per iniziare ad utilizzare il servizio, devi innanzitutto effettuare la prima configurazione.</string>
+    <string name="home_no_config_welcome_text">Per iniziare ad utilizzare il servizio, devi effettuare la prima configurazione.</string>
     <string name="home_first_config">Prima configurazione</string>
     <string name="book_new_table">Prenota</string>
 

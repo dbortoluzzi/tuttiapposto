@@ -27,6 +27,7 @@ class MainPresenter @Inject constructor(
         fun logoutError(errorMessage: String)
         fun initializeWhenUserIsLogged()
         fun initializeWhenUserIsNotLogged()
+        fun closeNavigationDrawer()
         fun onLogoutClicked(item: MenuItem)
         fun onSettingsClicked(item: MenuItem)
         fun onFilterClicked(item: MenuItem)
