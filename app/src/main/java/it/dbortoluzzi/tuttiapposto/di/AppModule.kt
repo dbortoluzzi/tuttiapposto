@@ -95,6 +95,10 @@ class AppModule {
     @Singleton
     fun androidTableSource(apiHelper: ApiHelper): TablePersistenceSource = AndroidTableSource(apiHelper)
 
+    @Provides
+    @Singleton
+    fun selectedAvailabilityFiltersSource(): SelectedAvailabilityFiltersSource = InMemorySelectedAvailabilityFiltersSource()
+
     /*Repositories*/
     @Provides
     @Singleton
@@ -118,6 +122,12 @@ class AppModule {
     @Singleton
     fun tableRepository(tablePersistenceSource: TablePersistenceSource): TablesRepository {
         return TablesRepository(tablePersistenceSource)
+    }
+
+    @Provides
+    @Singleton
+    fun filtersAvailabilitySelectedRepository(selectedAvailabilityFiltersSource: SelectedAvailabilityFiltersSource): SelectedAvailabilityFiltersRepository {
+        return SelectedAvailabilityFiltersRepository(selectedAvailabilityFiltersSource)
     }
 }
 

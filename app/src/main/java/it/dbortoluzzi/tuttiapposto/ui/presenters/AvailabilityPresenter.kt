@@ -2,6 +2,7 @@ package it.dbortoluzzi.tuttiapposto.ui.presenters
 
 import it.dbortoluzzi.tuttiapposto.di.App
 import it.dbortoluzzi.tuttiapposto.di.prefs
+import it.dbortoluzzi.tuttiapposto.framework.SelectedAvailabilityFiltersRepository
 import it.dbortoluzzi.tuttiapposto.model.Availability
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.model.toPresentationModel
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class AvailabilityPresenter @Inject constructor(
         mView: View?,
         private val getAvailableTables: GetAvailableTables,
+        private val selectedAvailabilityFiltersRepository: SelectedAvailabilityFiltersRepository,
         private val requestNewLocation: RequestNewLocation//TODO: change
 ) : BaseMvpPresenterImpl<AvailabilityPresenter.View>(mView){
 
@@ -40,8 +42,8 @@ class AvailabilityPresenter @Inject constructor(
                     val buildingId = "VTdqvUGCKLWKq0SFkTHx"
                     val roomId = "B29tSJlDqC6J6OG9Jcug"
 
-                    val startDate = Date()
-                    val endDate = Date(startDate.time + 3600)
+                    val startDate = selectedAvailabilityFiltersRepository.getStartDate()?:Date()
+                    val endDate =  selectedAvailabilityFiltersRepository.getEndDate()?:Date(startDate.time + 3600)
 
                     val availabilities = withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate) }
                     view?.renderAvailableTables(availabilities.map { it.toPresentationModel("ROOM NAME")/*TODO*/ })
