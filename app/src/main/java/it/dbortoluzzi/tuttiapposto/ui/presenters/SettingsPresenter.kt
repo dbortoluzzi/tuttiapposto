@@ -2,6 +2,7 @@ package it.dbortoluzzi.tuttiapposto.ui.presenters
 
 import it.dbortoluzzi.domain.Company
 import it.dbortoluzzi.tuttiapposto.di.prefs
+import it.dbortoluzzi.tuttiapposto.framework.SelectedAvailabilityFiltersRepository
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.GetCompanies
@@ -13,6 +14,7 @@ import javax.inject.Inject
 
 class SettingsPresenter @Inject constructor(
         mView: View?,
+        private val selectedAvailabilityFiltersRepository: SelectedAvailabilityFiltersRepository,
         private val getCompanies: GetCompanies
 ) : BaseMvpPresenterImpl<SettingsPresenter.View>(mView){
 
@@ -31,6 +33,7 @@ class SettingsPresenter @Inject constructor(
 
     fun doSaveOptions() {
         prefs.companyUId = view?.getCompanySelected()
+        selectedAvailabilityFiltersRepository.clearAllFilters()
         view?.onSuccessSave()
     }
 

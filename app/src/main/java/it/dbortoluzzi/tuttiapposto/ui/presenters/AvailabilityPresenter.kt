@@ -38,9 +38,8 @@ class AvailabilityPresenter @Inject constructor(
                     view?.showProgressBar();
 
                     val companyId = prefs.companyUId!!
-                    // TODO: changeh
-                    val buildingId = "VTdqvUGCKLWKq0SFkTHx"
-                    val roomId = "B29tSJlDqC6J6OG9Jcug"
+                    val buildingId = selectedAvailabilityFiltersRepository.getBuilding()?.uID
+                    val roomId = selectedAvailabilityFiltersRepository.getRoom()?.uID
 
                     val startDate = selectedAvailabilityFiltersRepository.getStartDate()?:Date()
                     val endDate =  selectedAvailabilityFiltersRepository.getEndDate()?:Date(startDate.time + 3600)
@@ -57,7 +56,7 @@ class AvailabilityPresenter @Inject constructor(
 
     fun newBookingClicked() = GlobalScope.launch(Dispatchers.Main) {
         val locations = withContext(Dispatchers.IO) { requestNewLocation() }
-        // TODO: go to reservation fragement
+        // TODO: go to reservation fragment
     }
 
     companion object {

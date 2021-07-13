@@ -42,4 +42,8 @@ class SelectedAvailabilityFiltersRepository @Inject constructor(
     fun setEndDate(endDate: Date) {
         return selectedAvailabilityFiltersSource.setEndDate(endDate)
     }
+
+    fun clearAllFilters() {
+        return selectedAvailabilityFiltersSource.clearAllFilters();
+    }
 }

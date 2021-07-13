@@ -51,6 +51,7 @@ class SettingsActivity : BaseMvpActivity<SettingsActivity, SettingsPresenter>(),
 
     override fun onSuccessSave() {
         finish()
+        // TODO: reloading availabilities
     }
 
     override fun renderCompanies(companies: List<Company>) {
