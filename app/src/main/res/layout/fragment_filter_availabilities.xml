@@ -50,6 +50,48 @@
         android:paddingRight="10dp"
         app:layout_constraintTop_toBottomOf="@id/roomsText" />
 
+    <TextView
+        android:id="@+id/startDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="15dp"
+        android:text="@string/searchingDate"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/roomsSpinner" />
+
+    <TextView
+        android:id="@+id/startDateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="30dp"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/startDateText" />
+
+    <TextView
+        android:id="@+id/intervalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="15dp"
+        android:text="@string/interval"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/startDateView" />
+
+    <Spinner
+        android:id="@+id/intervalSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:layout_constraintTop_toBottomOf="@id/intervalText" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/filter_btn"

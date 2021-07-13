@@ -2,6 +2,7 @@ package it.dbortoluzzi.tuttiapposto.framework
 
 import it.dbortoluzzi.domain.Building
 import it.dbortoluzzi.domain.Room
+import it.dbortoluzzi.tuttiapposto.model.Interval
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,6 +14,7 @@ class InMemorySelectedAvailabilityFiltersSource @Inject constructor(): SelectedA
     private var room: Room? = null
     private var startDate: Date? = null
     private var endDate: Date? = null
+    private var interval: Interval? = null
 
     override fun getBuilding(): Building? {
         return building
@@ -30,6 +32,11 @@ class InMemorySelectedAvailabilityFiltersSource @Inject constructor(): SelectedA
         return endDate
     }
 
+    override fun getInterval(): Interval? {
+        return interval
+    }
+
+
     override fun setBuilding(building: Building?) {
         this.building = building
     }
@@ -46,9 +53,16 @@ class InMemorySelectedAvailabilityFiltersSource @Inject constructor(): SelectedA
         this.endDate = endDate
     }
 
+    override fun setInterval(interval: Interval) {
+        this.interval = interval
+    }
+
     override fun clearAllFilters() {
         setBuilding(null)
         setRoom(null)
+        setStartDate(Calendar.getInstance().time)
+        setEndDate(Calendar.getInstance().time)
+        setInterval(Interval.ALL_DAY)
     }
 }
 
@@ -61,5 +75,7 @@ interface SelectedAvailabilityFiltersSource {
     fun setRoom(room: Room?)
     fun setStartDate(startDate:Date)
     fun setEndDate(endDate:Date)
+    fun getInterval(): Interval?
+    fun setInterval(interval: Interval)
     fun clearAllFilters()
 }

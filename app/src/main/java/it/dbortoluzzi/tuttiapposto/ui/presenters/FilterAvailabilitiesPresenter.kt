@@ -4,6 +4,7 @@ import it.dbortoluzzi.domain.Building
 import it.dbortoluzzi.domain.Room
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.framework.SelectedAvailabilityFiltersRepository
+import it.dbortoluzzi.tuttiapposto.model.Interval
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
@@ -27,8 +28,11 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         fun goToAvailabilitiesPage()
         fun getBuildingSelected(): Pair<String, String>?
         fun getRoomSelected(): Pair<String, String>?
+        fun getDateSelected(): Date
+        fun getIntervalSelected(): String?
         fun renderBuildings(buildings: List<Building>)
         fun renderRooms(rooms: List<Room>)
+        fun renderIntervals(intervals: List<Interval>)
     }
 
     override fun onAttachView() {
@@ -37,6 +41,10 @@ class FilterAvailabilitiesPresenter @Inject constructor(
                 val buildings = withContext(Dispatchers.IO) { getBuildings(prefs.companyUId!!) }
                 view?.renderBuildings(buildings)
                 view?.renderRooms(listOf())
+            }
+            GlobalScope.launch(Dispatchers.Main) {
+                val intervals  = withContext(Dispatchers.IO) { Interval.values().toList() }
+                view?.renderIntervals(intervals)
             }
         }
     }
@@ -56,16 +64,41 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         return selectedAvailabilityFiltersRepository.getRoom()
     }
 
+    fun getStartDateSelected() : Date? {
+        return selectedAvailabilityFiltersRepository.getStartDate()
+    }
+
+    fun getEndDate() : Date? {
+        return selectedAvailabilityFiltersRepository.getEndDate()
+    }
+
+    fun getInterval() : Interval? {
+        return selectedAvailabilityFiltersRepository.getInterval()
+    }
+
     fun filterBtnClicked() {
-        // TODO: add business logic
-        val start = Date()
-        val end = Date(start.time+1000)
+        val intervalSelected = Interval.valueOf(view?.getIntervalSelected()?:Interval.ALL_DAY.name)
+        selectedAvailabilityFiltersRepository.setInterval(intervalSelected)
+
+        val start = view?.getDateSelected()!!
+        val startCalendar = Calendar.getInstance()
+        startCalendar.time = start
+        startCalendar.set(Calendar.HOUR_OF_DAY, intervalSelected.startHour)
+        startCalendar.set(Calendar.MINUTE, 0)
+        startCalendar.set(Calendar.SECOND, 0)
+
+        val end = Date(start.time) //TODO: read from end
+        val endCalendar = Calendar.getInstance()
+        endCalendar.time = end
+        endCalendar.set(Calendar.HOUR_OF_DAY, intervalSelected.endHour)
+        endCalendar.set(Calendar.MINUTE, 0)
+        endCalendar.set(Calendar.SECOND, 0)
 
         val buildingSelected = view?.getBuildingSelected()
         val roomSelected = view?.getRoomSelected()
 
-        selectedAvailabilityFiltersRepository.setStartDate(start)
-        selectedAvailabilityFiltersRepository.setEndDate(end)
+        selectedAvailabilityFiltersRepository.setStartDate(startCalendar.time)
+        selectedAvailabilityFiltersRepository.setEndDate(endCalendar.time)
         if (buildingSelected != null) {
             selectedAvailabilityFiltersRepository.setBuilding(Building(buildingSelected.first, prefs.companyUId!!, true, buildingSelected.second))
             if (roomSelected != null) {

@@ -56,4 +56,6 @@
     <string name="options_welcome_text">Opzioni dell\'applicazione</string>
     <string name="filter">Filtra</string>
     <string name="search">Cerca</string>
+    <string name="searchingDate">Data</string>
+    <string name="interval">Durata</string>
 </resources>
