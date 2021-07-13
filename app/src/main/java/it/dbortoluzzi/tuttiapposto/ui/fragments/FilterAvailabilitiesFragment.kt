@@ -51,8 +51,6 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
                 val buildingSelected = getBuildingSelected()
                 if (buildingSelected != null) {
                     presenter.retrieveRooms(buildingSelected.first)
-                    // TODO:
-                    showMessage("render " + buildingSelected.first + " " + buildingSelected.second)
                 } else {
                     renderRooms(listOf())
                 }

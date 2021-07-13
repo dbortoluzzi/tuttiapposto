@@ -8,6 +8,7 @@ import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.GetBuildings
+import it.dbortoluzzi.usecases.GetRooms
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         mView: View?,
         private val selectedAvailabilityFiltersRepository: SelectedAvailabilityFiltersRepository,
         private val getBuildings: GetBuildings,
+        private val getRooms: GetRooms
 ) : BaseMvpPresenterImpl<FilterAvailabilitiesPresenter.View>(mView){
 
     interface View : BaseMvpView {
@@ -41,7 +43,8 @@ class FilterAvailabilitiesPresenter @Inject constructor(
 
     fun retrieveRooms(buildingId: String) {
         GlobalScope.launch(Dispatchers.Main) {
-            // TODO
+            val rooms = withContext(Dispatchers.IO) { getRooms(prefs.companyUId!!, buildingId) }
+            view?.renderRooms(rooms)
         }
     }
 
