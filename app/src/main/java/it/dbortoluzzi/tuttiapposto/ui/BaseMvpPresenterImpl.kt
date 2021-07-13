@@ -2,6 +2,10 @@ package it.dbortoluzzi.tuttiapposto.ui
 
 open class BaseMvpPresenterImpl<V : BaseMvpView>(protected var view: V?) : BaseMvpPresenter<V> {
 
+    override fun onStartView() {
+
+    }
+
     override fun onAttachView() {
 
     }

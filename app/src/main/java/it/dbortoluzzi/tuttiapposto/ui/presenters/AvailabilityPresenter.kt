@@ -32,6 +32,10 @@ class AvailabilityPresenter @Inject constructor(
     }
 
     override fun onAttachView() {
+    }
+
+    override fun onStartView() {
+        super.onStartView()
         if (PrefsValidator.isConfigured(prefs)) {
             if (App.isNetworkConnected()) {
                 GlobalScope.launch(Dispatchers.Main) {
@@ -49,7 +53,7 @@ class AvailabilityPresenter @Inject constructor(
                     view?.hideProgressBar();
                 }
             } else {
-                    view?.showNetworkError()
+                view?.showNetworkError()
             }
         }
     }
