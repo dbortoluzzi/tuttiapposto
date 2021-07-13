@@ -27,11 +27,11 @@ class SelectedAvailabilityFiltersRepository @Inject constructor(
         return selectedAvailabilityFiltersSource.getEndDate()
     }
 
-    fun setBuilding(building: Building) {
+    fun setBuilding(building: Building?) {
         return selectedAvailabilityFiltersSource.setBuilding(building)
     }
 
-    fun setRoom(room: Room) {
+    fun setRoom(room: Room?) {
         return selectedAvailabilityFiltersSource.setRoom(room)
     }
 

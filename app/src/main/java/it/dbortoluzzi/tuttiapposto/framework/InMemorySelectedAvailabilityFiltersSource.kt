@@ -30,11 +30,11 @@ class InMemorySelectedAvailabilityFiltersSource @Inject constructor(): SelectedA
         return endDate
     }
 
-    override fun setBuilding(building: Building) {
+    override fun setBuilding(building: Building?) {
         this.building = building
     }
 
-    override fun setRoom(room: Room) {
+    override fun setRoom(room: Room?) {
         this.room = room
     }
 
@@ -52,8 +52,8 @@ interface SelectedAvailabilityFiltersSource {
     fun getRoom(): Room?
     fun getStartDate(): Date?
     fun getEndDate(): Date?
-    fun setBuilding(building: Building)
-    fun setRoom(room: Room)
+    fun setBuilding(building: Building?)
+    fun setRoom(room: Room?)
     fun setStartDate(startDate:Date)
     fun setEndDate(endDate:Date)
 }

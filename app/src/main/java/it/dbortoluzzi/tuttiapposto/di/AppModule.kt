@@ -93,6 +93,10 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun buildingSource(firebaseFirestore: FirebaseFirestore): BuildingPersistenceSource = FirebaseBuildingSource(firebaseFirestore)
+
+    @Provides
+    @Singleton
     fun androidTableSource(apiHelper: ApiHelper): TablePersistenceSource = AndroidTableSource(apiHelper)
 
     @Provides
@@ -116,6 +120,12 @@ class AppModule {
     @Singleton
     fun companiesRepository(companyPersistenceSource: CompanyPersistenceSource): CompaniesRepository {
         return CompaniesRepository(companyPersistenceSource)
+    }
+
+    @Provides
+    @Singleton
+    fun buildingRepository(buildingPersistenceSource: BuildingPersistenceSource): BuildingsRepository {
+        return BuildingsRepository(buildingPersistenceSource)
     }
 
     @Provides
@@ -223,6 +233,10 @@ class UseCasesModule {
     @Provides
     @Singleton
     fun getCompanies(companiesRepository: CompaniesRepository): GetCompanies = GetCompanies(companiesRepository)
+
+    @Provides
+    @Singleton
+    fun getBuildings(buildingsRepository: BuildingsRepository): GetBuildings = GetBuildings(buildingsRepository)
 
     @Provides
     @Singleton
