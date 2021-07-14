@@ -34,20 +34,6 @@ class MainPresenter @Inject constructor(
     }
 
     override fun onAttachView() {
-
-        val buildingId = "VTdqvUGCKLWKq0SFkTHx"
-        val roomId = "B29tSJlDqC6J6OG9Jcug"
-
-        GlobalScope.launch(Dispatchers.IO) {
-            // TODO: only for tests!
-            if (prefs.companyUId != null) {
-                val serviceResult = getAvailableTables(prefs.companyUId!!, buildingId, roomId, Date(), Date())
-                val a = 2
-//            GlobalScope.launch(Dispatchers.Main) {
-//
-//            }
-            }
-        }
     }
 
     fun doLogout() {

@@ -20,7 +20,6 @@ import it.dbortoluzzi.tuttiapposto.framework.*
 import it.dbortoluzzi.tuttiapposto.ui.presenters.*
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants
 import it.dbortoluzzi.usecases.*
-import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -105,7 +104,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun androidTableSource(apiHelper: ApiHelper): TablePersistenceSource = AndroidTableSource(apiHelper)
+    fun tableSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): TablePersistenceSource = FirebaseTableSource(firebaseFirestore, CACHE_ENABLED)
+
+    @Provides
+    @Singleton
+    fun androidTableSource(apiHelper: ApiHelper): AvailabilitiesSource = AndroidTableSource(apiHelper)
 
     @Provides
     @Singleton
@@ -144,8 +147,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun tableRepository(tablePersistenceSource: TablePersistenceSource): TablesRepository {
-        return TablesRepository(tablePersistenceSource)
+    fun tableRepository(availabilitiesSource: AvailabilitiesSource, tablePersistenceSource: TablePersistenceSource): TablesRepository {
+        return TablesRepository(availabilitiesSource, tablePersistenceSource)
     }
 
     @Provides
@@ -255,6 +258,14 @@ class UseCasesModule {
     @Provides
     @Singleton
     fun getRooms(roomsRepository: RoomsRepository): GetRooms = GetRooms(roomsRepository)
+
+    @Provides
+    @Singleton
+    fun getAllRooms(roomsRepository: RoomsRepository): GetAllRooms = GetAllRooms(roomsRepository)
+
+    @Provides
+    @Singleton
+    fun getTables(tablesRepository: TablesRepository): GetTables = GetTables(tablesRepository)
 
     @Provides
     @Singleton
