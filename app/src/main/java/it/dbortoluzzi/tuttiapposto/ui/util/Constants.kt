@@ -6,6 +6,8 @@ object Constants {
     val DEV_BASE_URL = PROD_BASE_URL
     val DEFAULT_DATE_FORMATTER = "yyyy-MM-dd HH:mm:ss"
 
+    val CACHE_ENABLED = true
+
     val READ_SECONDS_TIMEOUT_RETROFIT = 20L
     val WRITE_SECONDS_TIMEOUT_RETROFIT = 20L
 }

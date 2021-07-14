@@ -32,6 +32,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
+    /* Global */
+    @Provides
+    fun provideCacheEnabled() = Constants.CACHE_ENABLED
+
     /* Retrofit */
     @Provides
     fun provideBaseUrl() = if (BuildConfig.DEBUG) {Constants.DEV_BASE_URL} else {Constants.PROD_BASE_URL}
@@ -89,15 +93,15 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun companySource(firebaseFirestore: FirebaseFirestore): CompanyPersistenceSource = FirebaseCompanySource(firebaseFirestore)
+    fun companySource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): CompanyPersistenceSource = FirebaseCompanySource(firebaseFirestore, CACHE_ENABLED)
 
     @Provides
     @Singleton
-    fun buildingSource(firebaseFirestore: FirebaseFirestore): BuildingPersistenceSource = FirebaseBuildingSource(firebaseFirestore)
+    fun buildingSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): BuildingPersistenceSource = FirebaseBuildingSource(firebaseFirestore, CACHE_ENABLED)
 
     @Provides
     @Singleton
-    fun roomSource(firebaseFirestore: FirebaseFirestore): RoomPersistenceSource = FirebaseRoomSource(firebaseFirestore)
+    fun roomSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): RoomPersistenceSource = FirebaseRoomSource(firebaseFirestore, CACHE_ENABLED)
 
     @Provides
     @Singleton
