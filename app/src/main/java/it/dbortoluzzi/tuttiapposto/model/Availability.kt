@@ -25,3 +25,9 @@ private fun Date.toPrettifiedString(): String =
         datePattern.run { format(this@toPrettifiedString) }
 
 private val datePattern = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+
+enum class Interval(val startHour: Int, val endHour: Int, val description: String) {
+    MORNING(9, 13, "Mattino"),
+    AFTERNOON(14, 18, "Pomeriggio"),
+    ALL_DAY(9, 18, "Tutto il giorno")
+}

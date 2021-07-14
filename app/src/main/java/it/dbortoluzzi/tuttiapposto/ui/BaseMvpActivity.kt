@@ -13,6 +13,11 @@ abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>>
         mPresenter.onAttachView()
     }
 
+    override fun onStart() {
+        super.onStart()
+        mPresenter.onStartView()
+    }
+
     override fun context(): Context = this
 
     protected abstract var mPresenter: T

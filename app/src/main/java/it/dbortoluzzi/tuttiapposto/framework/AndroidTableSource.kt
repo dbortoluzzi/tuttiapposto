@@ -1,8 +1,7 @@
 package it.dbortoluzzi.tuttiapposto.framework
 
-import it.dbortoluzzi.data.TablePersistenceSource
+import it.dbortoluzzi.data.AvailabilitiesSource
 import it.dbortoluzzi.domain.dto.TableAvailabilityRequestDto
-import it.dbortoluzzi.domain.Table
 import it.dbortoluzzi.domain.dto.TableAvailabilityResponseDto
 import it.dbortoluzzi.domain.util.ServiceResult
 import it.dbortoluzzi.tuttiapposto.api.ApiHelper
@@ -13,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class AndroidTableSource @Inject constructor(
         var apiHelper: ApiHelper
-) : TablePersistenceSource {
+) : AvailabilitiesSource {
 
     override suspend fun getAvailableTables(tableAvailabilityRequestDto: TableAvailabilityRequestDto): ServiceResult<List<TableAvailabilityResponseDto>> {
         return apiHelper

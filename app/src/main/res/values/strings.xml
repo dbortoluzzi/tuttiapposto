@@ -18,7 +18,10 @@
     <string name="save">Salva</string>
     <string name="back">Indietro</string>
     <string name="select_one_value">Seleziona un valore</string>
+    <string name="select_all_values">Tutti i valori</string>
     <string name="company">Ente di navigazione</string>
+    <string name="building">Struttura</string>
+    <string name="room">Locale</string>
     <string name="network_not_connected">Per favore collegare il dispositivo alla rete internet</string>
 
 
@@ -53,4 +56,6 @@
     <string name="options_welcome_text">Opzioni dell\'applicazione</string>
     <string name="filter">Filtra</string>
     <string name="search">Cerca</string>
+    <string name="searchingDate">Data</string>
+    <string name="interval">Durata</string>
 </resources>

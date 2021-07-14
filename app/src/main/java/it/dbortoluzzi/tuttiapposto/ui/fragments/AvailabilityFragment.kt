@@ -14,6 +14,7 @@ import it.dbortoluzzi.tuttiapposto.model.Availability
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.activities.AvailabilitiesAdapter
 import it.dbortoluzzi.tuttiapposto.ui.presenters.AvailabilityPresenter
+import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
 import javax.inject.Inject
 
 /**
@@ -59,6 +60,10 @@ class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPr
     override fun hideProgressBar() {
         binding.recycler.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
+
+        if (activity is MainPresenter.View) {
+            (activity as MainPresenter.View).closeNavigationDrawer()
+        }
     }
 
     override fun showNetworkError() {

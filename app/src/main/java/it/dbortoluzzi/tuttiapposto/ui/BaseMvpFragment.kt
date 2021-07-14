@@ -18,6 +18,11 @@ abstract class BaseMvpFragment<in V : BaseMvpView, T : BaseMvpPresenter<V>>
         return view;
     }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.onStartView()
+    }
+
     override fun context(): Context = this.requireContext()
 
     protected abstract var presenter: T
