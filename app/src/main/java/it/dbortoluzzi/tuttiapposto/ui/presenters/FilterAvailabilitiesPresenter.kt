@@ -2,6 +2,7 @@ package it.dbortoluzzi.tuttiapposto.ui.presenters
 
 import it.dbortoluzzi.domain.Building
 import it.dbortoluzzi.domain.Room
+import it.dbortoluzzi.domain.Table
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.framework.SelectedAvailabilityFiltersRepository
 import it.dbortoluzzi.tuttiapposto.model.Interval
@@ -10,10 +11,8 @@ import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.GetBuildings
 import it.dbortoluzzi.usecases.GetRooms
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import it.dbortoluzzi.usecases.GetTablesWithFilters
+import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
 
@@ -21,7 +20,8 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         mView: View?,
         private val selectedAvailabilityFiltersRepository: SelectedAvailabilityFiltersRepository,
         private val getBuildings: GetBuildings,
-        private val getRooms: GetRooms
+        private val getRooms: GetRooms,
+        private val getTablesWithFilters: GetTablesWithFilters
 ) : BaseMvpPresenterImpl<FilterAvailabilitiesPresenter.View>(mView){
 
     interface View : BaseMvpView {
@@ -32,6 +32,7 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         fun getIntervalSelected(): String?
         fun renderBuildings(buildings: List<Building>)
         fun renderRooms(rooms: List<Room>)
+        fun renderTables(tables: List<Table>)
         fun renderIntervals(intervals: List<Interval>)
     }
 
@@ -53,6 +54,13 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         GlobalScope.launch(Dispatchers.Main) {
             val rooms = withContext(Dispatchers.IO) { getRooms(prefs.companyUId!!, buildingId) }
             view?.renderRooms(rooms)
+        }
+    }
+
+    fun retrieveTables(buildingId: String, roomId: String) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val tables = withContext(Dispatchers.IO) { getTablesWithFilters(prefs.companyUId!!, buildingId, roomId) }
+            view?.renderTables(tables)
         }
     }
 
@@ -112,6 +120,10 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         }
 
         view?.goToAvailabilitiesPage()
+    }
+
+    fun bookBtnClicked() {
+        // TODO
     }
 
     companion object {

@@ -21,7 +21,22 @@
         <action android:id="@+id/action_home_to_filter"
             app:destination="@id/filterAvailabilitiesFragment"
             app:popUpToInclusive="true"
-            app:popUpTo="@id/homeFragment"/>
+            app:popUpTo="@id/homeFragment">
+            <argument
+                android:name="requestBooking"
+                app:argType="boolean"
+                android:defaultValue="false" />
+         </action>
+
+        <action android:id="@+id/action_home_to_book_filter"
+            app:destination="@id/filterAvailabilitiesFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/homeFragment">
+            <argument
+                android:name="requestBooking"
+                app:argType="boolean"
+                android:defaultValue="true" />
+        </action>
     </fragment>
 
     <fragment

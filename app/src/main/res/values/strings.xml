@@ -58,4 +58,5 @@
     <string name="search">Cerca</string>
     <string name="searchingDate">Data</string>
     <string name="interval">Durata</string>
+    <string name="table">Tavolo</string>
 </resources>

@@ -269,5 +269,9 @@ class UseCasesModule {
 
     @Provides
     @Singleton
+    fun getTablesWithFilters(tablesRepository: TablesRepository): GetTablesWithFilters = GetTablesWithFilters(tablesRepository)
+
+    @Provides
+    @Singleton
     fun getAvailableTables(tablesRepository: TablesRepository): GetAvailableTables = GetAvailableTables(tablesRepository)
 }

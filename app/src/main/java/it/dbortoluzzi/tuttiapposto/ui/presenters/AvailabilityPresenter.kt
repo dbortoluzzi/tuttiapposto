@@ -66,11 +66,6 @@ class AvailabilityPresenter @Inject constructor(
         }
     }
 
-    fun newBookingClicked() = GlobalScope.launch(Dispatchers.Main) {
-        val locations = withContext(Dispatchers.IO) { requestNewLocation() }
-        // TODO: go to reservation fragment
-    }
-
     companion object {
         private val TAG = "AvailabilityPresenter"
     }

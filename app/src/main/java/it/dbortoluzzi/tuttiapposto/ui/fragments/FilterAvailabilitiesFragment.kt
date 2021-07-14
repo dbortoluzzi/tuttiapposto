@@ -15,6 +15,7 @@ import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentFilterAvailabilitiesBinding
 import it.dbortoluzzi.domain.Building
 import it.dbortoluzzi.domain.Room
+import it.dbortoluzzi.domain.Table
 import it.dbortoluzzi.tuttiapposto.framework.SpinnerItem
 import it.dbortoluzzi.tuttiapposto.model.Interval
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
@@ -48,12 +49,17 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
 
         binding.filterBtn.setOnClickListener { presenter.filterBtnClicked() }
 
+        binding.bookBtn.setOnClickListener { presenter.bookBtnClicked() }
+        // TODO: add check validation
+
         cal.time = presenter.getStartDateSelected() ?: Calendar.getInstance().time
+
+        initLayout()
 
         binding.buildingsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                     parent: AdapterView<*>,
-                    view: View,
+                    view: View?,
                     position: Int,
                     id: Long,
             ) {
@@ -62,6 +68,27 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
                     presenter.retrieveRooms(buildingSelected.first)
                 } else {
                     renderRooms(listOf())
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // nothing
+            }
+        }
+
+        binding.roomsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long,
+            ) {
+                val buildingSelected = getBuildingSelected()
+                val roomSelected = getRoomSelected()
+                if (buildingSelected != null && roomSelected != null) {
+                    presenter.retrieveTables(buildingSelected.first, roomSelected.first)
+                } else {
+                    renderTables(listOf())
                 }
             }
 
@@ -97,14 +124,8 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
         return binding.root
     }
 
-    private fun updateDateInView() {
-        val myFormat = "dd/MM/yyyy"
-        val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
-        binding.startDateView.text = sdf.format(cal.getTime())
-    }
-
     override fun goToAvailabilitiesPage() {
-        findNavController().navigate(R.id.homeFragment)
+        findNavController().navigate(R.id.action_filter_to_home)
         if (activity is MainPresenter.View) {
             (activity as MainPresenter.View).closeNavigationDrawer()
         }
@@ -151,7 +172,7 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set Adapter to Spinner
         binding.buildingsSpinner.adapter = aa
-        binding.buildingsSpinner.setSelection(aa.getPosition(SpinnerItem(id = presenter.getBuildingSelected()?.name
+        binding.buildingsSpinner.setSelection(aa.getPosition(SpinnerItem(id = presenter.getBuildingSelected()?.uID
                 ?: "")))
     }
 
@@ -165,8 +186,21 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set Adapter to Spinner
         binding.roomsSpinner.adapter = aa
-        binding.roomsSpinner.setSelection(aa.getPosition(SpinnerItem(id = presenter.getRoomSelected()?.name
+        binding.roomsSpinner.setSelection(aa.getPosition(SpinnerItem(id = presenter.getRoomSelected()?.uID
                 ?: "")))
+    }
+
+    override fun renderTables(tables: List<Table>) {
+        var spinnerTables: List<SpinnerItem<String>> = tables.map { SpinnerItem(it.uID, it.name) }
+        spinnerTables += SpinnerItem("", getString(R.string.select_all_values))
+
+        // Create an ArrayAdapter using a simple spinner layout and languages array
+        val aa = ArrayAdapter(context(), android.R.layout.simple_spinner_item, spinnerTables)
+        // Set layout to use when the list of choices appear
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Set Adapter to Spinner
+        binding.tablesSpinner.adapter = aa
+        binding.tablesSpinner.setSelection(aa.getPosition(SpinnerItem("")))
     }
 
     override fun renderIntervals(intervals: List<Interval>) {
@@ -182,4 +216,40 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
                 ?: Interval.ALL_DAY.name)))
     }
 
+    private fun initLayout() {
+        val requestBooking = arguments?.getBoolean(REQUEST_BOOKING, false) ?: false
+        if (requestBooking) {
+            initRequestBookingLayout()
+        } else {
+            initRequestFilterLayout()
+        }
+    }
+
+    private fun updateDateInView() {
+        val myFormat = DATE_PATTERN
+        val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
+        binding.startDateView.text = sdf.format(cal.getTime())
+    }
+
+    private fun initRequestBookingLayout() {
+        binding.bookBtn.visibility = View.VISIBLE
+        binding.filterBtn.visibility = View.GONE
+        binding.tablesSpinner.visibility = View.VISIBLE
+        binding.tablesText.visibility = View.VISIBLE
+
+        // TODO: add check in fields
+    }
+
+    private fun initRequestFilterLayout() {
+        binding.bookBtn.visibility = View.GONE
+        binding.filterBtn.visibility = View.VISIBLE
+        binding.tablesSpinner.visibility = View.GONE
+        binding.tablesText.visibility = View.GONE
+    }
+
+    companion object {
+        private val TAG = "FilterAvailabilitiesFragment"
+        private val REQUEST_BOOKING = "requestBooking"
+        private val DATE_PATTERN = "dd/MM/yyyy"
+    }
 }

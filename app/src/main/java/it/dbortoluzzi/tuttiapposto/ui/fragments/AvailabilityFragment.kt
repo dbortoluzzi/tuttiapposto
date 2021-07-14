@@ -41,9 +41,9 @@ class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPr
 
         binding.recycler.adapter = availabilitiesAdapter
 
-        binding.newBookingBtn.setOnClickListener { presenter.newBookingClicked()}
+        binding.newBookingBtn.setOnClickListener { findNavController().navigate(R.id.action_home_to_book_filter)}
 
-        binding.filterAvailabilityBtn.setOnClickListener { findNavController().navigate(R.id.filterAvailabilitiesFragment)}
+        binding.filterAvailabilityBtn.setOnClickListener { findNavController().navigate(R.id.action_home_to_filter)}
 
         return binding.root
     }
