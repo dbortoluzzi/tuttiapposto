@@ -31,6 +31,14 @@ class FirebaseRoomSource @Inject constructor(
         }
     }
 
+    override suspend fun getActiveRoomsByCompany(companyId: String): ServiceResult<List<Room>> {
+        return if (cacheEnabled) {
+            timedCache.getOrElse(companyId) { -> execGetActiveRoomsByCompanyId(companyId) };
+        } else {
+            execGetActiveRoomsByCompanyId(companyId)
+        }
+    }
+
     override suspend fun getActiveRoomsByCompanyIdAndBuildingId(companyId: String, buildingId: String): ServiceResult<List<Room>> {
         return if (cacheEnabled) {
             timedCache.getOrElse("${companyId}_${buildingId}") { -> execGetActiveRoomsByCompanyIdAndBuildingId(companyId, buildingId) };
@@ -76,6 +84,31 @@ class FirebaseRoomSource @Inject constructor(
                 }
                 is Error -> {
                     Log.e(TAG, "getActiveRoomsByCompanyIdAndBuildingId ${resultDocumentSnapshot.exception}")
+                    Error(resultDocumentSnapshot.exception)
+                }
+                else -> throw NotImplementedError()
+            }
+        } catch (exception: Exception) {
+            return Error(exception)
+        }
+    }
+
+    private suspend fun execGetActiveRoomsByCompanyId(companyId: String): ServiceResult<List<Room>> {
+        try {
+            return when (val resultDocumentSnapshot = db.collection(COLLECTION)
+                    .whereEqualTo("active", true)
+                    .whereEqualTo("companyId", companyId)
+                    .get()
+                    .await()
+            ) {
+                is Success -> {
+                    val rooms = resultDocumentSnapshot.data!!
+                            .toObjects(FirebaseRoom::class.java)
+                            .map { it.toObject() }
+                    Success(rooms)
+                }
+                is Error -> {
+                    Log.e(TAG, "execGetActiveRoomsByCompanyId ${resultDocumentSnapshot.exception}")
                     Error(resultDocumentSnapshot.exception)
                 }
                 else -> throw NotImplementedError()

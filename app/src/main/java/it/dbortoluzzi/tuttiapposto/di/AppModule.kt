@@ -261,7 +261,7 @@ class UseCasesModule {
 
     @Provides
     @Singleton
-    fun getAllRooms(roomsRepository: RoomsRepository): GetAllRooms = GetAllRooms(roomsRepository)
+    fun getRoomsByCompany(roomsRepository: RoomsRepository): GetRoomsByCompany = GetRoomsByCompany(roomsRepository)
 
     @Provides
     @Singleton
