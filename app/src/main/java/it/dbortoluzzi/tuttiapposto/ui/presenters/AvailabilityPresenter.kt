@@ -1,5 +1,7 @@
 package it.dbortoluzzi.tuttiapposto.ui.presenters
 
+import it.dbortoluzzi.domain.Room
+import it.dbortoluzzi.domain.dto.TableAvailabilityResponseDto
 import it.dbortoluzzi.tuttiapposto.di.App
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.framework.SelectedAvailabilityFiltersRepository
@@ -12,10 +14,7 @@ import it.dbortoluzzi.usecases.GetAllRooms
 import it.dbortoluzzi.usecases.GetAvailableTables
 import it.dbortoluzzi.usecases.GetRooms
 import it.dbortoluzzi.usecases.RequestNewLocation
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
 
@@ -51,8 +50,11 @@ class AvailabilityPresenter @Inject constructor(
                     val startDate = selectedAvailabilityFiltersRepository.getStartDate()?:Date()
                     val endDate =  selectedAvailabilityFiltersRepository.getEndDate()?:Date(startDate.time + 3600)
 
-                    val availabilities = withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate) }
-                    val rooms = withContext(Dispatchers.IO) { getAllRooms() }
+                    val jobAvailabilities: Deferred<List<TableAvailabilityResponseDto>> = async { withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate) } }
+                    val jobRooms: Deferred<List<Room>> = async { withContext(Dispatchers.IO) { getAllRooms() } }
+                    val availabilities = jobAvailabilities.await()
+                    val rooms = jobRooms.await()
+
                     view?.renderAvailableTables(availabilities.map { avail ->
                         val room = rooms.find { it.companyId == companyId && it.uID == avail.table.roomId }
                         avail.toPresentationModel(room?.name?:"Unknown")}
