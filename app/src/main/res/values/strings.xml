@@ -23,7 +23,7 @@
     <string name="building">Struttura</string>
     <string name="room">Locale</string>
     <string name="network_not_connected">Per favore collegare il dispositivo alla rete internet</string>
-
+    <string name="book">Prenota</string>
 
     <!--    Login-->
     <string name="login">Login</string>
@@ -59,4 +59,13 @@
     <string name="searchingDate">Data</string>
     <string name="interval">Durata</string>
     <string name="table">Tavolo</string>
+
+<!--    Landing-->
+    <string name="landing_book_title">Conferma</string>
+    <string name="landing_book_message">Si desidera confermare la prenotazione?</string>
+    <string name="landing_book_confirm">Conferma</string>
+    <string name="landing_book_not_available_message">Disponibiità esaurita</string>
+    <string name="landing_book_success_message">Prenotazione confermata!</string>
+    <string name="landing_book_error_message">Si è verificato un problema nella creazione della prenotazione</string>
+    <string name="landing_book_dismiss_message">Prenotazione non effettuata!</string>
 </resources>

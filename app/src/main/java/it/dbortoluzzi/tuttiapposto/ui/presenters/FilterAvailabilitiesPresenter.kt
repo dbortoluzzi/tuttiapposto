@@ -122,10 +122,6 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         view?.goToAvailabilitiesPage()
     }
 
-    fun bookBtnClicked() {
-        // TODO
-    }
-
     companion object {
         private val TAG = "FilterAvailabilitiesPresenter"
     }

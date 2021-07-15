@@ -49,7 +49,12 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
 
         binding.filterBtn.setOnClickListener { presenter.filterBtnClicked() }
 
-        binding.bookBtn.setOnClickListener { presenter.bookBtnClicked() }
+        binding.bookBtn.setOnClickListener {
+            val navController = findNavController()
+            navController.apply {
+                navigate(R.id.action_filter_to_book)
+            }
+        }
         // TODO: add check validation
 
         cal.time = presenter.getStartDateSelected() ?: Calendar.getInstance().time

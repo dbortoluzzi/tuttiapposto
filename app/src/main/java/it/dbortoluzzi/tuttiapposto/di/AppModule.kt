@@ -217,6 +217,12 @@ object FragmentModule {
     fun bindFilterAvailabilities(fragment: Fragment): FilterAvailabilitiesPresenter.View {
         return fragment as FilterAvailabilitiesPresenter.View
     }
+
+    @Provides
+    @FragmentScoped
+    fun bindLandingBooking(fragment: Fragment): LandingBookingPresenter.View {
+        return fragment as LandingBookingPresenter.View
+    }
 }
 
 @Module
