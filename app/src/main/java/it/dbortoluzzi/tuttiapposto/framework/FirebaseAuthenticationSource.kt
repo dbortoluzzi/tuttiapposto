@@ -12,7 +12,8 @@ import javax.inject.Singleton
 
 @Singleton
 class FirebaseAuthenticationSource @Inject constructor(
-        var mAuth: FirebaseAuth
+        var mAuth: FirebaseAuth,
+        var userSource: UserPersistenceSource
 ) : AuthenticationSource {
 
     override suspend fun login(mail: String, password: String): ServiceResult<String> {
@@ -27,7 +28,14 @@ class FirebaseAuthenticationSource @Inject constructor(
     override suspend fun register(mail: String, password: String): ServiceResult<String> {
         val firebaseUser = registerUserFromAuthWithEmailAndPassword(mail, password)
         return when(firebaseUser) {
-            is Success -> Success(firebaseUser.data.uid)
+            is Success -> {
+                val userId = firebaseUser.data.uid
+                return when(val saveUserResult = userSource.saveUser(userId, mail)) {
+                    is Success -> Success(userId)
+                    is Error -> Error(saveUserResult.exception)
+                    else -> throw NotImplementedError()
+                }
+            }
             is Error -> Error(firebaseUser.exception)
             else -> throw NotImplementedError()
         }

@@ -88,7 +88,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun authenticationSource(firebaseAuth: FirebaseAuth): AuthenticationSource = FirebaseAuthenticationSource(firebaseAuth)
+    fun authenticationSource(firebaseAuth: FirebaseAuth, userPersistenceSource: UserPersistenceSource): AuthenticationSource = FirebaseAuthenticationSource(firebaseAuth, userPersistenceSource)
+
+    @Provides
+    @Singleton
+    fun userSource(firebaseFirestore: FirebaseFirestore): UserPersistenceSource = FirebaseUserSource(firebaseFirestore)
 
     @Provides
     @Singleton
