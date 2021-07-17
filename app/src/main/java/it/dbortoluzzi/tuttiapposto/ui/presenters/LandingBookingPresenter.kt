@@ -8,7 +8,6 @@ import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.CreateBooking
 import it.dbortoluzzi.usecases.GetAvailableTables
-import it.dbortoluzzi.usecases.RequestNewLocation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -18,7 +17,6 @@ import javax.inject.Inject
 
 class LandingBookingPresenter @Inject constructor(
         mView: View?,
-        private val getAvailableTables: GetAvailableTables,
         private val createBooking: CreateBooking
 ) : BaseMvpPresenterImpl<LandingBookingPresenter.View>(mView){
 
