@@ -116,6 +116,10 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun androidBookingSource(apiHelper: ApiHelper): BookingPersistenceSource = AndroidBookingSource(apiHelper)
+
+    @Provides
+    @Singleton
     fun selectedAvailabilityFiltersSource(): SelectedAvailabilityFiltersSource = InMemorySelectedAvailabilityFiltersSource()
 
     /*Repositories*/
@@ -153,6 +157,12 @@ class AppModule {
     @Singleton
     fun tableRepository(availabilitiesSource: AvailabilitiesSource, tablePersistenceSource: TablePersistenceSource): TablesRepository {
         return TablesRepository(availabilitiesSource, tablePersistenceSource)
+    }
+
+    @Provides
+    @Singleton
+    fun bookingRepository(bookingSource: BookingPersistenceSource): BookingsRepository {
+        return BookingsRepository(bookingSource)
     }
 
     @Provides
@@ -284,4 +294,8 @@ class UseCasesModule {
     @Provides
     @Singleton
     fun getAvailableTables(tablesRepository: TablesRepository): GetAvailableTables = GetAvailableTables(tablesRepository)
+
+    @Provides
+    @Singleton
+    fun createBooking(bookingsRepository: BookingsRepository): CreateBooking = CreateBooking(bookingsRepository)
 }

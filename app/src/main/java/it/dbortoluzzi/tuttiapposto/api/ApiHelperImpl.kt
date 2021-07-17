@@ -1,5 +1,7 @@
 package it.dbortoluzzi.tuttiapposto.api
 
+import android.util.Log
+import it.dbortoluzzi.domain.Booking
 import it.dbortoluzzi.domain.dto.TableAvailabilityRequestDto
 import it.dbortoluzzi.domain.dto.TableAvailabilityResponseDto
 import it.dbortoluzzi.domain.util.ServiceResult
@@ -18,13 +20,24 @@ class ApiHelperImpl @Inject constructor(
         }
     }
 
+    override suspend fun createBooking(booking: Booking): Response<Booking> {
+        return safeCall {
+            apiService.bookTable(booking)
+        }
+    }
+
     protected suspend fun <T> safeCall (callback : suspend (() -> Response<T>)) : Response<T> {
         try {
             return callback()
         }catch (e: IOException) {
+            Log.d(TAG, "error in api call", e)
             val errorResponseBody = (e.message ?: "network error").toResponseBody(null);
             return Response.error(500, errorResponseBody);
         }
+    }
+
+    companion object {
+        val TAG = "ApiHelperImpl"
     }
 }
 
