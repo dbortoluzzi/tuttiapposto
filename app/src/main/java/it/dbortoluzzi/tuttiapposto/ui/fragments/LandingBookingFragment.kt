@@ -16,6 +16,13 @@ import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.LandingBookingPresenter
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BUILDING_ID
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BUNDLE_DATA
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.END_DATE
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.ROOM_ID
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.START_DATE
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.TABLE_ID
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -47,9 +54,15 @@ class LandingBookingFragment : BaseMvpFragment<LandingBookingFragment, LandingBo
             dismissBookingBtnClicked()
         }
 
-        // TODO: read data from arguments
-        // TODO: pass data to presenter
-        presenter.searchAvailabilityToConfirm(prefs.companyUId!!)
+        val bookingData = arguments?.get(BUNDLE_DATA) as Map<String, Any>
+        presenter.searchAvailabilityToConfirm(
+                prefs.companyUId!!,
+                bookingData[BUILDING_ID] as String,
+                bookingData[ROOM_ID] as String,
+                bookingData[TABLE_ID] as String,
+                bookingData[START_DATE] as Date,
+                bookingData[END_DATE] as Date
+        )
 
         return binding.root
     }

@@ -3,12 +3,15 @@ package it.dbortoluzzi.tuttiapposto.ui.fragments
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
+import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
@@ -21,6 +24,7 @@ import it.dbortoluzzi.tuttiapposto.model.Interval
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.FilterAvailabilitiesPresenter
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BUNDLE_DATA
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -47,15 +51,38 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
 
         binding = FragmentFilterAvailabilitiesBinding.inflate(layoutInflater)
 
-        binding.filterBtn.setOnClickListener { presenter.filterBtnClicked() }
+        binding.filterBtn.setOnClickListener {
+            // TODO: add check validation
+            presenter.filterBtnClicked()
+        }
 
         binding.bookBtn.setOnClickListener {
+            val buildingSpinnerSelected = getBuildingSelected()
+            val roomSpinnerSelected = getRoomSelected()
+            val tableSpinnerSelected = getTableSelected()
+            if (TextUtils.isEmpty(buildingSpinnerSelected?.first)) {
+                val errorTextView = binding.buildingsSpinner.selectedView as TextView
+                errorTextView.error = getString(R.string.mandatory_error)
+                return@setOnClickListener
+            }
+            if (TextUtils.isEmpty(roomSpinnerSelected?.first)) {
+                val errorTextView = binding.roomsSpinner.selectedView as TextView
+                errorTextView.error = getString(R.string.mandatory_error)
+                return@setOnClickListener
+            }
+            if (TextUtils.isEmpty(tableSpinnerSelected?.first)) {
+                val errorTextView = binding.tablesSpinner.selectedView as TextView
+                errorTextView.error = getString(R.string.mandatory_error)
+                return@setOnClickListener
+            }
+
             val navController = findNavController()
+            val mapBookingData: Map<String, Any> = presenter.newBookingBtnClicked()
             navController.apply {
-                navigate(R.id.action_filter_to_book)
+                val b = bundleOf(BUNDLE_DATA to mapBookingData)
+                navigate(R.id.action_filter_to_book, b)
             }
         }
-        // TODO: add check validation
 
         cal.time = presenter.getStartDateSelected() ?: Calendar.getInstance().time
 
@@ -160,6 +187,15 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
 
     override fun getRoomSelected(): Pair<String, String>? {
         val spinnerItem = binding.roomsSpinner.selectedItem as SpinnerItem<*>
+        return if (spinnerItem.id?.equals("") == false) {
+            Pair(spinnerItem.id.toString(), spinnerItem.text.toString())
+        } else {
+            null
+        }
+    }
+
+    override fun getTableSelected(): Pair<String, String>? {
+        val spinnerItem = binding.tablesSpinner.selectedItem as SpinnerItem<*>
         return if (spinnerItem.id?.equals("") == false) {
             Pair(spinnerItem.id.toString(), spinnerItem.text.toString())
         } else {

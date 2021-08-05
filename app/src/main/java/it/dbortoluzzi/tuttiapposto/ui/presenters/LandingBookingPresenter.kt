@@ -1,13 +1,14 @@
 package it.dbortoluzzi.tuttiapposto.ui.presenters
 
 import it.dbortoluzzi.domain.Booking
+import it.dbortoluzzi.domain.util.ServiceResult
 import it.dbortoluzzi.tuttiapposto.di.App
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.CreateBooking
-import it.dbortoluzzi.usecases.GetAvailableTables
+import it.dbortoluzzi.usecases.GetUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ import javax.inject.Inject
 
 class LandingBookingPresenter @Inject constructor(
         mView: View?,
+        private val getUser: GetUser,
         private val createBooking: CreateBooking
 ) : BaseMvpPresenterImpl<LandingBookingPresenter.View>(mView){
 
@@ -32,30 +34,19 @@ class LandingBookingPresenter @Inject constructor(
         fun bookingNotDoneWithError()
     }
 
-    fun searchAvailabilityToConfirm(companyId: String/*, buildingId: String, roomId: String, tableId: String, startDate: Date, endDate: Date*/) {
+    fun searchAvailabilityToConfirm(companyId: String, buildingId: String, roomId: String, tableId: String, startDate: Date, endDate: Date) {
         if (PrefsValidator.isConfigured(prefs)) {
             if (App.isNetworkConnected()) {
                 GlobalScope.launch(Dispatchers.Main) {
                     view?.showProgressBar();
 
-                    // TODO: read data from intent
-                    val companyId = "FbF0or0c0NdBphbZcssm"
-                    val buildingId = "VTdqvUGCKLWKq0SFkTHx"
-                    val roomId = "B29tSJlDqC6J6OG9Jcug"
-                    val tableId = "hepxdHgG9Zejol2BWw0F"
-                    val userId = "Feyitm6eaoVmCqggutdRjhY2AKB3"
+                    val u = getUser()
+                    val user = when (u) {
+                        is ServiceResult.Success -> u.data
+                        else -> throw Exception("no user found")
+                    }
 
-                    val startDate = Date()
-                    val endDate = Date()
-                    endDate.time = startDate.time + 1000
-//                    val companyId = prefs.companyUId!!
-//                    val buildingId = selectedAvailabilityFiltersRepository.getBuilding()?.uID
-//                    val roomId = selectedAvailabilityFiltersRepository.getRoom()?.uID
-//
-//                    val startDate = selectedAvailabilityFiltersRepository.getStartDate()?:Date()
-//                    val endDate =  selectedAvailabilityFiltersRepository.getEndDate()?:Date(startDate.time + 3600)
-
-                    val bookingCreated = withContext(Dispatchers.IO) { createBooking(Booking(null, userId, companyId, buildingId, roomId, tableId, startDate, endDate)) }
+                    val bookingCreated = withContext(Dispatchers.IO) { createBooking(Booking(null, user.uID, companyId, buildingId, roomId, tableId, startDate, endDate)) }
 
                     if (bookingCreated != null) {
                         view?.showBookingConfirm()

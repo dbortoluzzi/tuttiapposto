@@ -96,7 +96,7 @@ class FirebaseAuthenticationSource @Inject constructor(
     }
 
     private fun convertToUser(firebaseUser: FirebaseUser): User {
-        return User(firebaseUser.email?:"none", firebaseUser.displayName)
+        return User(firebaseUser.uid, firebaseUser.email?:"none", firebaseUser.displayName)
     }
 
     companion object {

@@ -10,4 +10,11 @@ object Constants {
 
     val READ_SECONDS_TIMEOUT_RETROFIT = 20L
     val WRITE_SECONDS_TIMEOUT_RETROFIT = 20L
+
+    val BUNDLE_DATA = "BUNDLE_DATA"
+    val START_DATE = "START_DATE"
+    val END_DATE = "END_DATE"
+    val BUILDING_ID = "BUILDING_ID"
+    val ROOM_ID = "ROOM_ID"
+    val TABLE_ID = "TABLE_ID"
 }
