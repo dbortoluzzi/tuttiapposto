@@ -40,7 +40,7 @@ class AvailabilityPresenter @Inject constructor(
         if (PrefsValidator.isConfigured(prefs)) {
             if (App.isNetworkConnected()) {
                 GlobalScope.launch(Dispatchers.Main) {
-                    view?.showProgressBar();
+                    view?.showProgressBar()
 
                     val companyId = prefs.companyUId!!
                     val buildingId = selectedAvailabilityFiltersRepository.getBuilding()?.uID
@@ -58,7 +58,7 @@ class AvailabilityPresenter @Inject constructor(
                         val room = rooms.find { it.uID == avail.table.roomId }
                         avail.toPresentationModel(room?.name?:"Unknown")}
                     )
-                    view?.hideProgressBar();
+                    view?.hideProgressBar()
                 }
             } else {
                 view?.showNetworkError()

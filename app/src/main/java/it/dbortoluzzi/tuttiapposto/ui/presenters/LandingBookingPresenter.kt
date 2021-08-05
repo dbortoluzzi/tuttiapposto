@@ -8,6 +8,7 @@ import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.CreateBooking
+import it.dbortoluzzi.usecases.GetAvailableTables
 import it.dbortoluzzi.usecases.GetUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -19,8 +20,16 @@ import javax.inject.Inject
 class LandingBookingPresenter @Inject constructor(
         mView: View?,
         private val getUser: GetUser,
+        private val getAvailableTables: GetAvailableTables,
         private val createBooking: CreateBooking
 ) : BaseMvpPresenterImpl<LandingBookingPresenter.View>(mView){
+
+    lateinit var companyIdModel: String
+    lateinit var buildingIdModel: String
+    lateinit var roomIdModel: String
+    lateinit var tableIdModel: String
+    lateinit var startDateModel: Date
+    lateinit var endDateModel: Date
 
     interface View : BaseMvpView {
         fun showProgressBar()
@@ -38,22 +47,22 @@ class LandingBookingPresenter @Inject constructor(
         if (PrefsValidator.isConfigured(prefs)) {
             if (App.isNetworkConnected()) {
                 GlobalScope.launch(Dispatchers.Main) {
-                    view?.showProgressBar();
+                    view?.showProgressBar()
 
-                    val u = getUser()
-                    val user = when (u) {
-                        is ServiceResult.Success -> u.data
-                        else -> throw Exception("no user found")
-                    }
+                    val availabilities = withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate) }
 
-                    val bookingCreated = withContext(Dispatchers.IO) { createBooking(Booking(null, user.uID, companyId, buildingId, roomId, tableId, startDate, endDate)) }
-
-                    if (bookingCreated != null) {
+                    if (availabilities.any { it.table.uID == tableId }) {
+                        companyIdModel = companyId
+                        buildingIdModel = buildingId
+                        roomIdModel = roomId
+                        tableIdModel = tableId
+                        startDateModel = startDate
+                        endDateModel = endDate
                         view?.showBookingConfirm()
                     } else {
                         view?.showBookingNotAvailable()
                     }
-                    view?.hideProgressBar();
+                    view?.hideProgressBar()
                 }
             } else {
                 view?.showNetworkError()
@@ -62,8 +71,25 @@ class LandingBookingPresenter @Inject constructor(
     }
 
     fun bookTable() {
-        // TODO: do call
-        view?.bookingDoneWithSuccess()
+        if (PrefsValidator.isConfigured(prefs)) {
+            if (App.isNetworkConnected()) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    view?.showProgressBar()
+
+                    val user = when (val u = getUser()) {
+                        is ServiceResult.Success -> u.data
+                        else -> throw Exception("no user found")
+                    }
+
+                    val bookingCreated = withContext(Dispatchers.IO) { createBooking(Booking(null, user.uID, companyIdModel, buildingIdModel, roomIdModel, tableIdModel, startDateModel, endDateModel)) }
+                    if (bookingCreated != null) {
+                        view?.bookingDoneWithSuccess()
+                    } else {
+                        view?.bookingNotDoneWithError()
+                    }
+                }
+            }
+        }
     }
 
     companion object {
