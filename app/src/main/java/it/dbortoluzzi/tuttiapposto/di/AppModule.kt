@@ -298,4 +298,9 @@ class UseCasesModule {
     @Provides
     @Singleton
     fun createBooking(bookingsRepository: BookingsRepository): CreateBooking = CreateBooking(bookingsRepository)
+
+    @Provides
+    @Singleton
+    fun getBookings(bookingsRepository: BookingsRepository): GetBookings = GetBookings(bookingsRepository)
+
 }

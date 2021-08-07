@@ -3,6 +3,7 @@ package it.dbortoluzzi.tuttiapposto.api
 import it.dbortoluzzi.domain.Booking
 import it.dbortoluzzi.domain.dto.TableAvailabilityRequestDto
 import it.dbortoluzzi.domain.Table
+import it.dbortoluzzi.domain.dto.GetBookingsRequestDto
 import it.dbortoluzzi.domain.dto.TableAvailabilityResponseDto
 import retrofit2.Response
 import retrofit2.http.Body
@@ -15,4 +16,8 @@ interface ApiService{
 
     @POST("/api/bookings")
     suspend fun bookTable(@Body booking: Booking):Response<Booking>
+
+    @POST("/api/bookings/filtered")
+    suspend fun getBookingsFiltered(@Body getBookingsRequestDto: GetBookingsRequestDto):Response<List<Booking>>
+
 }

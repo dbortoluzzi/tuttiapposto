@@ -2,6 +2,7 @@ package it.dbortoluzzi.tuttiapposto.api
 
 import android.util.Log
 import it.dbortoluzzi.domain.Booking
+import it.dbortoluzzi.domain.dto.GetBookingsRequestDto
 import it.dbortoluzzi.domain.dto.TableAvailabilityRequestDto
 import it.dbortoluzzi.domain.dto.TableAvailabilityResponseDto
 import it.dbortoluzzi.domain.util.ServiceResult
@@ -23,6 +24,12 @@ class ApiHelperImpl @Inject constructor(
     override suspend fun createBooking(booking: Booking): Response<Booking> {
         return safeCall {
             apiService.bookTable(booking)
+        }
+    }
+
+    override suspend fun getBookingsBy(userId: String, companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date?): Response<List<Booking>> {
+        return safeCall {
+            apiService.getBookingsFiltered(GetBookingsRequestDto(userId, companyId, buildingId, roomId, startDate, endDate))
         }
     }
 

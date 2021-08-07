@@ -9,4 +9,6 @@ interface ApiHelper {
     suspend fun findAvailableTable(companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date): Response<List<TableAvailabilityResponseDto>>
 
     suspend fun createBooking(booking: Booking): Response<Booking>
+
+    suspend fun getBookingsBy(userId: String, companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date?): Response<List<Booking>>
 }
