@@ -216,6 +216,12 @@ object FragmentModule {
 
     @Provides
     @FragmentScoped
+    fun bindDashboardFragment(fragment: Fragment): DashboardPresenter.View {
+        return fragment as DashboardPresenter.View
+    }
+
+    @Provides
+    @FragmentScoped
     fun bindLocationFragment(fragment: Fragment): LocationPresenter.View {
         return fragment as LocationPresenter.View
     }
