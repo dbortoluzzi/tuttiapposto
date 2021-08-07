@@ -46,11 +46,16 @@ class AvailabilityPresenter @Inject constructor(
                     val buildingId = selectedAvailabilityFiltersRepository.getBuilding()?.uID
                     val roomId = selectedAvailabilityFiltersRepository.getRoom()?.uID
 
-                    // TODO: fix date
-                    val startDate = selectedAvailabilityFiltersRepository.getStartDate()?:Date()
-                    val endDate =  selectedAvailabilityFiltersRepository.getEndDate()?:Date(startDate.time + 3600)
+                    val intervalSelected = FilterAvailabilitiesUtil.extractInterval(selectedAvailabilityFiltersRepository.getInterval()?.name)
+                    val (startCalendar, endCalendar) = if (selectedAvailabilityFiltersRepository.getStartDate() != null) {
+                        val start = Calendar.getInstance().apply { time = selectedAvailabilityFiltersRepository.getStartDate()!!}
+                        val end = Calendar.getInstance().apply { time = selectedAvailabilityFiltersRepository.getEndDate()!!}
+                        Pair(start, end)
+                    } else {
+                        FilterAvailabilitiesUtil.extractStartEndPair(intervalSelected, Date())
+                    }
 
-                    val jobAvailabilities: Deferred<List<TableAvailabilityResponseDto>> = async { withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate) } }
+                    val jobAvailabilities: Deferred<List<TableAvailabilityResponseDto>> = async { withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startCalendar.time, endCalendar.time) } }
                     val jobRooms: Deferred<List<Room>> = async { withContext(Dispatchers.IO) { getRoomsByCompany(companyId) } }
                     val availabilities = jobAvailabilities.await()
                     val rooms = jobRooms.await()
