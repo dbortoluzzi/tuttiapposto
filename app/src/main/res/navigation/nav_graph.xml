@@ -37,6 +37,11 @@
                 app:argType="boolean"
                 android:defaultValue="true" />
         </action>
+
+        <action android:id="@+id/action_home_to_book"
+            app:destination="@id/landingBookingFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/homeFragment"/>
     </fragment>
 
     <fragment

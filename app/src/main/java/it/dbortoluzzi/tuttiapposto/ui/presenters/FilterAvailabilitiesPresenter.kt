@@ -14,6 +14,7 @@ import it.dbortoluzzi.tuttiapposto.ui.util.Constants.END_DATE
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants.ROOM_ID
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants.START_DATE
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants.TABLE_ID
+import it.dbortoluzzi.tuttiapposto.ui.util.FilterAvailabilitiesUtil
 import it.dbortoluzzi.usecases.GetBuildings
 import it.dbortoluzzi.usecases.GetRooms
 import it.dbortoluzzi.usecases.GetTablesWithFilters
@@ -91,10 +92,10 @@ class FilterAvailabilitiesPresenter @Inject constructor(
     }
 
     fun filterBtnClicked() {
-        val intervalSelected = Interval.valueOf(view?.getIntervalSelected()?:Interval.ALL_DAY.name)
+        val intervalSelected = FilterAvailabilitiesUtil.extractInterval(view?.getIntervalSelected())
         selectedAvailabilityFiltersRepository.setInterval(intervalSelected)
 
-        val (startCalendar, endCalendar) = getStartEndCalendarFromView(intervalSelected)
+        val (startCalendar, endCalendar) = FilterAvailabilitiesUtil.extractStartEndPair(intervalSelected, view?.getDateSelected())
 
         val buildingSelected = view?.getBuildingSelected()
         val roomSelected = view?.getRoomSelected()
@@ -117,8 +118,8 @@ class FilterAvailabilitiesPresenter @Inject constructor(
     }
 
     fun newBookingBtnClicked(): Map<String, Any> {
-        val intervalSelected = Interval.valueOf(view?.getIntervalSelected()?:Interval.ALL_DAY.name)
-        val (startCalendar, endCalendar) = getStartEndCalendarFromView(intervalSelected)
+        val intervalSelected = FilterAvailabilitiesUtil.extractInterval(view?.getIntervalSelected())
+        val (startCalendar, endCalendar) = FilterAvailabilitiesUtil.extractStartEndPair(intervalSelected, view?.getDateSelected())
         val buildingSelected = view?.getBuildingSelected()
         val roomSelected = view?.getRoomSelected()
         val tableSelected = view?.getTableSelected()
@@ -129,23 +130,6 @@ class FilterAvailabilitiesPresenter @Inject constructor(
                 ROOM_ID to roomSelected!!.first,
                 TABLE_ID to tableSelected!!.first
         )
-    }
-
-    private fun getStartEndCalendarFromView(intervalSelected: Interval): Pair<Calendar, Calendar> {
-        val start = view?.getDateSelected()!!
-        val startCalendar = Calendar.getInstance()
-        startCalendar.time = start
-        startCalendar.set(Calendar.HOUR_OF_DAY, intervalSelected.startHour)
-        startCalendar.set(Calendar.MINUTE, 0)
-        startCalendar.set(Calendar.SECOND, 0)
-
-        val end = Date(start.time) //TODO: read from end
-        val endCalendar = Calendar.getInstance()
-        endCalendar.time = end
-        endCalendar.set(Calendar.HOUR_OF_DAY, intervalSelected.endHour)
-        endCalendar.set(Calendar.MINUTE, 0)
-        endCalendar.set(Calendar.SECOND, 0)
-        return Pair(startCalendar, endCalendar)
     }
 
     companion object {

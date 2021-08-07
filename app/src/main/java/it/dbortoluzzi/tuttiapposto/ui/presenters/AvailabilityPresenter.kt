@@ -10,9 +10,10 @@ import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.model.toPresentationModel
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
-import it.dbortoluzzi.usecases.GetRoomsByCompany
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants
+import it.dbortoluzzi.tuttiapposto.ui.util.FilterAvailabilitiesUtil
 import it.dbortoluzzi.usecases.GetAvailableTables
-import it.dbortoluzzi.usecases.RequestNewLocation
+import it.dbortoluzzi.usecases.GetRoomsByCompany
 import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
@@ -21,8 +22,7 @@ class AvailabilityPresenter @Inject constructor(
         mView: View?,
         private val getAvailableTables: GetAvailableTables,
         private val getRoomsByCompany: GetRoomsByCompany,
-        private val selectedAvailabilityFiltersRepository: SelectedAvailabilityFiltersRepository,
-        private val requestNewLocation: RequestNewLocation//TODO: change
+        private val selectedAvailabilityFiltersRepository: SelectedAvailabilityFiltersRepository
 ) : BaseMvpPresenterImpl<AvailabilityPresenter.View>(mView){
 
     interface View : BaseMvpView {
@@ -46,6 +46,7 @@ class AvailabilityPresenter @Inject constructor(
                     val buildingId = selectedAvailabilityFiltersRepository.getBuilding()?.uID
                     val roomId = selectedAvailabilityFiltersRepository.getRoom()?.uID
 
+                    // TODO: fix date
                     val startDate = selectedAvailabilityFiltersRepository.getStartDate()?:Date()
                     val endDate =  selectedAvailabilityFiltersRepository.getEndDate()?:Date(startDate.time + 3600)
 
@@ -64,6 +65,20 @@ class AvailabilityPresenter @Inject constructor(
                 view?.showNetworkError()
             }
         }
+    }
+
+    fun newBookingBtnClicked(avail: Availability): Map<String, Any> {
+        val intervalSelected = FilterAvailabilitiesUtil.extractInterval(selectedAvailabilityFiltersRepository.getInterval()?.name)
+        // TODO: improve
+        val (startCalendar, endCalendar) = FilterAvailabilitiesUtil.extractStartEndPair(intervalSelected, selectedAvailabilityFiltersRepository.getStartDate())
+
+        return mapOf(
+                Constants.START_DATE to startCalendar.time,
+                Constants.END_DATE to endCalendar.time,
+                Constants.BUILDING_ID to avail.tableAvailabilityResponseDto.table.buildingId,
+                Constants.ROOM_ID to  avail.tableAvailabilityResponseDto.table.roomId,
+                Constants.TABLE_ID to  avail.tableAvailabilityResponseDto.table.uID
+        )
     }
 
     companion object {
