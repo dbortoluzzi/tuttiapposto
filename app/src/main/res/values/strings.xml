@@ -69,4 +69,7 @@
     <string name="landing_book_success_message">Prenotazione confermata!</string>
     <string name="landing_book_error_message">Si è verificato un problema nella creazione della prenotazione</string>
     <string name="landing_book_dismiss_message">Prenotazione non effettuata!</string>
+
+<!--    Dashboard-->
+    <string name="hour_occupation_bar_chart_desc">Occupazione per fasce orarie</string>
 </resources>

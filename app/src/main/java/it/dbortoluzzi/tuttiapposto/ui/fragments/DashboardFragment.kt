@@ -50,7 +50,7 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
 
     private fun initHourOccupationBarChart() {
 //        hide grid lines
-        barChart = binding.barChart
+        barChart = binding.hourOccupationBarChart
         barChart.axisLeft.setDrawGridLines(false)
         val xAxis: XAxis = barChart.xAxis
         xAxis.setDrawGridLines(false)
@@ -76,7 +76,7 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
     }
 
     override fun renderHourOccupationChart(scores: List<Score>) {
-        val barChart = binding.barChart
+        val barChart = binding.hourOccupationBarChart
 
         //now draw bar chart with dynamic data
         val entries: ArrayList<BarEntry> = ArrayList()
