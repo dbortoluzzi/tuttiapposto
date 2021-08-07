@@ -73,6 +73,7 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
                 R.id.homeFragment,
                 R.id.homeNoConfigFragment,
                 R.id.locationFragment,
+                R.id.landingBookingFragment,
                 R.id.dashboardFragment) //Pass the ids of fragments from nav_graph which you d'ont want to show back button in toolbar
                 .setOpenableLayout(binding.mainDrawerLayout) //Pass the drawer layout id from activity xml
                 .build()

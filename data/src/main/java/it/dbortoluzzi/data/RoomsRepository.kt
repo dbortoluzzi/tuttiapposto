@@ -8,6 +8,7 @@ class RoomsRepository(
 ) {
 
     suspend fun getActiveRooms(): ServiceResult<List<Room>> = roomPersistenceSource.getActiveRooms()
+    suspend fun getActiveRoomsByCompany(companyId: String): ServiceResult<List<Room>> = roomPersistenceSource.getActiveRoomsByCompany(companyId)
     suspend fun getActiveRoomsByCompanyIdAndBuildingId(companyId: String, buildingId: String): ServiceResult<List<Room>> = roomPersistenceSource.getActiveRoomsByCompanyIdAndBuildingId(companyId, buildingId)
 
 }
@@ -15,6 +16,7 @@ class RoomsRepository(
 interface RoomPersistenceSource {
 
     suspend fun getActiveRooms(): ServiceResult<List<Room>>
+    suspend fun getActiveRoomsByCompany(companyId: String): ServiceResult<List<Room>>
     suspend fun getActiveRoomsByCompanyIdAndBuildingId(companyId: String, buildingId: String): ServiceResult<List<Room>>
 
 }

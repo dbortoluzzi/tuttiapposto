@@ -8,17 +8,19 @@ import java.util.*
 import it.dbortoluzzi.domain.Location as DomainLocation
 
 data class Availability(
+        val tableAvailabilityResponseDto: TableAvailabilityResponseDto,
         val tableName: String,
         val roomName: String,
         val availabilityNumber: Int,
-        val availabilityIntervalDesc: String,
+        val availabilityIntervalDesc: String
 )
 
 fun TableAvailabilityResponseDto.toPresentationModel(roomName: String): Availability = Availability(
+        this,
         table.name,
         roomName,
         availability,
-        "${startDate?.toPrettifiedString()} | ${endDate?.toPrettifiedString()}",
+        "${startDate?.toPrettifiedString()} | ${endDate?.toPrettifiedString()}"
 )
 
 private fun Date.toPrettifiedString(): String =

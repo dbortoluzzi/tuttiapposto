@@ -2,18 +2,23 @@ package it.dbortoluzzi.tuttiapposto.ui.presenters
 
 import it.dbortoluzzi.domain.Building
 import it.dbortoluzzi.domain.Room
+import it.dbortoluzzi.domain.Table
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.framework.SelectedAvailabilityFiltersRepository
 import it.dbortoluzzi.tuttiapposto.model.Interval
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BUILDING_ID
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.END_DATE
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.ROOM_ID
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.START_DATE
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.TABLE_ID
+import it.dbortoluzzi.tuttiapposto.ui.util.FilterAvailabilitiesUtil
 import it.dbortoluzzi.usecases.GetBuildings
 import it.dbortoluzzi.usecases.GetRooms
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import it.dbortoluzzi.usecases.GetTablesWithFilters
+import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
 
@@ -21,17 +26,20 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         mView: View?,
         private val selectedAvailabilityFiltersRepository: SelectedAvailabilityFiltersRepository,
         private val getBuildings: GetBuildings,
-        private val getRooms: GetRooms
+        private val getRooms: GetRooms,
+        private val getTablesWithFilters: GetTablesWithFilters
 ) : BaseMvpPresenterImpl<FilterAvailabilitiesPresenter.View>(mView){
 
     interface View : BaseMvpView {
         fun goToAvailabilitiesPage()
         fun getBuildingSelected(): Pair<String, String>?
         fun getRoomSelected(): Pair<String, String>?
+        fun getTableSelected(): Pair<String, String>?
         fun getDateSelected(): Date
         fun getIntervalSelected(): String?
         fun renderBuildings(buildings: List<Building>)
         fun renderRooms(rooms: List<Room>)
+        fun renderTables(tables: List<Table>)
         fun renderIntervals(intervals: List<Interval>)
     }
 
@@ -56,6 +64,13 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         }
     }
 
+    fun retrieveTables(buildingId: String, roomId: String) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val tables = withContext(Dispatchers.IO) { getTablesWithFilters(prefs.companyUId!!, buildingId, roomId) }
+            view?.renderTables(tables)
+        }
+    }
+
     fun getBuildingSelected() : Building? {
         return selectedAvailabilityFiltersRepository.getBuilding()
     }
@@ -77,22 +92,10 @@ class FilterAvailabilitiesPresenter @Inject constructor(
     }
 
     fun filterBtnClicked() {
-        val intervalSelected = Interval.valueOf(view?.getIntervalSelected()?:Interval.ALL_DAY.name)
+        val intervalSelected = FilterAvailabilitiesUtil.extractInterval(view?.getIntervalSelected())
         selectedAvailabilityFiltersRepository.setInterval(intervalSelected)
 
-        val start = view?.getDateSelected()!!
-        val startCalendar = Calendar.getInstance()
-        startCalendar.time = start
-        startCalendar.set(Calendar.HOUR_OF_DAY, intervalSelected.startHour)
-        startCalendar.set(Calendar.MINUTE, 0)
-        startCalendar.set(Calendar.SECOND, 0)
-
-        val end = Date(start.time) //TODO: read from end
-        val endCalendar = Calendar.getInstance()
-        endCalendar.time = end
-        endCalendar.set(Calendar.HOUR_OF_DAY, intervalSelected.endHour)
-        endCalendar.set(Calendar.MINUTE, 0)
-        endCalendar.set(Calendar.SECOND, 0)
+        val (startCalendar, endCalendar) = FilterAvailabilitiesUtil.extractStartEndPair(intervalSelected, view?.getDateSelected())
 
         val buildingSelected = view?.getBuildingSelected()
         val roomSelected = view?.getRoomSelected()
@@ -112,6 +115,21 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         }
 
         view?.goToAvailabilitiesPage()
+    }
+
+    fun newBookingBtnClicked(): Map<String, Any> {
+        val intervalSelected = FilterAvailabilitiesUtil.extractInterval(view?.getIntervalSelected())
+        val (startCalendar, endCalendar) = FilterAvailabilitiesUtil.extractStartEndPair(intervalSelected, view?.getDateSelected())
+        val buildingSelected = view?.getBuildingSelected()
+        val roomSelected = view?.getRoomSelected()
+        val tableSelected = view?.getTableSelected()
+        return mapOf(
+                START_DATE to startCalendar.time,
+                END_DATE to endCalendar.time,
+                BUILDING_ID to buildingSelected!!.first,
+                ROOM_ID to roomSelected!!.first,
+                TABLE_ID to tableSelected!!.first
+        )
     }
 
     companion object {

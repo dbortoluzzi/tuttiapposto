@@ -2,16 +2,11 @@ package it.dbortoluzzi.tuttiapposto.framework
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import it.dbortoluzzi.data.RoomPersistenceSource
 import it.dbortoluzzi.data.TablePersistenceSource
-import it.dbortoluzzi.domain.Building
-import it.dbortoluzzi.domain.Company
-import it.dbortoluzzi.domain.Room
 import it.dbortoluzzi.domain.Table
 import it.dbortoluzzi.domain.util.ServiceResult
 import it.dbortoluzzi.domain.util.ServiceResult.Error
 import it.dbortoluzzi.domain.util.ServiceResult.Success
-import it.dbortoluzzi.tuttiapposto.model.FirebaseRoom
 import it.dbortoluzzi.tuttiapposto.model.FirebaseTable
 import it.dbortoluzzi.tuttiapposto.model.toObject
 import java.util.concurrent.TimeUnit

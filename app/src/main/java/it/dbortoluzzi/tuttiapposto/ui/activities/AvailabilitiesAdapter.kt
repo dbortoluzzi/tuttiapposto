@@ -7,16 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ViewAvailabilityItemBinding
 import it.dbortoluzzi.tuttiapposto.model.Availability
-import javax.inject.Inject
 import kotlin.properties.Delegates
 
-class AvailabilitiesAdapter @Inject constructor(): RecyclerView.Adapter<AvailabilitiesAdapter.ViewHolder>() {
+class AvailabilitiesAdapter : RecyclerView.Adapter<AvailabilitiesAdapter.ViewHolder>() {
 
     var items: List<Availability> by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
+    var onItemClick: ((Availability) -> Unit)? = null
+    var onItemLongPress: ((Availability) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ViewAvailabilityItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(binding, onItemClick, onItemLongPress)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -25,12 +26,23 @@ class AvailabilitiesAdapter @Inject constructor(): RecyclerView.Adapter<Availabi
 
     override fun getItemCount(): Int = items.size
 
-    class ViewHolder(val binding: ViewAvailabilityItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ViewAvailabilityItemBinding,
+                     var onItemClick: ((Availability) -> Unit)? = null,
+                     private val onItemLongPress: ((Availability) -> Unit)? = null) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(availability: Availability) {
             with(availability) {
                 binding.tableName.text = availability.tableName
                 binding.roomName.text = availability.roomName
+
+                binding.root.setOnClickListener {
+                    onItemClick?.invoke(availability)
+                }
+
+                binding.root.setOnLongClickListener {
+                    onItemLongPress?.invoke(availability)
+                    return@setOnLongClickListener true
+                }
 
                 if (availabilityNumber > 5) {
                     binding.availabilityNumber.text = "$availabilityNumber ${itemView.context.getString(R.string.a_lot_of_tables)}"

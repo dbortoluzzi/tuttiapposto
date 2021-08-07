@@ -22,7 +22,7 @@ class AndroidTableSource @Inject constructor(
     }
 
     companion object {
-        private val TAG = "TablePersistenceSource"
+        private val TAG = "AndroidTableSource"
     }
 
 }

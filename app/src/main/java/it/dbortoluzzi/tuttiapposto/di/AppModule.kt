@@ -88,7 +88,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun authenticationSource(firebaseAuth: FirebaseAuth): AuthenticationSource = FirebaseAuthenticationSource(firebaseAuth)
+    fun authenticationSource(firebaseAuth: FirebaseAuth, userPersistenceSource: UserPersistenceSource): AuthenticationSource = FirebaseAuthenticationSource(firebaseAuth, userPersistenceSource)
+
+    @Provides
+    @Singleton
+    fun userSource(firebaseFirestore: FirebaseFirestore): UserPersistenceSource = FirebaseUserSource(firebaseFirestore)
 
     @Provides
     @Singleton
@@ -109,6 +113,10 @@ class AppModule {
     @Provides
     @Singleton
     fun androidTableSource(apiHelper: ApiHelper): AvailabilitiesSource = AndroidTableSource(apiHelper)
+
+    @Provides
+    @Singleton
+    fun androidBookingSource(apiHelper: ApiHelper): BookingPersistenceSource = AndroidBookingSource(apiHelper)
 
     @Provides
     @Singleton
@@ -149,6 +157,12 @@ class AppModule {
     @Singleton
     fun tableRepository(availabilitiesSource: AvailabilitiesSource, tablePersistenceSource: TablePersistenceSource): TablesRepository {
         return TablesRepository(availabilitiesSource, tablePersistenceSource)
+    }
+
+    @Provides
+    @Singleton
+    fun bookingRepository(bookingSource: BookingPersistenceSource): BookingsRepository {
+        return BookingsRepository(bookingSource)
     }
 
     @Provides
@@ -217,6 +231,12 @@ object FragmentModule {
     fun bindFilterAvailabilities(fragment: Fragment): FilterAvailabilitiesPresenter.View {
         return fragment as FilterAvailabilitiesPresenter.View
     }
+
+    @Provides
+    @FragmentScoped
+    fun bindLandingBooking(fragment: Fragment): LandingBookingPresenter.View {
+        return fragment as LandingBookingPresenter.View
+    }
 }
 
 @Module
@@ -261,7 +281,7 @@ class UseCasesModule {
 
     @Provides
     @Singleton
-    fun getAllRooms(roomsRepository: RoomsRepository): GetAllRooms = GetAllRooms(roomsRepository)
+    fun getRoomsByCompany(roomsRepository: RoomsRepository): GetRoomsByCompany = GetRoomsByCompany(roomsRepository)
 
     @Provides
     @Singleton
@@ -269,5 +289,13 @@ class UseCasesModule {
 
     @Provides
     @Singleton
+    fun getTablesWithFilters(tablesRepository: TablesRepository): GetTablesWithFilters = GetTablesWithFilters(tablesRepository)
+
+    @Provides
+    @Singleton
     fun getAvailableTables(tablesRepository: TablesRepository): GetAvailableTables = GetAvailableTables(tablesRepository)
+
+    @Provides
+    @Singleton
+    fun createBooking(bookingsRepository: BookingsRepository): CreateBooking = CreateBooking(bookingsRepository)
 }

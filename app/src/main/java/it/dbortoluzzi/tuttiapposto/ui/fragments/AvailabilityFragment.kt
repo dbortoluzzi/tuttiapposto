@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
@@ -15,6 +16,7 @@ import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.activities.AvailabilitiesAdapter
 import it.dbortoluzzi.tuttiapposto.ui.presenters.AvailabilityPresenter
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants
 import javax.inject.Inject
 
 /**
@@ -23,7 +25,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPresenter>(), AvailabilityPresenter.View {
-    @Inject
+
     lateinit var availabilitiesAdapter: AvailabilitiesAdapter
 
     @Inject
@@ -37,13 +39,24 @@ class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPr
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
+        availabilitiesAdapter = AvailabilitiesAdapter().apply {
+            onItemLongPress = { avail ->
+                val navController = findNavController()
+                val mapBookingData: Map<String, Any> = presenter.newBookingBtnClicked(avail)
+                navController.apply {
+                    val b = bundleOf(Constants.BUNDLE_DATA to mapBookingData)
+                    navigate(R.id.action_home_to_book, b)
+                }
+            }
+        }
+
         binding = FragmentAvailabilitiesBinding.inflate(layoutInflater)
 
         binding.recycler.adapter = availabilitiesAdapter
 
-        binding.newBookingBtn.setOnClickListener { presenter.newBookingClicked()}
+        binding.newBookingBtn.setOnClickListener { findNavController().navigate(R.id.action_home_to_book_filter)}
 
-        binding.filterAvailabilityBtn.setOnClickListener { findNavController().navigate(R.id.filterAvailabilitiesFragment)}
+        binding.filterAvailabilityBtn.setOnClickListener { findNavController().navigate(R.id.action_home_to_filter)}
 
         return binding.root
     }

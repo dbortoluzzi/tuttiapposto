@@ -45,11 +45,11 @@ class InMemorySelectedAvailabilityFiltersSource @Inject constructor(): SelectedA
         this.room = room
     }
 
-    override fun setStartDate(startDate: Date) {
+    override fun setStartDate(startDate: Date?) {
         this.startDate = startDate
     }
 
-    override fun setEndDate(endDate: Date) {
+    override fun setEndDate(endDate: Date?) {
         this.endDate = endDate
     }
 
@@ -60,8 +60,8 @@ class InMemorySelectedAvailabilityFiltersSource @Inject constructor(): SelectedA
     override fun clearAllFilters() {
         setBuilding(null)
         setRoom(null)
-        setStartDate(Calendar.getInstance().time)
-        setEndDate(Calendar.getInstance().time)
+        setStartDate(null)
+        setEndDate(null)
         setInterval(Interval.ALL_DAY)
     }
 }
@@ -73,8 +73,8 @@ interface SelectedAvailabilityFiltersSource {
     fun getEndDate(): Date?
     fun setBuilding(building: Building?)
     fun setRoom(room: Room?)
-    fun setStartDate(startDate:Date)
-    fun setEndDate(endDate:Date)
+    fun setStartDate(startDate:Date?)
+    fun setEndDate(endDate:Date?)
     fun getInterval(): Interval?
     fun setInterval(interval: Interval)
     fun clearAllFilters()

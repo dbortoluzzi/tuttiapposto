@@ -10,10 +10,10 @@ import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.model.toPresentationModel
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
-import it.dbortoluzzi.usecases.GetAllRooms
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants
+import it.dbortoluzzi.tuttiapposto.ui.util.FilterAvailabilitiesUtil
 import it.dbortoluzzi.usecases.GetAvailableTables
-import it.dbortoluzzi.usecases.GetRooms
-import it.dbortoluzzi.usecases.RequestNewLocation
+import it.dbortoluzzi.usecases.GetRoomsByCompany
 import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
@@ -21,9 +21,8 @@ import javax.inject.Inject
 class AvailabilityPresenter @Inject constructor(
         mView: View?,
         private val getAvailableTables: GetAvailableTables,
-        private val getAllRooms: GetAllRooms,
-        private val selectedAvailabilityFiltersRepository: SelectedAvailabilityFiltersRepository,
-        private val requestNewLocation: RequestNewLocation//TODO: change
+        private val getRoomsByCompany: GetRoomsByCompany,
+        private val selectedAvailabilityFiltersRepository: SelectedAvailabilityFiltersRepository
 ) : BaseMvpPresenterImpl<AvailabilityPresenter.View>(mView){
 
     interface View : BaseMvpView {
@@ -41,25 +40,31 @@ class AvailabilityPresenter @Inject constructor(
         if (PrefsValidator.isConfigured(prefs)) {
             if (App.isNetworkConnected()) {
                 GlobalScope.launch(Dispatchers.Main) {
-                    view?.showProgressBar();
+                    view?.showProgressBar()
 
                     val companyId = prefs.companyUId!!
                     val buildingId = selectedAvailabilityFiltersRepository.getBuilding()?.uID
                     val roomId = selectedAvailabilityFiltersRepository.getRoom()?.uID
 
-                    val startDate = selectedAvailabilityFiltersRepository.getStartDate()?:Date()
-                    val endDate =  selectedAvailabilityFiltersRepository.getEndDate()?:Date(startDate.time + 3600)
+                    val intervalSelected = FilterAvailabilitiesUtil.extractInterval(selectedAvailabilityFiltersRepository.getInterval()?.name)
+                    val (startCalendar, endCalendar) = if (selectedAvailabilityFiltersRepository.getStartDate() != null) {
+                        val start = Calendar.getInstance().apply { time = selectedAvailabilityFiltersRepository.getStartDate()!!}
+                        val end = Calendar.getInstance().apply { time = selectedAvailabilityFiltersRepository.getEndDate()!!}
+                        Pair(start, end)
+                    } else {
+                        FilterAvailabilitiesUtil.extractStartEndPair(intervalSelected, Date())
+                    }
 
-                    val jobAvailabilities: Deferred<List<TableAvailabilityResponseDto>> = async { withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate) } }
-                    val jobRooms: Deferred<List<Room>> = async { withContext(Dispatchers.IO) { getAllRooms() } }
+                    val jobAvailabilities: Deferred<List<TableAvailabilityResponseDto>> = async { withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startCalendar.time, endCalendar.time) } }
+                    val jobRooms: Deferred<List<Room>> = async { withContext(Dispatchers.IO) { getRoomsByCompany(companyId) } }
                     val availabilities = jobAvailabilities.await()
                     val rooms = jobRooms.await()
 
                     view?.renderAvailableTables(availabilities.map { avail ->
-                        val room = rooms.find { it.companyId == companyId && it.uID == avail.table.roomId }
+                        val room = rooms.find { it.uID == avail.table.roomId }
                         avail.toPresentationModel(room?.name?:"Unknown")}
                     )
-                    view?.hideProgressBar();
+                    view?.hideProgressBar()
                 }
             } else {
                 view?.showNetworkError()
@@ -67,9 +72,18 @@ class AvailabilityPresenter @Inject constructor(
         }
     }
 
-    fun newBookingClicked() = GlobalScope.launch(Dispatchers.Main) {
-        val locations = withContext(Dispatchers.IO) { requestNewLocation() }
-        // TODO: go to reservation fragment
+    fun newBookingBtnClicked(avail: Availability): Map<String, Any> {
+        val intervalSelected = FilterAvailabilitiesUtil.extractInterval(selectedAvailabilityFiltersRepository.getInterval()?.name)
+        // TODO: improve
+        val (startCalendar, endCalendar) = FilterAvailabilitiesUtil.extractStartEndPair(intervalSelected, selectedAvailabilityFiltersRepository.getStartDate())
+
+        return mapOf(
+                Constants.START_DATE to startCalendar.time,
+                Constants.END_DATE to endCalendar.time,
+                Constants.BUILDING_ID to avail.tableAvailabilityResponseDto.table.buildingId,
+                Constants.ROOM_ID to  avail.tableAvailabilityResponseDto.table.roomId,
+                Constants.TABLE_ID to  avail.tableAvailabilityResponseDto.table.uID
+        )
     }
 
     companion object {

@@ -21,6 +21,26 @@
         <action android:id="@+id/action_home_to_filter"
             app:destination="@id/filterAvailabilitiesFragment"
             app:popUpToInclusive="true"
+            app:popUpTo="@id/homeFragment">
+            <argument
+                android:name="requestBooking"
+                app:argType="boolean"
+                android:defaultValue="false" />
+         </action>
+
+        <action android:id="@+id/action_home_to_book_filter"
+            app:destination="@id/filterAvailabilitiesFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/homeFragment">
+            <argument
+                android:name="requestBooking"
+                app:argType="boolean"
+                android:defaultValue="true" />
+        </action>
+
+        <action android:id="@+id/action_home_to_book"
+            app:destination="@id/landingBookingFragment"
+            app:popUpToInclusive="true"
             app:popUpTo="@id/homeFragment"/>
     </fragment>
 
@@ -34,6 +54,33 @@
             app:destination="@id/homeFragment"
             app:popUpToInclusive="true"
             app:popUpTo="@id/filterAvailabilitiesFragment"/>
+
+        <action android:id="@+id/action_filter_to_book"
+            app:destination="@id/landingBookingFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/filterAvailabilitiesFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/landingBookingFragment"
+        android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.LandingBookingFragment"
+        android:label="@string/book"
+        tools:layout="@layout/fragment_landing_booking" >
+
+        <action android:id="@+id/action_book_to_filter"
+            app:destination="@id/filterAvailabilitiesFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/landingBookingFragment">
+            <argument
+                android:name="requestBooking"
+                app:argType="boolean"
+                android:defaultValue="true" />
+        </action>
+
+        <action android:id="@+id/action_book_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/landingBookingFragment"/>
     </fragment>
 
     <fragment
