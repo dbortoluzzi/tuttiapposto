@@ -13,7 +13,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentLandingBookingBinding
 import it.dbortoluzzi.tuttiapposto.di.prefs
-import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.LandingBookingPresenter
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BUILDING_ID
@@ -95,10 +94,7 @@ class LandingBookingFragment : BaseMvpFragment<LandingBookingFragment, LandingBo
         Toast.makeText(context?.applicationContext,
                 R.string.landing_book_not_available_message, Toast.LENGTH_LONG).show()
 
-        val navController = findNavController()
-        navController.apply {
-            navigate(R.id.action_book_to_filter)
-        }
+        navigateTo(R.id.action_book_to_filter)
     }
 
     override fun confirmBookingBtnClicked() {
@@ -109,25 +105,28 @@ class LandingBookingFragment : BaseMvpFragment<LandingBookingFragment, LandingBo
         Toast.makeText(context?.applicationContext,
                 R.string.landing_book_dismiss_message, Toast.LENGTH_LONG).show()
 
-        val navController = findNavController()
-        navController.apply {
-            navigate(R.id.action_book_to_filter)
-        }
+        navigateTo(R.id.action_book_to_filter)
     }
 
     override fun bookingDoneWithSuccess() {
         Toast.makeText(context?.applicationContext,
                 R.string.landing_book_success_message, Toast.LENGTH_LONG).show()
 
-        val navController = findNavController()
-        navController.apply {
-            navigate(R.id.action_book_to_home)
-        }
+        navigateTo(R.id.action_book_to_home)
     }
 
     override fun bookingNotDoneWithError() {
         Toast.makeText(context?.applicationContext,
                 R.string.landing_book_error_message, Toast.LENGTH_LONG).show()
+
+        navigateTo(R.id.action_book_to_home)
+    }
+
+    private fun navigateTo(resId: Int) {
+        val navController = findNavController()
+        navController.apply {
+            navigate(resId)
+        }
     }
 
 }

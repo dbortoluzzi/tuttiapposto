@@ -142,12 +142,14 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
         // when you click on the button, show DatePickerDialog that is set with OnDateSetListener
         binding.startDateView.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View) {
-                DatePickerDialog(this@FilterAvailabilitiesFragment.context(),
+                val datePickerDialog = DatePickerDialog(this@FilterAvailabilitiesFragment.context(),
                         dateSetListener,
                         // set DatePickerDialog to point to today's date when it loads up
                         cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH),
-                        cal.get(Calendar.DAY_OF_MONTH)).show()
+                        cal.get(Calendar.DAY_OF_MONTH))
+                datePickerDialog.datePicker.minDate = Date().time
+                datePickerDialog.show()
             }
 
         })

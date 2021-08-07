@@ -87,6 +87,7 @@ class LandingBookingPresenter @Inject constructor(
                     } else {
                         view?.bookingNotDoneWithError()
                     }
+                    view?.hideProgressBar()
                 }
             }
         }
