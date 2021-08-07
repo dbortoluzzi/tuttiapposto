@@ -14,12 +14,16 @@ class DashboardPresenter @Inject constructor(
 
     interface View : BaseMvpView {
         fun renderHourOccupationChart(scores: List<Score>)
+        fun renderRoomOccupationChart(scores: List<Score>)
     }
 
     override fun onAttachView() {
         GlobalScope.launch(Dispatchers.Main) {
-            val scores = getHourOccupationList()
-            view?.renderHourOccupationChart(scores)
+            val hourScores = getHourOccupationList()
+            view?.renderHourOccupationChart(hourScores)
+
+            val roomScores = getRoomOccupationList()
+            view?.renderRoomOccupationChart(roomScores)
         }
     }
 
@@ -39,6 +43,16 @@ class DashboardPresenter @Inject constructor(
                 Score("17", 5, true),
                 Score("18", 3),
                 Score("19", 5),
+        )
+    }
+
+    // TODO:
+    // simulate api call
+    // we are initialising it directly
+    private fun getRoomOccupationList(): List<Score> {
+        return listOf(
+                Score("Stanza Studio", 70),
+                Score("Open Space", 25)
         )
     }
 

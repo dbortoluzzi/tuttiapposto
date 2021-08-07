@@ -29,6 +29,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/hour_occupation_bar_chart_desc" />
 
+        <TextView
+            android:id="@+id/room_occupation_bar_chart_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/room_occupation_bar_chart_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hour_occupation_bar_chart" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/room_occupation_bar_chart"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_margin="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/room_occupation_bar_chart_desc" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

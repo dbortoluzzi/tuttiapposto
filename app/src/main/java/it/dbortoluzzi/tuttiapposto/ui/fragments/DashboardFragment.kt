@@ -34,8 +34,6 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
     @Inject
     override lateinit var presenter: DashboardPresenter
 
-    private lateinit var barChart: BarChart
-
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?,
@@ -44,13 +42,14 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
         binding = FragmentDashboardBinding.inflate(layoutInflater)
 
         initHourOccupationBarChart()
+        initRoomOccupationBarChart()
 
         return binding.root
     }
 
     private fun initHourOccupationBarChart() {
 //        hide grid lines
-        barChart = binding.hourOccupationBarChart
+        val barChart = binding.hourOccupationBarChart
         barChart.axisLeft.setDrawGridLines(false)
         val xAxis: XAxis = barChart.xAxis
         xAxis.setDrawGridLines(false)
@@ -73,6 +72,34 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
 
         //hide values on columns
         xAxis.setDrawLabels(true)
+    }
+
+    private fun initRoomOccupationBarChart() {
+//        hide grid lines
+        val barChart = binding.roomOccupationBarChart
+        barChart.axisLeft.setDrawGridLines(false)
+        val xAxis: XAxis = barChart.xAxis
+        xAxis.setDrawGridLines(false)
+        xAxis.setDrawAxisLine(false)
+
+        //remove right y-axis
+        barChart.axisRight.isEnabled = false
+
+        //remove legend
+        barChart.legend.isEnabled = false
+
+        //remove description label
+        barChart.description.isEnabled = false
+
+        //add animation
+        barChart.animateY(2000)
+
+        // to draw label on xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
+
+        //hide values on columns
+        xAxis.setDrawLabels(true)
+//        xAxis.labelRotationAngle = +90f
     }
 
     override fun renderHourOccupationChart(scores: List<Score>) {
@@ -109,6 +136,37 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
         barChart.invalidate()
     }
 
+    override fun renderRoomOccupationChart(scores: List<Score>) {
+        val barChart = binding.roomOccupationBarChart
+
+        //now draw bar chart with dynamic data
+        val entries: ArrayList<BarEntry> = ArrayList()
+
+        for (i in scores.indices) {
+            val score = scores[i]
+            entries.add(BarEntry(i.toFloat(), score.score.toFloat()))
+        }
+
+        val barDataSet = BarDataSet(entries, "")
+        // simple algorithm to colour the values
+        val barColors = percentBarColours(scores)
+        barDataSet.colors = barColors
+        barDataSet.setDrawValues(false)
+
+        // update data
+        val data = BarData(barDataSet)
+        barChart.data = data
+
+        // set formatter for label x axis
+        val xAxis: XAxis = barChart.xAxis
+        xAxis.valueFormatter = MyAxisFormatter(scores)
+        // show all labels
+        xAxis.labelCount = scores.size
+        // TODO: set max value on Y axis
+
+        barChart.invalidate()
+    }
+
     private fun findHighligthedIndex(arr: Array<Score>): Int? {
         return (arr.indices)
                 .firstOrNull { i: Int -> arr[i].highlighted };
@@ -123,6 +181,24 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
                     barColors.add(ColorTemplate.rgb("e74c3c"))
                 }
                 scores[i].score > maxScore * 0.5 -> {
+                    barColors.add(ColorTemplate.rgb("#f1c40f"))
+                }
+                else -> {
+                    barColors.add(ColorTemplate.rgb("#2ecc71"))
+                }
+            }
+        }
+        return barColors
+    }
+
+    private fun percentBarColours(scores: List<Score>): ArrayList<Int> {
+        val barColors = arrayListOf<Int>()
+        for (i in scores.indices) {
+            when {
+                scores[i].score > 75 -> {
+                    barColors.add(ColorTemplate.rgb("e74c3c"))
+                }
+                scores[i].score > 40 -> {
                     barColors.add(ColorTemplate.rgb("#f1c40f"))
                 }
                 else -> {

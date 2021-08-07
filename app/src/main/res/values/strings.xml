@@ -72,4 +72,5 @@
 
 <!--    Dashboard-->
     <string name="hour_occupation_bar_chart_desc">Occupazione per fasce orarie</string>
+    <string name="room_occupation_bar_chart_desc">Occupazione locali in data odierna</string>
 </resources>
