@@ -237,6 +237,13 @@ object FragmentModule {
     fun bindLandingBooking(fragment: Fragment): LandingBookingPresenter.View {
         return fragment as LandingBookingPresenter.View
     }
+
+
+    @Provides
+    @FragmentScoped
+    fun bindBookingFragment(fragment: Fragment): BookingsPresenter.View {
+        return fragment as BookingsPresenter.View
+    }
 }
 
 @Module

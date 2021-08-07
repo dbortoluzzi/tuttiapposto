@@ -102,6 +102,12 @@
         tools:layout="@layout/fragment_locations" />
 
     <fragment
+        android:id="@+id/bookingsFragment"
+        android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.BookingsFragment"
+        android:label="@string/bookings"
+        tools:layout="@layout/fragment_bookings" />
+
+    <fragment
         android:id="@+id/dashboardFragment"
         android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.DashboardFragment"
         android:label="@string/dashboard"
