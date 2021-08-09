@@ -35,7 +35,9 @@ class BookingsFragment: BaseMvpFragment<BookingsFragment, BookingsPresenter>(), 
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        bookingAdapter = BookingsAdapter().apply {
+        binding = FragmentBookingsBinding.inflate(layoutInflater)
+
+        bookingAdapter = BookingsAdapter(binding.emptyView).apply {
             onItemLongPress = { bookingAggregate, view ->
                 //creating a popup menu
                 val popup = PopupMenu(activity, view)
@@ -57,8 +59,6 @@ class BookingsFragment: BaseMvpFragment<BookingsFragment, BookingsPresenter>(), 
                 popup.show()
             }
         }
-
-        binding = FragmentBookingsBinding.inflate(layoutInflater)
 
         binding.recycler.adapter = bookingAdapter
 

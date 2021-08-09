@@ -28,6 +28,7 @@
     <string name="action_delete">Cancella</string>
     <string name="action_delete_success">Cancellazione avvenuta con successo</string>
     <string name="action_delete_error">Cancellazione non avvenuta</string>
+    <string name="no_data_available">NESSUN ELEMENTO DISPONIBILE</string>
 
     <!--    Login-->
     <string name="login">Login</string>

@@ -2,6 +2,7 @@ package it.dbortoluzzi.tuttiapposto.ui.activities
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import it.dbortoluzzi.data.R
@@ -9,9 +10,20 @@ import it.dbortoluzzi.data.databinding.ViewAvailabilityItemBinding
 import it.dbortoluzzi.tuttiapposto.model.Availability
 import kotlin.properties.Delegates
 
-class AvailabilitiesAdapter : RecyclerView.Adapter<AvailabilitiesAdapter.ViewHolder>() {
+// TODO: refactor with BookingsAdapter using a custom Adapter
+class AvailabilitiesAdapter(private val emptyView: View) : RecyclerView.Adapter<AvailabilitiesAdapter.ViewHolder>() {
 
-    var items: List<Availability> by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
+    var items: List<Availability> by Delegates.observable(emptyList()) { _, _, items ->
+        run {
+            notifyDataSetChanged()
+            if (items.isEmpty()) {
+                emptyView.visibility = View.VISIBLE
+            } else {
+                emptyView.visibility = View.GONE
+            }
+        }
+    }
+
     var onItemClick: ((Availability) -> Unit)? = null
     var onItemLongPress: ((Availability) -> Unit)? = null
 

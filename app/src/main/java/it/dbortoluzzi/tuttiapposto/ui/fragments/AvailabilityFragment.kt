@@ -39,7 +39,9 @@ class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPr
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        availabilitiesAdapter = AvailabilitiesAdapter().apply {
+        binding = FragmentAvailabilitiesBinding.inflate(layoutInflater)
+
+        availabilitiesAdapter = AvailabilitiesAdapter(binding.emptyView).apply {
             onItemLongPress = { avail ->
                 val navController = findNavController()
                 val mapBookingData: Map<String, Any> = presenter.newBookingBtnClicked(avail)
@@ -49,8 +51,6 @@ class AvailabilityFragment: BaseMvpFragment<AvailabilityFragment, AvailabilityPr
                 }
             }
         }
-
-        binding = FragmentAvailabilitiesBinding.inflate(layoutInflater)
 
         binding.recycler.adapter = availabilitiesAdapter
 

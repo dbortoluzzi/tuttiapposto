@@ -8,9 +8,20 @@ import it.dbortoluzzi.data.databinding.ViewBookingItemBinding
 import it.dbortoluzzi.tuttiapposto.model.BookingAggregate
 import kotlin.properties.Delegates
 
-class BookingsAdapter : RecyclerView.Adapter<BookingsAdapter.ViewHolder>() {
+// TODO: refactor with AvailabilitiesAdapter using a custom Adapter
+class BookingsAdapter(private val emptyView: View) : RecyclerView.Adapter<BookingsAdapter.ViewHolder>() {
 
-    var items: List<BookingAggregate> by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
+    var items: List<BookingAggregate> by Delegates.observable(emptyList()) { _, _, items ->
+        run {
+            notifyDataSetChanged()
+            if (items.isEmpty()) {
+                emptyView.visibility = View.VISIBLE
+            } else {
+                emptyView.visibility = View.GONE
+            }
+        }
+    }
+
     var onItemClick: ((BookingAggregate, View) -> Unit)? = null
     var onItemLongPress: ((BookingAggregate, View) -> Unit)? = null
 
