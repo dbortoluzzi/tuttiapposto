@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -49,41 +50,16 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
     }
 
     private fun initHourOccupationBarChart() {
-//        hide grid lines
         val barChart = binding.hourOccupationBarChart
-        barChart.setPinchZoom(false)
-        barChart.setScaleEnabled(false)
-        barChart.axisLeft.setDrawGridLines(false)
-        val xAxis: XAxis = barChart.xAxis
-        xAxis.setDrawGridLines(false)
-        xAxis.setDrawAxisLine(false)
-
-        //remove right y-axis
-        barChart.axisRight.isEnabled = false
-
-        //remove legend
-        barChart.legend.isEnabled = false
-
-        //remove description label
-        barChart.description.isEnabled = false
-
-        //add animation
-        barChart.animateY(2000)
-
-        // to draw label on xAxis
-        xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
-
-        //hide values on columns
-        xAxis.setDrawLabels(true)
-
-        barChart.axisLeft.granularity = 1.0f;
-        barChart.axisLeft.isGranularityEnabled = true; // Required to enable granularity
-
+        initCustomBarChart(barChart)
     }
 
     private fun initRoomOccupationBarChart() {
-//        hide grid lines
         val barChart = binding.roomOccupationBarChart
+        initCustomBarChart(barChart)
+    }
+
+    private fun initCustomBarChart(barChart: BarChart) {
         barChart.setPinchZoom(false)
         barChart.setScaleEnabled(false)
         barChart.axisLeft.setDrawGridLines(false)
@@ -108,7 +84,9 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
 
         //hide values on columns
         xAxis.setDrawLabels(true)
-//        xAxis.labelRotationAngle = +90f
+
+        xAxis.granularity = 1.0f;
+        xAxis.isGranularityEnabled = true; // Required to enable granularity
 
         barChart.axisLeft.granularity = 1.0f;
         barChart.axisLeft.isGranularityEnabled = true; // Required to enable granularity
