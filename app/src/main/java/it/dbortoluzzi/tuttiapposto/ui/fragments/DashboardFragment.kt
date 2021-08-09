@@ -75,6 +75,10 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
 
         //hide values on columns
         xAxis.setDrawLabels(true)
+
+        barChart.axisLeft.granularity = 1.0f;
+        barChart.axisLeft.isGranularityEnabled = true; // Required to enable granularity
+
     }
 
     private fun initRoomOccupationBarChart() {
@@ -103,6 +107,9 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
         //hide values on columns
         xAxis.setDrawLabels(true)
 //        xAxis.labelRotationAngle = +90f
+
+        barChart.axisLeft.granularity = 1.0f;
+        barChart.axisLeft.isGranularityEnabled = true; // Required to enable granularity
     }
 
     override fun renderHourOccupationChart(scores: List<Score>) {
@@ -165,6 +172,8 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
         xAxis.valueFormatter = MyAxisFormatter(scores)
         // show all labels
         xAxis.labelCount = scores.size
+        var yAxis = barChart.axisLeft
+        yAxis.valueFormatter = MyPercentAxisFormatter()
         // TODO: set max value on Y axis
 
         barChart.invalidate()
@@ -214,10 +223,10 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
         val barColors = arrayListOf<Int>()
         for (i in scores.indices) {
             when {
-                scores[i].score > 75 -> {
+                scores[i].score > 50 -> {
                     barColors.add(ColorTemplate.rgb("e74c3c"))
                 }
-                scores[i].score > 40 -> {
+                scores[i].score > 25 -> {
                     barColors.add(ColorTemplate.rgb("#f1c40f"))
                 }
                 else -> {
@@ -237,6 +246,12 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
             } else {
                 ""
             }
+        }
+    }
+
+    inner class MyPercentAxisFormatter() : IndexAxisValueFormatter() {
+        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+            return "$value %"
         }
     }
 

@@ -19,7 +19,7 @@ fun OccupationByHourResponseDto.toPresentationModel(): Score = Score(
 
 fun OccupationByRoomResponseDto.toPresentationModel(room: String): Score = Score(
         room,
-        occupation
+        (occupationPercent*100).toLong()
 )
 
 private fun Date.toPrettifiedString(): String =

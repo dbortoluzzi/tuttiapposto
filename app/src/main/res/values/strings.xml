@@ -71,6 +71,6 @@
     <string name="landing_book_dismiss_message">Prenotazione non effettuata!</string>
 
 <!--    Dashboard-->
-    <string name="hour_occupation_bar_chart_desc">Occupazione per fasce orarie in data odierna</string>
+    <string name="hour_occupation_bar_chart_desc">Prenotazioni per fasce orarie in data odierna</string>
     <string name="room_occupation_bar_chart_desc">Occupazione locali in data odierna</string>
 </resources>
