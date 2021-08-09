@@ -120,6 +120,10 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun androidStatisticsSource(apiHelper: ApiHelper): StatisticsPersistenceSource = AndroidStatisticsSource(apiHelper)
+
+    @Provides
+    @Singleton
     fun selectedAvailabilityFiltersSource(): SelectedAvailabilityFiltersSource = InMemorySelectedAvailabilityFiltersSource()
 
     /*Repositories*/
@@ -163,6 +167,12 @@ class AppModule {
     @Singleton
     fun bookingRepository(bookingSource: BookingPersistenceSource): BookingsRepository {
         return BookingsRepository(bookingSource)
+    }
+
+    @Provides
+    @Singleton
+    fun statisticsRepository(statisticsPersistenceSource: StatisticsPersistenceSource): StatisticsRepository {
+        return StatisticsRepository(statisticsPersistenceSource)
     }
 
     @Provides
@@ -213,6 +223,12 @@ object ActivityModule {
 @InstallIn(FragmentComponent::class)
 @Module
 object FragmentModule {
+
+    @Provides
+    @FragmentScoped
+    fun bindDashboardFragment(fragment: Fragment): DashboardPresenter.View {
+        return fragment as DashboardPresenter.View
+    }
 
     @Provides
     @FragmentScoped
@@ -310,4 +326,11 @@ class UseCasesModule {
     @Singleton
     fun getBookings(bookingsRepository: BookingsRepository): GetBookings = GetBookings(bookingsRepository)
 
+    @Provides
+    @Singleton
+    fun getOccupationByHour(statisticsRepository: StatisticsRepository): GetOccupationByHour = GetOccupationByHour(statisticsRepository)
+
+    @Provides
+    @Singleton
+    fun getOccupationByRoom(statisticsRepository: StatisticsRepository): GetOccupationByRoom = GetOccupationByRoom(statisticsRepository)
 }
