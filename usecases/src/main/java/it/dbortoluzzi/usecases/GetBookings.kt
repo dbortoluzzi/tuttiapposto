@@ -11,7 +11,6 @@ class GetBookings(private val bookingsRepository: BookingsRepository) {
         return when (val bookingsResult = bookingsRepository.getBookingsBy(userId, companyId, buildingId, roomId, startDate, endDate)) {
             is ServiceResult.Success -> bookingsResult.data
             is ServiceResult.Error -> arrayListOf()
-            else -> throw NotImplementedError()
         }
     }
 

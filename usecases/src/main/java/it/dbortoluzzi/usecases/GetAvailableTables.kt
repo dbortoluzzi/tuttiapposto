@@ -13,7 +13,6 @@ class GetAvailableTables(private val tablesRepository: TablesRepository) {
         return when (val serviceResult = tablesRepository.findAvailableTables(TableAvailabilityRequestDto(companyId, buildingId, roomId, startDate, endDate))) {
             is ServiceResult.Success -> serviceResult.data
             is ServiceResult.Error -> arrayListOf()
-            else -> throw NotImplementedError()
         }
     }
 

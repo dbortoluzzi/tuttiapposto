@@ -10,7 +10,6 @@ class GetCompanies(private val companiesRepository: CompaniesRepository) {
         return when (val activeCompaniesResult = companiesRepository.getActiveCompanies()) {
             is ServiceResult.Success -> activeCompaniesResult.data
             is ServiceResult.Error -> arrayListOf()
-            else -> throw NotImplementedError()
         }
     }
 

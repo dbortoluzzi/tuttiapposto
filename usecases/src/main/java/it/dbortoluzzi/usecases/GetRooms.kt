@@ -10,7 +10,6 @@ class GetRooms(private val roomsRepository: RoomsRepository) {
         return when (val activeRoomsResult = roomsRepository.getActiveRoomsByCompanyIdAndBuildingId(companyId, buildingId)) {
             is ServiceResult.Success -> activeRoomsResult.data
             is ServiceResult.Error -> arrayListOf()
-            else -> throw NotImplementedError()
         }
     }
 

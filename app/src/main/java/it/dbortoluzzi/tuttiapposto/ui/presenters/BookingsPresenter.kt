@@ -1,5 +1,6 @@
 package it.dbortoluzzi.tuttiapposto.ui.presenters
 
+import it.dbortoluzzi.data.R
 import it.dbortoluzzi.domain.Booking
 import it.dbortoluzzi.domain.Company
 import it.dbortoluzzi.domain.Room
@@ -24,6 +25,7 @@ class BookingsPresenter @Inject constructor(
         private val getTables: GetTables,
         private val getCompanies: GetCompanies,
         private val getRoomsByCompany: GetRoomsByCompany,
+        private val deleteBooking: DeleteBooking
 ) : BaseMvpPresenterImpl<BookingsPresenter.View>(mView){
 
     interface View : BaseMvpView {
@@ -38,6 +40,24 @@ class BookingsPresenter @Inject constructor(
 
     override fun onStartView() {
         super.onStartView()
+        loadBookings()
+    }
+
+    fun deleteBookingClicked(booking: Booking) {
+        GlobalScope.launch(Dispatchers.Main) {
+            view?.showProgressBar()
+            val deleteResult = withContext(Dispatchers.IO) { deleteBooking(booking) }
+            view?.hideProgressBar()
+            if (deleteResult) {
+                view?.showMessage(R.string.action_delete_success)
+                loadBookings()
+            } else {
+                view?.showMessage(R.string.action_delete_error)
+            }
+        }
+    }
+
+    private fun loadBookings() {
         if (PrefsValidator.isConfigured(prefs)) {
             if (App.isNetworkConnected()) {
                 GlobalScope.launch(Dispatchers.Main) {
@@ -51,11 +71,7 @@ class BookingsPresenter @Inject constructor(
                     }
 
                     val startCal = Calendar.getInstance() // locale-specific
-                    startCal.time = Date()
-                    startCal[Calendar.HOUR_OF_DAY] = 0
-                    startCal[Calendar.MINUTE] = 0
-                    startCal[Calendar.SECOND] = 0
-                    startCal[Calendar.MILLISECOND] = 0
+                    resetCal(startCal)
 
                     val jobBookings: Deferred<List<Booking>> = async { withContext(Dispatchers.IO) { getBookings(user.uID, companyId, null, null, startCal.time, null) } }
                     val jobCompanies: Deferred<List<Company>> = async { withContext(Dispatchers.IO) { getCompanies() } }
@@ -70,8 +86,8 @@ class BookingsPresenter @Inject constructor(
                         val room = rooms.find { it.uID == b.roomId }
                         val company = companies.find { it.uID == b.companyId }
                         val table = tables.find { it.uID == b.tableId }
-                        b.toPresentationModel(company?.denomination ?: "Unknown company", room?.name
-                                ?: "Unknown room", table?.name ?: "Unknown table")
+                        b.toPresentationModel(company?.denomination ?: "Unknown company",
+                                room?.name ?: "Unknown room", table?.name ?: "Unknown table")
                     }
                     )
                     view?.hideProgressBar()
@@ -80,6 +96,14 @@ class BookingsPresenter @Inject constructor(
                 view?.showNetworkError()
             }
         }
+    }
+
+    private fun resetCal(startCal: Calendar) {
+        startCal.time = Date()
+        startCal[Calendar.HOUR_OF_DAY] = 0
+        startCal[Calendar.MINUTE] = 0
+        startCal[Calendar.SECOND] = 0
+        startCal[Calendar.MILLISECOND] = 0
     }
 
     companion object {

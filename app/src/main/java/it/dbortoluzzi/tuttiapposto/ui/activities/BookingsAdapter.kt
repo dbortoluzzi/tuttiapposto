@@ -1,6 +1,7 @@
 package it.dbortoluzzi.tuttiapposto.ui.activities
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import it.dbortoluzzi.data.databinding.ViewBookingItemBinding
@@ -10,8 +11,8 @@ import kotlin.properties.Delegates
 class BookingsAdapter : RecyclerView.Adapter<BookingsAdapter.ViewHolder>() {
 
     var items: List<BookingAggregate> by Delegates.observable(emptyList()) { _, _, _ -> notifyDataSetChanged() }
-    var onItemClick: ((BookingAggregate) -> Unit)? = null
-    var onItemLongPress: ((BookingAggregate) -> Unit)? = null
+    var onItemClick: ((BookingAggregate, View) -> Unit)? = null
+    var onItemLongPress: ((BookingAggregate, View) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ViewBookingItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,8 +26,8 @@ class BookingsAdapter : RecyclerView.Adapter<BookingsAdapter.ViewHolder>() {
     override fun getItemCount(): Int = items.size
 
     class ViewHolder(val binding: ViewBookingItemBinding,
-                     var onItemClick: ((BookingAggregate) -> Unit)? = null,
-                     private val onItemLongPress: ((BookingAggregate) -> Unit)? = null) : RecyclerView.ViewHolder(binding.root) {
+                     var onItemClick: ((BookingAggregate, View) -> Unit)? = null,
+                     private val onItemLongPress: ((BookingAggregate, View) -> Unit)? = null) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(bookingAggregate: BookingAggregate) {
             with(bookingAggregate) {
@@ -37,11 +38,11 @@ class BookingsAdapter : RecyclerView.Adapter<BookingsAdapter.ViewHolder>() {
                 binding.dateSecondPart.text = bookingAggregate.dateSecondDescription
 
                 binding.root.setOnClickListener {
-                    onItemClick?.invoke(bookingAggregate)
+                    onItemClick?.invoke(bookingAggregate, binding.root)
                 }
 
                 binding.root.setOnLongClickListener {
-                    onItemLongPress?.invoke(bookingAggregate)
+                    onItemLongPress?.invoke(bookingAggregate, binding.root)
                     return@setOnLongClickListener true
                 }
             }

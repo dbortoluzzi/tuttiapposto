@@ -10,7 +10,6 @@ class CreateBooking(private val bookingsRepository: BookingsRepository) {
         return when (val activeBuildingsResult = bookingsRepository.createBooking(booking)) {
             is ServiceResult.Success -> activeBuildingsResult.data
             is ServiceResult.Error -> null
-            else -> throw NotImplementedError()
         }
     }
 

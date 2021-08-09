@@ -11,7 +11,6 @@ class GetOccupationByHour(private val statisticsRepository: StatisticsRepository
         return when (val result = statisticsRepository.getOccupationByHour(companyId, startDate, endDate)) {
             is ServiceResult.Success -> result.data
             is ServiceResult.Error -> arrayListOf()
-            else -> throw NotImplementedError()
         }
     }
 

@@ -25,6 +25,12 @@ class ApiHelperImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteBooking(booking: Booking): Response<Boolean> {
+        return safeCall {
+            apiService.deleteBooking(booking.uID!!)
+        }
+    }
+
     override suspend fun getBookingsBy(userId: String, companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date?): Response<List<Booking>> {
         return safeCall {
             apiService.getBookingsFiltered(GetBookingsRequestDto(userId, companyId, buildingId, roomId, startDate, endDate))

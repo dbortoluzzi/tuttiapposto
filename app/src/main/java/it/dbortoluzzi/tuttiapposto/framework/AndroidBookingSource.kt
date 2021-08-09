@@ -20,6 +20,12 @@ class AndroidBookingSource @Inject constructor(
                 .toServiceResult()
     }
 
+    override suspend fun deleteBooking(booking: Booking): ServiceResult<Boolean> {
+        return apiHelper
+                .deleteBooking(booking)
+                .toServiceResult()
+    }
+
     override suspend fun getBookingsBy(userId: String, companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date?): ServiceResult<List<Booking>> {
         return apiHelper
                 .getBookingsBy(userId, companyId, buildingId, roomId, startDate, endDate)

@@ -10,7 +10,6 @@ class GetTables(private val tablesRepository: TablesRepository) {
         return when (val activeTablesResult = tablesRepository.getActiveTables()) {
             is ServiceResult.Success -> activeTablesResult.data
             is ServiceResult.Error -> arrayListOf()
-            else -> throw NotImplementedError()
         }
     }
 

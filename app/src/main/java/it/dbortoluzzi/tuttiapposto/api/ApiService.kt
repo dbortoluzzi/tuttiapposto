@@ -5,7 +5,9 @@ import it.dbortoluzzi.domain.Table
 import it.dbortoluzzi.domain.dto.*
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService{
 
@@ -14,6 +16,9 @@ interface ApiService{
 
     @POST("/api/bookings")
     suspend fun bookTable(@Body booking: Booking):Response<Booking>
+
+    @DELETE("/api/bookings/{bookingId}")
+    suspend fun deleteBooking(@Path("bookingId") bookingId: String):Response<Boolean>
 
     @POST("/api/bookings/filtered")
     suspend fun getBookingsFiltered(@Body getBookingsRequestDto: GetBookingsRequestDto):Response<List<Booking>>
