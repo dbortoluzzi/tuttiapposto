@@ -226,7 +226,7 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
                 scores[i].score > 50 -> {
                     barColors.add(ColorTemplate.rgb("e74c3c"))
                 }
-                scores[i].score > 25 -> {
+                scores[i].score > 40 -> {
                     barColors.add(ColorTemplate.rgb("#f1c40f"))
                 }
                 else -> {
