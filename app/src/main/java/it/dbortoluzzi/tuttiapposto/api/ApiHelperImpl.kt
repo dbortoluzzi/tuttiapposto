@@ -2,9 +2,7 @@ package it.dbortoluzzi.tuttiapposto.api
 
 import android.util.Log
 import it.dbortoluzzi.domain.Booking
-import it.dbortoluzzi.domain.dto.GetBookingsRequestDto
-import it.dbortoluzzi.domain.dto.TableAvailabilityRequestDto
-import it.dbortoluzzi.domain.dto.TableAvailabilityResponseDto
+import it.dbortoluzzi.domain.dto.*
 import it.dbortoluzzi.domain.util.ServiceResult
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
@@ -30,6 +28,18 @@ class ApiHelperImpl @Inject constructor(
     override suspend fun getBookingsBy(userId: String, companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date?): Response<List<Booking>> {
         return safeCall {
             apiService.getBookingsFiltered(GetBookingsRequestDto(userId, companyId, buildingId, roomId, startDate, endDate))
+        }
+    }
+
+    override suspend fun getOccupationByHour(companyId: String, startDate: Date, endDate: Date): Response<List<OccupationByHourResponseDto>> {
+        return safeCall {
+            apiService.getOccupationStatsPerHour(OccupationRequestDto(companyId, startDate, endDate))
+        }
+    }
+
+    override suspend fun getOccupationByRoom(companyId: String, startDate: Date, endDate: Date): Response<List<OccupationByRoomResponseDto>> {
+        return safeCall {
+            apiService.getOccupationStatsPerRoom(OccupationRequestDto(companyId, startDate, endDate))
         }
     }
 

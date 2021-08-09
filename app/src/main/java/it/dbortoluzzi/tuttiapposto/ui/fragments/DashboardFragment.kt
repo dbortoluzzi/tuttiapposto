@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
@@ -14,10 +15,12 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import dagger.hilt.android.AndroidEntryPoint
+import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentDashboardBinding
 import it.dbortoluzzi.tuttiapposto.model.Score
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.DashboardPresenter
+import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -167,13 +170,29 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
         barChart.invalidate()
     }
 
+    override fun showProgressBar() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressBar() {
+        binding.progressBar.visibility = View.GONE
+
+        if (activity is MainPresenter.View) {
+            (activity as MainPresenter.View).closeNavigationDrawer()
+        }
+    }
+
+    override fun showNetworkError() {
+        Toast.makeText(context() , getString(R.string.network_not_connected), Toast.LENGTH_LONG).show()
+    }
+
     private fun findHighligthedIndex(arr: Array<Score>): Int? {
         return (arr.indices)
                 .firstOrNull { i: Int -> arr[i].highlighted };
     }
 
     private fun gradientBarColours(scores: List<Score>): ArrayList<Int> {
-        val maxScore = scores.maxOf { it.score }
+        val maxScore = if (scores.isNotEmpty()) scores.maxOf { it.score } else 0
         val barColors = arrayListOf<Int>()
         for (i in scores.indices) {
             when {
