@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -21,7 +20,6 @@ import it.dbortoluzzi.tuttiapposto.model.Score
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.DashboardPresenter
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
-import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -53,6 +51,8 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
     private fun initHourOccupationBarChart() {
 //        hide grid lines
         val barChart = binding.hourOccupationBarChart
+        barChart.setPinchZoom(false)
+        barChart.setScaleEnabled(false)
         barChart.axisLeft.setDrawGridLines(false)
         val xAxis: XAxis = barChart.xAxis
         xAxis.setDrawGridLines(false)
@@ -84,6 +84,8 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
     private fun initRoomOccupationBarChart() {
 //        hide grid lines
         val barChart = binding.roomOccupationBarChart
+        barChart.setPinchZoom(false)
+        barChart.setScaleEnabled(false)
         barChart.axisLeft.setDrawGridLines(false)
         val xAxis: XAxis = barChart.xAxis
         xAxis.setDrawGridLines(false)
