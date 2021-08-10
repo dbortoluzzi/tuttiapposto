@@ -1,6 +1,7 @@
 package it.dbortoluzzi.tuttiapposto.di
 
 import android.app.Activity
+import android.app.Service
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,10 +14,12 @@ import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.android.scopes.FragmentScoped
 import dagger.hilt.components.SingletonComponent
 import it.dbortoluzzi.data.*
+import it.dbortoluzzi.domain.Booking
 import it.dbortoluzzi.tuttiapposto.api.ApiHelper
 import it.dbortoluzzi.tuttiapposto.api.ApiHelperImpl
 import it.dbortoluzzi.tuttiapposto.api.ApiService
 import it.dbortoluzzi.tuttiapposto.framework.*
+import it.dbortoluzzi.tuttiapposto.services.BookingNotificationService
 import it.dbortoluzzi.tuttiapposto.ui.presenters.*
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants
 import it.dbortoluzzi.usecases.*
@@ -180,6 +183,12 @@ class AppModule {
     fun filtersAvailabilitySelectedRepository(selectedAvailabilityFiltersSource: SelectedAvailabilityFiltersSource): SelectedAvailabilityFiltersRepository {
         return SelectedAvailabilityFiltersRepository(selectedAvailabilityFiltersSource)
     }
+
+    @Provides
+    fun bookingNotificationService(): BookingNotificationService {
+        return BookingNotificationService()
+    }
+
 }
 
 @Module

@@ -20,7 +20,7 @@ import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityMainBinding
 import it.dbortoluzzi.domain.User
 import it.dbortoluzzi.tuttiapposto.di.prefs
-import it.dbortoluzzi.tuttiapposto.framework.NotificationService.Companion.SHOW_BOOKINGS
+import it.dbortoluzzi.tuttiapposto.services.BookingNotificationService.Companion.SHOW_BOOKINGS
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpActivity
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter

@@ -4,12 +4,13 @@ import java.util.*
 
 object TuttiAppostoUtils {
 
-    fun resetCal(startCal: Calendar) {
+    fun resetCal(startCal: Calendar) : Calendar{
         startCal.time = Date()
         startCal[Calendar.HOUR_OF_DAY] = 0
         startCal[Calendar.MINUTE] = 0
         startCal[Calendar.SECOND] = 0
         startCal[Calendar.MILLISECOND] = 0
+        return startCal
     }
 
     fun extractHour(date: Date) : Int {

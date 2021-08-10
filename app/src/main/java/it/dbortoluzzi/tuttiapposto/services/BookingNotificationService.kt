@@ -1,4 +1,4 @@
-package it.dbortoluzzi.tuttiapposto.framework
+package it.dbortoluzzi.tuttiapposto.services
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -8,57 +8,37 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.IBinder
+import android.util.Log
+import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.tuttiapposto.ui.activities.MainActivity
-import java.util.*
+import it.dbortoluzzi.usecases.GetBookings
+import it.dbortoluzzi.usecases.GetUser
+import javax.inject.Inject
 
-class NotificationService : IntentService("NotificationService") {
+@AndroidEntryPoint
+class BookingNotificationService : Service() {
+
     private lateinit var mNotification: Notification
     private val mNotificationId: Int = 1000
 
-    @SuppressLint("NewApi")
-    private fun createChannel() {
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            // Create the NotificationChannel, but only on API 26+ because
-            // the NotificationChannel class is new and not in the support library
-
-            val context = this.applicationContext
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val notificationChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
-            notificationChannel.setShowBadge(true)
-            notificationChannel.enableLights(true)
-            notificationChannel.lightColor = Color.parseColor("#e8334a")
-            notificationChannel.description = getString(R.string.reminder_today_booking_title)
-            notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
-
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
     }
 
-    companion object {
-        const val CHANNEL_ID = "it.dbortoluzzi.tuttiapposto.framework.NotificationServices.CHANNEL_ID"
-        const val CHANNEL_NAME = "REMINDER_TODAY_BOOKING"
-        const val SHOW_BOOKINGS = "SHOW_BOOKINGS"
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        execNotification()
+
+        stopForeground(false)
+        return START_NOT_STICKY
     }
 
-
-    override fun onHandleIntent(intent: Intent?) {
-
+    private fun execNotification() {
         //Create Channel
         createChannel()
 
-        var timestamp: Long = 0
-        if (intent != null && intent.extras != null) {
-            timestamp = intent.extras!!.getLong("timestamp")
-        }
-
         val context = this.applicationContext
-        var notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notifyIntent = Intent(this, MainActivity::class.java)
 
         val title = getString(R.string.reminder_today_booking_title)
@@ -69,10 +49,6 @@ class NotificationService : IntentService("NotificationService") {
         notifyIntent.putExtra(SHOW_BOOKINGS, true)
 
         notifyIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = timestamp
-
 
         val pendingIntent = PendingIntent.getActivity(context, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val res = this.resources
@@ -102,11 +78,32 @@ class NotificationService : IntentService("NotificationService") {
                             .bigText(message))
                     .setSound(uri)
                     .setContentText(message).build()
-
         }
+        startForeground(mNotificationId, mNotification)
+    }
 
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        // mNotificationId is a unique int for each notification that you must define
-        notificationManager.notify(mNotificationId, mNotification)
+    @SuppressLint("NewApi")
+    private fun createChannel() {
+        val context = this.applicationContext
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val notificationChannel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
+        notificationChannel.importance = NotificationManager.IMPORTANCE_HIGH
+        notificationChannel.enableVibration(false)
+        notificationChannel.setShowBadge(true)
+        notificationChannel.enableLights(true)
+        notificationChannel.lightColor = Color.parseColor("#e8334a")
+        notificationChannel.description = getString(R.string.reminder_today_booking_title)
+        notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        notificationManager.createNotificationChannel(notificationChannel)
+        notificationManager.cancelAll()
+    }
+
+    companion object {
+        const val CHANNEL_ID = "it.dbortoluzzi.tuttiapposto.framework.NotificationServices.CHANNEL_ID"
+        const val CHANNEL_NAME = "REMINDER_TODAY_BOOKING"
+        const val SHOW_BOOKINGS = "SHOW_BOOKINGS"
+        const val TAG = "BookingNotificationServ"
     }
 }

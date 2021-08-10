@@ -81,6 +81,6 @@
 
 <!--    Notification-->
     <string name="reminder_today_booking_title">Ricorda i tuoi posti!</string>
-    <string name="reminder_today_booking_desc">Non dimenticare le prenotazioni di domani.</string>
+    <string name="reminder_today_booking_desc">Non dimenticare le prenotazioni di oggi.</string>
     <string name="reminder_click_here_to_view">Clicca qui per visualizzare!</string>
 </resources>
