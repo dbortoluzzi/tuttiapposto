@@ -26,6 +26,14 @@
         <activity android:name="it.dbortoluzzi.tuttiapposto.ui.activities.LoginActivity" />
         <activity android:name="it.dbortoluzzi.tuttiapposto.ui.activities.RegisterActivity" />
         <activity android:name="it.dbortoluzzi.tuttiapposto.ui.activities.SettingsActivity" />
+
+        <receiver
+            android:name="it.dbortoluzzi.tuttiapposto.framework.AlarmReceiver"
+            android:enabled="true" />
+
+        <service
+            android:name="it.dbortoluzzi.tuttiapposto.framework.NotificationService"
+            android:enabled="true" />
     </application>
 
 </manifest>

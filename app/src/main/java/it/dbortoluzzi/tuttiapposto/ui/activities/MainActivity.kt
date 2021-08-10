@@ -20,6 +20,7 @@ import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ActivityMainBinding
 import it.dbortoluzzi.domain.User
 import it.dbortoluzzi.tuttiapposto.di.prefs
+import it.dbortoluzzi.tuttiapposto.framework.NotificationService.Companion.SHOW_BOOKINGS
 import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpActivity
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
@@ -87,6 +88,10 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
         visibilityNavElements(navController) //If you want to hide drawer or bottom navigation configure that in this function
+
+        if (intent.getBooleanExtra(SHOW_BOOKINGS, false)) { //Just for confirmation
+            navController.navigate(R.id.bookingsFragment)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) { // Here You have to save count value
