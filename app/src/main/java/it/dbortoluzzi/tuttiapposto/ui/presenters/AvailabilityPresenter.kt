@@ -54,6 +54,11 @@ class AvailabilityPresenter @Inject constructor(
                 GlobalScope.launch(Dispatchers.Main) {
                     view?.showProgressBar()
 
+                    val user = when (val u = getUser()) {
+                        is ServiceResult.Success -> u.data
+                        else -> throw Exception("no user found")
+                    }
+
                     val companyId = prefs.companyUId!!
                     val buildingId = selectedAvailabilityFiltersRepository.getBuilding()?.uID
                     val roomId = selectedAvailabilityFiltersRepository.getRoom()?.uID
@@ -67,7 +72,7 @@ class AvailabilityPresenter @Inject constructor(
                         FilterAvailabilitiesUtil.extractStartEndPair(intervalSelected, Date())
                     }
 
-                    val jobAvailabilities: Deferred<List<TableAvailabilityResponseDto>> = async { withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startCalendar.time, endCalendar.time) } }
+                    val jobAvailabilities: Deferred<List<TableAvailabilityResponseDto>> = async { withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startCalendar.time, endCalendar.time, user.uID) } }
                     val jobRooms: Deferred<List<Room>> = async { withContext(Dispatchers.IO) { getRoomsByCompany(companyId) } }
                     val availabilities = jobAvailabilities.await()
                     val rooms = jobRooms.await()

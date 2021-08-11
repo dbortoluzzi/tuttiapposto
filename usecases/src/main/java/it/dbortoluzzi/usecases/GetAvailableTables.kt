@@ -9,7 +9,7 @@ import java.util.*
 
 class GetAvailableTables(private val tablesRepository: TablesRepository) {
 
-    suspend operator fun invoke(companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date): List<TableAvailabilityResponseDto> {
+    suspend operator fun invoke(companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date, userId: String?): List<TableAvailabilityResponseDto> {
         return when (val serviceResult = tablesRepository.findAvailableTables(TableAvailabilityRequestDto(companyId, buildingId, roomId, startDate, endDate))) {
             is ServiceResult.Success -> serviceResult.data
             is ServiceResult.Error -> arrayListOf()

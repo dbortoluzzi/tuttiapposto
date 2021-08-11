@@ -8,7 +8,7 @@ import retrofit2.Response
 import java.util.*
 
 interface ApiHelper {
-    suspend fun findAvailableTable(companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date): Response<List<TableAvailabilityResponseDto>>
+    suspend fun findAvailableTable(companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date, userId: String?): Response<List<TableAvailabilityResponseDto>>
 
     suspend fun createBooking(booking: Booking): Response<Booking>
 

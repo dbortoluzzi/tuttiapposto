@@ -16,7 +16,7 @@ class AndroidTableSource @Inject constructor(
 
     override suspend fun getAvailableTables(tableAvailabilityRequestDto: TableAvailabilityRequestDto): ServiceResult<List<TableAvailabilityResponseDto>> {
         return apiHelper
-                .findAvailableTable(tableAvailabilityRequestDto.companyId, tableAvailabilityRequestDto.buildingId, tableAvailabilityRequestDto.roomId, tableAvailabilityRequestDto.startDate, tableAvailabilityRequestDto.endDate)
+                .findAvailableTable(tableAvailabilityRequestDto.companyId, tableAvailabilityRequestDto.buildingId, tableAvailabilityRequestDto.roomId, tableAvailabilityRequestDto.startDate, tableAvailabilityRequestDto.endDate, tableAvailabilityRequestDto.userId)
                 .toServiceResult()
 
     }
