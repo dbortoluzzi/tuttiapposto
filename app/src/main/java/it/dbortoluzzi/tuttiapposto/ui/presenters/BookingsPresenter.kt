@@ -52,7 +52,6 @@ class BookingsPresenter @Inject constructor(
             view?.hideProgressBar()
             if (deleteResult) {
                 view?.showMessage(R.string.action_delete_success)
-                loadBookings()
             } else {
                 view?.showMessage(R.string.action_delete_error)
             }

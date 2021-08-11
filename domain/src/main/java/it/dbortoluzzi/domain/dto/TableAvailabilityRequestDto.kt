@@ -8,4 +8,5 @@ data class TableAvailabilityRequestDto(
         val buildingId: String? = null,
         val roomId: String? = null,
         val startDate: Date = Date(),
-        val endDate: Date = Date()) : Serializable
+        val endDate: Date = Date(),
+        val userId: String? = null) : Serializable

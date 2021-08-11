@@ -13,9 +13,9 @@ import javax.inject.Inject
 class ApiHelperImpl @Inject constructor(
         private val apiService: ApiService,
 ) : ApiHelper {
-    override suspend fun findAvailableTable(companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date): Response<List<TableAvailabilityResponseDto>> {
+    override suspend fun findAvailableTable(companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date, userId: String?): Response<List<TableAvailabilityResponseDto>> {
         return safeCall {
-            apiService.findAvailableTable(TableAvailabilityRequestDto(companyId, buildingId, roomId, startDate, endDate))
+            apiService.findAvailableTable(TableAvailabilityRequestDto(companyId, buildingId, roomId, startDate, endDate, userId))
         }
     }
 

@@ -24,8 +24,8 @@ class AvailabilitiesAdapter(private val emptyView: View) : RecyclerView.Adapter<
         }
     }
 
-    var onItemClick: ((Availability) -> Unit)? = null
-    var onItemLongPress: ((Availability) -> Unit)? = null
+    var onItemClick: ((Availability, View) -> Unit)? = null
+    var onItemLongPress: ((Availability, View) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ViewAvailabilityItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -39,8 +39,8 @@ class AvailabilitiesAdapter(private val emptyView: View) : RecyclerView.Adapter<
     override fun getItemCount(): Int = items.size
 
     class ViewHolder(val binding: ViewAvailabilityItemBinding,
-                     var onItemClick: ((Availability) -> Unit)? = null,
-                     private val onItemLongPress: ((Availability) -> Unit)? = null) : RecyclerView.ViewHolder(binding.root) {
+                     var onItemClick: ((Availability, View) -> Unit)? = null,
+                     private val onItemLongPress: ((Availability, View) -> Unit)? = null) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(availability: Availability) {
             with(availability) {
@@ -48,11 +48,11 @@ class AvailabilitiesAdapter(private val emptyView: View) : RecyclerView.Adapter<
                 binding.roomName.text = availability.roomName
 
                 binding.root.setOnClickListener {
-                    onItemClick?.invoke(availability)
+                    onItemClick?.invoke(availability, binding.root)
                 }
 
                 binding.root.setOnLongClickListener {
-                    onItemLongPress?.invoke(availability)
+                    onItemLongPress?.invoke(availability, binding.root)
                     return@setOnLongClickListener true
                 }
 
@@ -61,8 +61,14 @@ class AvailabilitiesAdapter(private val emptyView: View) : RecyclerView.Adapter<
                 } else if (availabilityNumber >= 2){
                     binding.availabilityNumber.text = "${itemView.context.getString(R.string.only_tables)} $availabilityNumber"
                 } else if (availabilityNumber == 1) {
-                    binding.availabilityNumber.setTextColor(Color.RED)
+                    binding.availabilityNumber.setTextColor(binding.root.resources.getColor(R.color.colorAccent))
                     binding.availabilityNumber.text = itemView.context.getString(R.string.last_table)
+                }
+
+                if (availability.tableAvailabilityResponseDto.reported) {
+                    binding.reportImageView.visibility = View.VISIBLE
+                } else {
+                    binding.reportImageView.visibility = View.GONE
                 }
             }
         }

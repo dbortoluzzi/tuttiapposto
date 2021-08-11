@@ -53,7 +53,7 @@ class LandingBookingPresenter @Inject constructor(
                 GlobalScope.launch(Dispatchers.Main) {
                     view?.showProgressBar()
 
-                    val availabilities = withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate) }
+                    val availabilities = withContext(Dispatchers.IO) { getAvailableTables(companyId, buildingId, roomId, startDate, endDate, null) }
 
                     if (availabilities.any { it.table.uID == tableId }) {
                         companyIdModel = companyId

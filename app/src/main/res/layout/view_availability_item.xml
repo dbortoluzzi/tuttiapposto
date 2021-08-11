@@ -67,6 +67,18 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="10 posti" />
 
+        <ImageView
+            android:id="@+id/reportImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/availabilityNumber"
+            app:layout_constraintStart_toEndOf="@+id/verticalGuideline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:srcCompat="@drawable/outline_report_problem"
+            android:visibility="gone"
+            app:tint="@color/colorAccent" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/verticalGuideline"
             android:layout_width="wrap_content"
