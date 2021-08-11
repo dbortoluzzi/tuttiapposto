@@ -82,15 +82,6 @@ class AppModule {
     /*Sources*/
     @Provides
     @Singleton
-    fun locationPersistenceSource(): LocationPersistenceSource = InMemoryLocationPersistenceSource()
-
-
-    @Provides
-    @Singleton
-    fun deviceLocationSource(): DeviceLocationSource = FakeLocationSource()
-
-    @Provides
-    @Singleton
     fun authenticationSource(firebaseAuth: FirebaseAuth, userPersistenceSource: UserPersistenceSource): AuthenticationSource = FirebaseAuthenticationSource(firebaseAuth, userPersistenceSource)
 
     @Provides
@@ -130,12 +121,6 @@ class AppModule {
     fun selectedAvailabilityFiltersSource(): SelectedAvailabilityFiltersSource = InMemorySelectedAvailabilityFiltersSource()
 
     /*Repositories*/
-    @Provides
-    @Singleton
-    fun locationsRepository(persistence: LocationPersistenceSource, deviceLocationSource: DeviceLocationSource): LocationsRepository {
-        return LocationsRepository(persistence, deviceLocationSource)
-    }
-
     @Provides
     @Singleton
     fun usersRepository(authenticationSource: AuthenticationSource): UsersRepository {
@@ -241,12 +226,6 @@ object FragmentModule {
 
     @Provides
     @FragmentScoped
-    fun bindLocationFragment(fragment: Fragment): LocationPresenter.View {
-        return fragment as LocationPresenter.View
-    }
-
-    @Provides
-    @FragmentScoped
     fun bindAvailabilityFragment(fragment: Fragment): AvailabilityPresenter.View {
         return fragment as AvailabilityPresenter.View
     }
@@ -274,14 +253,6 @@ object FragmentModule {
 @Module
 @InstallIn(SingletonComponent::class)
 class UseCasesModule {
-
-    @Provides
-    @Singleton
-    fun getLocations(locationsRepository: LocationsRepository): GetLocations = GetLocations(locationsRepository)
-
-    @Provides
-    @Singleton
-    fun requestNewLocation(locationsRepository: LocationsRepository): RequestNewLocation = RequestNewLocation(locationsRepository)
 
     @Provides
     @Singleton
