@@ -72,7 +72,6 @@ class BookingsPresenter @Inject constructor(
                     }
 
                     val startCal = Calendar.getInstance() // locale-specific
-                    TuttiAppostoUtils.resetCal(startCal)
 
                     val jobBookings: Deferred<List<Booking>> = async { withContext(Dispatchers.IO) { getBookings(user.uID, companyId, null, null, startCal.time, null) } }
                     val jobCompanies: Deferred<List<Company>> = async { withContext(Dispatchers.IO) { getCompanies() } }
