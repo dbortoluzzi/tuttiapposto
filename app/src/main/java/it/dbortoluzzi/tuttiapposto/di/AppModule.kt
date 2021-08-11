@@ -14,7 +14,6 @@ import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.android.scopes.FragmentScoped
 import dagger.hilt.components.SingletonComponent
 import it.dbortoluzzi.data.*
-import it.dbortoluzzi.domain.Booking
 import it.dbortoluzzi.tuttiapposto.api.ApiHelper
 import it.dbortoluzzi.tuttiapposto.api.ApiHelperImpl
 import it.dbortoluzzi.tuttiapposto.api.ApiService
@@ -106,6 +105,10 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun availabilityReportSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): AvailabilityReportSource = FirebaseAvailabilityReportSource(firebaseFirestore, CACHE_ENABLED)
+
+    @Provides
+    @Singleton
     fun androidTableSource(apiHelper: ApiHelper): AvailabilitiesSource = AndroidTableSource(apiHelper)
 
     @Provides
@@ -149,6 +152,12 @@ class AppModule {
     @Singleton
     fun tableRepository(availabilitiesSource: AvailabilitiesSource, tablePersistenceSource: TablePersistenceSource): TablesRepository {
         return TablesRepository(availabilitiesSource, tablePersistenceSource)
+    }
+
+    @Provides
+    @Singleton
+    fun availabilityReportRepository(availabilityReportSource: AvailabilityReportSource): AvailabilityReportsRepository {
+        return AvailabilityReportsRepository(availabilityReportSource)
     }
 
     @Provides
@@ -289,6 +298,10 @@ class UseCasesModule {
     @Provides
     @Singleton
     fun getTables(tablesRepository: TablesRepository): GetTables = GetTables(tablesRepository)
+
+    @Provides
+    @Singleton
+    fun createAvailabilityReport(repository: AvailabilityReportsRepository): CreateAvailabilityReport = CreateAvailabilityReport(repository)
 
     @Provides
     @Singleton

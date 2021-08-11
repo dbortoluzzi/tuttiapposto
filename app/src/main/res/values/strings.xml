@@ -31,6 +31,7 @@
     <string name="action_edit_error">Modifica non avvenuta</string>
     <string name="action_delete_success">Cancellazione avvenuta con successo</string>
     <string name="action_delete_error">Cancellazione non avvenuta</string>
+    <string name="action_report">Segnala</string>
     <string name="no_data_available">NESSUN ELEMENTO DISPONIBILE</string>
     <string name="today">Oggi</string>
 
@@ -89,4 +90,6 @@
     <string name="reminder_today_booking_title">Ricorda i tuoi posti!</string>
     <string name="reminder_today_booking_desc">Non dimenticare le prenotazioni di oggi.</string>
     <string name="reminder_click_here_to_view">Clicca qui per visualizzare!</string>
+    <string name="report_availability_success_message">Segnalazione creata con successo</string>
+    <string name="report_availability_error_message">Segnalazione non creata</string>
 </resources>

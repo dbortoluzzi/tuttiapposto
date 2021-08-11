@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="it.dbortoluzzi.tuttiapposto.ui.fragments.BookingsFragment">
+    <item
+        android:id="@+id/book_table"
+        android:title="@string/action_book"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/report_availability"
+        android:title="@string/action_report"
+        app:showAsAction="never" />
+</menu>
