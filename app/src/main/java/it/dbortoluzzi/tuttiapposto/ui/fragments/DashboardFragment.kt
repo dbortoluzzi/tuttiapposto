@@ -21,6 +21,9 @@ import it.dbortoluzzi.tuttiapposto.model.Score
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.DashboardPresenter
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.REMINDER_BOOKING_HOUR
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.REMINDER_BOOKING_MINUTE
+import it.dbortoluzzi.tuttiapposto.utils.NotificationUtils
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -157,6 +160,7 @@ class DashboardFragment : BaseMvpFragment<DashboardFragment, DashboardPresenter>
         // TODO: set max value on Y axis
 
         barChart.invalidate()
+
     }
 
     override fun showProgressBar() {

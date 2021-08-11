@@ -29,6 +29,7 @@
     <string name="action_delete_success">Cancellazione avvenuta con successo</string>
     <string name="action_delete_error">Cancellazione non avvenuta</string>
     <string name="no_data_available">NESSUN ELEMENTO DISPONIBILE</string>
+    <string name="today">Oggi</string>
 
     <!--    Login-->
     <string name="login">Login</string>
@@ -77,4 +78,9 @@
 <!--    Dashboard-->
     <string name="hour_occupation_bar_chart_desc">Prenotazioni per fasce orarie in data odierna</string>
     <string name="room_occupation_bar_chart_desc">Occupazione locali in data odierna</string>
+
+<!--    Notification-->
+    <string name="reminder_today_booking_title">Ricorda i tuoi posti!</string>
+    <string name="reminder_today_booking_desc">Non dimenticare le prenotazioni di oggi.</string>
+    <string name="reminder_click_here_to_view">Clicca qui per visualizzare!</string>
 </resources>

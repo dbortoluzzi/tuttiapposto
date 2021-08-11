@@ -13,6 +13,7 @@ import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.model.toPresentationModel
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
+import it.dbortoluzzi.tuttiapposto.utils.TuttiAppostoUtils
 import it.dbortoluzzi.usecases.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -71,7 +72,6 @@ class BookingsPresenter @Inject constructor(
                     }
 
                     val startCal = Calendar.getInstance() // locale-specific
-                    resetCal(startCal)
 
                     val jobBookings: Deferred<List<Booking>> = async { withContext(Dispatchers.IO) { getBookings(user.uID, companyId, null, null, startCal.time, null) } }
                     val jobCompanies: Deferred<List<Company>> = async { withContext(Dispatchers.IO) { getCompanies() } }
@@ -86,7 +86,7 @@ class BookingsPresenter @Inject constructor(
                         val room = rooms.find { it.uID == b.roomId }
                         val company = companies.find { it.uID == b.companyId }
                         val table = tables.find { it.uID == b.tableId }
-                        b.toPresentationModel(company?.denomination ?: "Unknown company",
+                        b.toPresentationModel(view!!.context(), company?.denomination ?: "Unknown company",
                                 room?.name ?: "Unknown room", table?.name ?: "Unknown table")
                     }
                     )
@@ -96,14 +96,6 @@ class BookingsPresenter @Inject constructor(
                 view?.showNetworkError()
             }
         }
-    }
-
-    private fun resetCal(startCal: Calendar) {
-        startCal.time = Date()
-        startCal[Calendar.HOUR_OF_DAY] = 0
-        startCal[Calendar.MINUTE] = 0
-        startCal[Calendar.SECOND] = 0
-        startCal[Calendar.MILLISECOND] = 0
     }
 
     companion object {

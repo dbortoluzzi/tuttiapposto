@@ -1,9 +1,12 @@
 package it.dbortoluzzi.tuttiapposto.ui.activities
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.ViewBookingItemBinding
 import it.dbortoluzzi.tuttiapposto.model.BookingAggregate
 import kotlin.properties.Delegates
@@ -47,6 +50,11 @@ class BookingsAdapter(private val emptyView: View) : RecyclerView.Adapter<Bookin
                 binding.roomName.text = bookingAggregate.roomName
                 binding.dateFirstPart.text = bookingAggregate.dateFirstDescription
                 binding.dateSecondPart.text = bookingAggregate.dateSecondDescription
+                if (bookingAggregate.current) {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        binding.root.setCardBackgroundColor(binding.root.resources.getColorStateList(R.color.colorPrimaryLight, null))
+                    }
+                }
 
                 binding.root.setOnClickListener {
                     onItemClick?.invoke(bookingAggregate, binding.root)

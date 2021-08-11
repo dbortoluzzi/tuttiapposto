@@ -17,4 +17,7 @@ object Constants {
     val BUILDING_ID = "BUILDING_ID"
     val ROOM_ID = "ROOM_ID"
     val TABLE_ID = "TABLE_ID"
+
+    val REMINDER_BOOKING_HOUR = 8
+    val REMINDER_BOOKING_MINUTE = 0
 }

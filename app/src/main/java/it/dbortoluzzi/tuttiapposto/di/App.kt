@@ -7,6 +7,8 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import dagger.hilt.android.HiltAndroidApp
 import it.dbortoluzzi.tuttiapposto.model.Prefs
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants
+import it.dbortoluzzi.tuttiapposto.utils.NotificationUtils
 
 val prefs: Prefs by lazy {
     BaseApp.prefs!!
@@ -17,6 +19,8 @@ open class BaseApp : Application() {
         super.onCreate()
         prefs = Prefs(applicationContext)
         instance = this
+
+        NotificationUtils().sendAtTimeNotification(Constants.REMINDER_BOOKING_HOUR, Constants.REMINDER_BOOKING_MINUTE,true, this)
     }
 
     companion object {
