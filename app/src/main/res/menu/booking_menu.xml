@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="it.dbortoluzzi.tuttiapposto.ui.fragments.BookingsFragment">
     <item
+        android:id="@+id/edit_booking"
+        android:title="@string/action_edit"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/delete_booking"
         android:title="@string/action_delete"
         app:showAsAction="never" />

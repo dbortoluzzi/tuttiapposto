@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentBookingsBinding
@@ -13,6 +15,7 @@ import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.activities.BookingsAdapter
 import it.dbortoluzzi.tuttiapposto.ui.presenters.BookingsPresenter
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BUNDLE_DATA
 import javax.inject.Inject
 
 /**
@@ -52,6 +55,9 @@ class BookingsFragment: BaseMvpFragment<BookingsFragment, BookingsPresenter>(), 
                         R.id.delete_booking -> {
                             presenter.deleteBookingClicked(bookingAggregate.booking)
                         }
+                        R.id.edit_booking -> {
+                            presenter.editBookingClicked(bookingAggregate.booking)
+                        }
                     }
                     false
                 }
@@ -62,13 +68,19 @@ class BookingsFragment: BaseMvpFragment<BookingsFragment, BookingsPresenter>(), 
 
         binding.recycler.adapter = bookingAdapter
 
-        binding.filterBookingsBtn.setOnClickListener { showMessage("Da sviluppare")}
-
         return binding.root
     }
 
     override fun renderBookings(bookingAggregates: List<BookingAggregate>) {
         bookingAdapter.items = bookingAggregates
+    }
+
+    override fun goToEditBooking(bookingMap: Map<String, Any>) {
+        val navController = findNavController()
+        navController.apply {
+            val b = bundleOf(BUNDLE_DATA to bookingMap)
+            navigate(R.id.action_bookings_to_edit, b)
+        }
     }
 
     override fun showProgressBar() {

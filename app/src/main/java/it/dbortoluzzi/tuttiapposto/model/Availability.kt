@@ -1,11 +1,8 @@
 package it.dbortoluzzi.tuttiapposto.model
 
 import it.dbortoluzzi.domain.dto.TableAvailabilityResponseDto
-import java.math.RoundingMode
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import it.dbortoluzzi.domain.Location as DomainLocation
 
 data class Availability(
         val tableAvailabilityResponseDto: TableAvailabilityResponseDto,

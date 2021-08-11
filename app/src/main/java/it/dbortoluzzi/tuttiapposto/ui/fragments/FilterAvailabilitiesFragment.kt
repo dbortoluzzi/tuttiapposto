@@ -24,6 +24,7 @@ import it.dbortoluzzi.tuttiapposto.model.Interval
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.FilterAvailabilitiesPresenter
 import it.dbortoluzzi.tuttiapposto.ui.presenters.MainPresenter
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BOOKING
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BUNDLE_DATA
 import java.text.SimpleDateFormat
 import java.util.*
@@ -52,32 +53,26 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
         binding = FragmentFilterAvailabilitiesBinding.inflate(layoutInflater)
 
         binding.filterBtn.setOnClickListener {
-            // TODO: add check validation
             presenter.filterBtnClicked()
         }
 
         binding.bookBtn.setOnClickListener {
-            val buildingSpinnerSelected = getBuildingSelected()
-            val roomSpinnerSelected = getRoomSelected()
-            val tableSpinnerSelected = getTableSelected()
-            if (TextUtils.isEmpty(buildingSpinnerSelected?.first)) {
-                val errorTextView = binding.buildingsSpinner.selectedView as TextView
-                errorTextView.error = getString(R.string.mandatory_error)
-                return@setOnClickListener
-            }
-            if (TextUtils.isEmpty(roomSpinnerSelected?.first)) {
-                val errorTextView = binding.roomsSpinner.selectedView as TextView
-                errorTextView.error = getString(R.string.mandatory_error)
-                return@setOnClickListener
-            }
-            if (TextUtils.isEmpty(tableSpinnerSelected?.first)) {
-                val errorTextView = binding.tablesSpinner.selectedView as TextView
-                errorTextView.error = getString(R.string.mandatory_error)
-                return@setOnClickListener
-            }
+            if (checkFiltersBeforeBook()) return@setOnClickListener
 
             val navController = findNavController()
-            val mapBookingData: Map<String, Any> = presenter.newBookingBtnClicked()
+            val mapBookingData: Map<String, Any> = presenter.prepareFiltersData()
+            navController.apply {
+                val b = bundleOf(BUNDLE_DATA to mapBookingData)
+                navigate(R.id.action_filter_to_book, b)
+            }
+        }
+
+        binding.editBtn.setOnClickListener {
+            if (checkFiltersBeforeBook()) return@setOnClickListener
+            val bookingToEdit = (arguments?.get(BUNDLE_DATA) as Map<String,Any>)[BOOKING] ?: return@setOnClickListener
+
+            val navController = findNavController()
+            val mapBookingData: Map<String, Any> = presenter.prepareFiltersData() + Pair(BOOKING, bookingToEdit)
             navController.apply {
                 val b = bundleOf(BUNDLE_DATA to mapBookingData)
                 navigate(R.id.action_filter_to_book, b)
@@ -156,6 +151,28 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
         updateDateInView()
 
         return binding.root
+    }
+
+    private fun checkFiltersBeforeBook(): Boolean {
+        val buildingSpinnerSelected = getBuildingSelected()
+        val roomSpinnerSelected = getRoomSelected()
+        val tableSpinnerSelected = getTableSelected()
+        if (TextUtils.isEmpty(buildingSpinnerSelected?.first)) {
+            val errorTextView = binding.buildingsSpinner.selectedView as TextView
+            errorTextView.error = getString(R.string.mandatory_error)
+            return true
+        }
+        if (TextUtils.isEmpty(roomSpinnerSelected?.first)) {
+            val errorTextView = binding.roomsSpinner.selectedView as TextView
+            errorTextView.error = getString(R.string.mandatory_error)
+            return true
+        }
+        if (TextUtils.isEmpty(tableSpinnerSelected?.first)) {
+            val errorTextView = binding.tablesSpinner.selectedView as TextView
+            errorTextView.error = getString(R.string.mandatory_error)
+            return true
+        }
+        return false
     }
 
     override fun goToAvailabilitiesPage() {
@@ -261,8 +278,11 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
 
     private fun initLayout() {
         val requestBooking = arguments?.getBoolean(REQUEST_BOOKING, false) ?: false
+        val requestEdit = arguments?.getBoolean(REQUEST_EDIT, false) ?: false
         if (requestBooking) {
             initRequestBookingLayout()
+        } else if (requestEdit) {
+            initRequestEditLayout()
         } else {
             initRequestFilterLayout()
         }
@@ -275,16 +295,24 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
     }
 
     private fun initRequestBookingLayout() {
-        binding.bookBtn.visibility = View.VISIBLE
         binding.filterBtn.visibility = View.GONE
+        binding.editBtn.visibility = View.GONE
+        binding.bookBtn.visibility = View.VISIBLE
         binding.tablesSpinner.visibility = View.VISIBLE
         binding.tablesText.visibility = View.VISIBLE
+    }
 
-        // TODO: add check in fields
+    private fun initRequestEditLayout() {
+        binding.bookBtn.visibility = View.GONE
+        binding.filterBtn.visibility = View.GONE
+        binding.editBtn.visibility = View.VISIBLE
+        binding.tablesSpinner.visibility = View.VISIBLE
+        binding.tablesText.visibility = View.VISIBLE
     }
 
     private fun initRequestFilterLayout() {
         binding.bookBtn.visibility = View.GONE
+        binding.editBtn.visibility = View.GONE
         binding.filterBtn.visibility = View.VISIBLE
         binding.tablesSpinner.visibility = View.GONE
         binding.tablesText.visibility = View.GONE
@@ -293,6 +321,7 @@ class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragmen
     companion object {
         private val TAG = "FilterAvailabilitiesFragment"
         private val REQUEST_BOOKING = "requestBooking"
+        private val REQUEST_EDIT = "requestEdit"
         private val DATE_PATTERN = "dd/MM/yyyy"
     }
 }

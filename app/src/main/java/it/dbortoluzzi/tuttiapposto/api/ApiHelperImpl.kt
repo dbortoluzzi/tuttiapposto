@@ -25,6 +25,12 @@ class ApiHelperImpl @Inject constructor(
         }
     }
 
+    override suspend fun editBooking(booking: Booking): Response<Booking> {
+        return safeCall {
+            apiService.editBooking(booking.uID!!, booking)
+        }
+    }
+
     override suspend fun deleteBooking(booking: Booking): Response<Boolean> {
         return safeCall {
             apiService.deleteBooking(booking.uID!!)

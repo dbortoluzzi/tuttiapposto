@@ -20,6 +20,12 @@ class AndroidBookingSource @Inject constructor(
                 .toServiceResult()
     }
 
+    override suspend fun editBooking(booking: Booking): ServiceResult<Booking> {
+        return apiHelper
+                .editBooking(booking)
+                .toServiceResult()
+    }
+
     override suspend fun deleteBooking(booking: Booking): ServiceResult<Boolean> {
         return apiHelper
                 .deleteBooking(booking)
