@@ -35,6 +35,7 @@ import javax.inject.Inject
  */
 
 @AndroidEntryPoint
+// TODO: rename
 class FilterAvailabilitiesFragment : BaseMvpFragment<FilterAvailabilitiesFragment, FilterAvailabilitiesPresenter>(), FilterAvailabilitiesPresenter.View {
 
     @Inject
