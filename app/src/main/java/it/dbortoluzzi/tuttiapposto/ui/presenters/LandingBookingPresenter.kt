@@ -8,6 +8,7 @@ import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
 import it.dbortoluzzi.usecases.CreateBooking
+import it.dbortoluzzi.usecases.EditBooking
 import it.dbortoluzzi.usecases.GetAvailableTables
 import it.dbortoluzzi.usecases.GetUser
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,8 @@ class LandingBookingPresenter @Inject constructor(
         mView: View?,
         private val getUser: GetUser,
         private val getAvailableTables: GetAvailableTables,
-        private val createBooking: CreateBooking
+        private val createBooking: CreateBooking,
+        private val editBooking: EditBooking
 ) : BaseMvpPresenterImpl<LandingBookingPresenter.View>(mView){
 
     lateinit var companyIdModel: String
@@ -41,6 +43,8 @@ class LandingBookingPresenter @Inject constructor(
         fun dismissBookingBtnClicked()
         fun bookingDoneWithSuccess()
         fun bookingNotDoneWithError()
+        fun editBookingDoneWithSuccess()
+        fun editBookingNotDoneWithError()
     }
 
     fun searchAvailabilityToConfirm(companyId: String, buildingId: String, roomId: String, tableId: String, startDate: Date, endDate: Date) {
@@ -70,7 +74,7 @@ class LandingBookingPresenter @Inject constructor(
         }
     }
 
-    fun bookTable() {
+    fun bookTable(bookingId: String?) {
         if (PrefsValidator.isConfigured(prefs)) {
             if (App.isNetworkConnected()) {
                 GlobalScope.launch(Dispatchers.Main) {
@@ -81,11 +85,20 @@ class LandingBookingPresenter @Inject constructor(
                         else -> throw Exception("no user found")
                     }
 
-                    val bookingCreated = withContext(Dispatchers.IO) { createBooking(Booking(null, user.uID, companyIdModel, buildingIdModel, roomIdModel, tableIdModel, startDateModel, endDateModel)) }
-                    if (bookingCreated != null) {
-                        view?.bookingDoneWithSuccess()
+                    if (bookingId == null) {
+                        val bookingCreated = withContext(Dispatchers.IO) { createBooking(Booking(null, user.uID, companyIdModel, buildingIdModel, roomIdModel, tableIdModel, startDateModel, endDateModel)) }
+                        if (bookingCreated != null) {
+                            view?.bookingDoneWithSuccess()
+                        } else {
+                            view?.bookingNotDoneWithError()
+                        }
                     } else {
-                        view?.bookingNotDoneWithError()
+                        val bookingUpdated = withContext(Dispatchers.IO) { editBooking(Booking(bookingId, user.uID, companyIdModel, buildingIdModel, roomIdModel, tableIdModel, startDateModel, endDateModel)) }
+                        if (bookingUpdated != null) {
+                            view?.editBookingDoneWithSuccess()
+                        } else {
+                            view?.editBookingNotDoneWithError()
+                        }
                     }
                     view?.hideProgressBar()
                 }

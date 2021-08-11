@@ -117,7 +117,7 @@ class FilterAvailabilitiesPresenter @Inject constructor(
         view?.goToAvailabilitiesPage()
     }
 
-    fun newBookingBtnClicked(): Map<String, Any> {
+    fun prepareFiltersData(): Map<String, Any> {
         val intervalSelected = FilterAvailabilitiesUtil.extractInterval(view?.getIntervalSelected())
         val (startCalendar, endCalendar) = FilterAvailabilitiesUtil.extractStartEndPair(intervalSelected, view?.getDateSelected())
         val buildingSelected = view?.getBuildingSelected()

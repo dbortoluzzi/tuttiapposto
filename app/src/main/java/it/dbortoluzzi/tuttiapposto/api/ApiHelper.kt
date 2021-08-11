@@ -12,6 +12,8 @@ interface ApiHelper {
 
     suspend fun createBooking(booking: Booking): Response<Booking>
 
+    suspend fun editBooking(booking: Booking): Response<Booking>
+
     suspend fun deleteBooking(booking: Booking): Response<Boolean>
 
     suspend fun getBookingsBy(userId: String, companyId: String, buildingId: String?, roomId: String?, startDate: Date, endDate: Date?): Response<List<Booking>>

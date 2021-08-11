@@ -13,7 +13,7 @@ import it.dbortoluzzi.tuttiapposto.model.PrefsValidator
 import it.dbortoluzzi.tuttiapposto.model.toPresentationModel
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpPresenterImpl
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpView
-import it.dbortoluzzi.tuttiapposto.utils.TuttiAppostoUtils
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants
 import it.dbortoluzzi.usecases.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -31,6 +31,7 @@ class BookingsPresenter @Inject constructor(
 
     interface View : BaseMvpView {
         fun renderBookings(bookingAggregates: List<BookingAggregate>)
+        fun goToEditBooking(bookingMap: Map<String, Any>)
         fun showProgressBar()
         fun hideProgressBar()
         fun showNetworkError()
@@ -57,6 +58,19 @@ class BookingsPresenter @Inject constructor(
             }
         }
     }
+
+    fun editBookingClicked(booking: Booking) {
+        val bookingMap = mapOf(
+                Constants.START_DATE to booking.startDate,
+                Constants.END_DATE to booking.endDate,
+                Constants.BUILDING_ID to booking.buildingId,
+                Constants.ROOM_ID to  booking.roomId,
+                Constants.TABLE_ID to  booking.tableId,
+                Constants.BOOKING to booking
+        )
+        view?.goToEditBooking(bookingMap)
+    }
+
 
     private fun loadBookings() {
         if (PrefsValidator.isConfigured(prefs)) {

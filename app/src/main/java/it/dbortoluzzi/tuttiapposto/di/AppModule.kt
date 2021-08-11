@@ -333,6 +333,10 @@ class UseCasesModule {
 
     @Provides
     @Singleton
+    fun editBooking(bookingsRepository: BookingsRepository): EditBooking = EditBooking(bookingsRepository)
+
+    @Provides
+    @Singleton
     fun deleteBooking(bookingsRepository: BookingsRepository): DeleteBooking = DeleteBooking(bookingsRepository)
 
     @Provides

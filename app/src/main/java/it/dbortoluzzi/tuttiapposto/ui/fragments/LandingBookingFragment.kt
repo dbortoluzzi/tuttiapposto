@@ -12,9 +12,11 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import it.dbortoluzzi.data.R
 import it.dbortoluzzi.data.databinding.FragmentLandingBookingBinding
+import it.dbortoluzzi.domain.Booking
 import it.dbortoluzzi.tuttiapposto.di.prefs
 import it.dbortoluzzi.tuttiapposto.ui.BaseMvpFragment
 import it.dbortoluzzi.tuttiapposto.ui.presenters.LandingBookingPresenter
+import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BOOKING
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BUILDING_ID
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants.BUNDLE_DATA
 import it.dbortoluzzi.tuttiapposto.ui.util.Constants.END_DATE
@@ -35,6 +37,8 @@ class LandingBookingFragment : BaseMvpFragment<LandingBookingFragment, LandingBo
 
     private lateinit var binding: FragmentLandingBookingBinding
 
+    private var booking: Booking? = null
+
     var confirmBookingButtonClick: ((DialogInterface, Int) -> Unit)? = null
     var dismissBookingButtonClick: ((DialogInterface, Int) -> Unit)? = null
 
@@ -54,6 +58,7 @@ class LandingBookingFragment : BaseMvpFragment<LandingBookingFragment, LandingBo
         }
 
         val bookingData = arguments?.get(BUNDLE_DATA) as Map<String, Any>
+        booking = bookingData.get(BOOKING) as Booking?
         presenter.searchAvailabilityToConfirm(
                 prefs.companyUId!!,
                 bookingData[BUILDING_ID] as String,
@@ -83,7 +88,7 @@ class LandingBookingFragment : BaseMvpFragment<LandingBookingFragment, LandingBo
 
         with(builder) {
             setTitle(getString(R.string.landing_book_title))
-            setMessage(getString(R.string.landing_book_message))
+            setMessage(if (booking == null){getString((R.string.landing_book_message))} else {getString((R.string.landing_book_edit_message))})
             setPositiveButton(getString(R.string.landing_book_confirm), confirmBookingButtonClick)
             setNegativeButton(android.R.string.no, dismissBookingButtonClick)
             show()
@@ -98,7 +103,7 @@ class LandingBookingFragment : BaseMvpFragment<LandingBookingFragment, LandingBo
     }
 
     override fun confirmBookingBtnClicked() {
-        presenter.bookTable()
+        presenter.bookTable(booking?.uID)
     }
 
     override fun dismissBookingBtnClicked() {
@@ -118,6 +123,20 @@ class LandingBookingFragment : BaseMvpFragment<LandingBookingFragment, LandingBo
     override fun bookingNotDoneWithError() {
         Toast.makeText(context?.applicationContext,
                 R.string.landing_book_error_message, Toast.LENGTH_LONG).show()
+
+        navigateTo(R.id.action_book_to_home)
+    }
+
+    override fun editBookingDoneWithSuccess() {
+        Toast.makeText(context?.applicationContext,
+                R.string.landing_book_edit_success_message, Toast.LENGTH_LONG).show()
+
+        navigateTo(R.id.action_book_to_home)
+    }
+
+    override fun editBookingNotDoneWithError() {
+        Toast.makeText(context?.applicationContext,
+                R.string.landing_book_edit_error_message, Toast.LENGTH_LONG).show()
 
         navigateTo(R.id.action_book_to_home)
     }

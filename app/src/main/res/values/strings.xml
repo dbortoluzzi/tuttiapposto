@@ -26,6 +26,9 @@
     <string name="network_not_connected">Per favore collegare il dispositivo alla rete internet</string>
     <string name="action_book">Prenota</string>
     <string name="action_delete">Cancella</string>
+    <string name="action_edit">Modifica</string>
+    <string name="action_edit_success">Modifica avvenuta con successo</string>
+    <string name="action_edit_error">Modifica non avvenuta</string>
     <string name="action_delete_success">Cancellazione avvenuta con successo</string>
     <string name="action_delete_error">Cancellazione non avvenuta</string>
     <string name="no_data_available">NESSUN ELEMENTO DISPONIBILE</string>
@@ -69,10 +72,13 @@
 <!--    Landing-->
     <string name="landing_book_title">Conferma</string>
     <string name="landing_book_message">Si desidera confermare la prenotazione?</string>
+    <string name="landing_book_edit_message">Si desidera confermare la modifica della prenotazione?</string>
     <string name="landing_book_confirm">Conferma</string>
     <string name="landing_book_not_available_message">Disponibiità esaurita</string>
     <string name="landing_book_success_message">Prenotazione confermata!</string>
     <string name="landing_book_error_message">Si è verificato un problema nella creazione della prenotazione</string>
+    <string name="landing_book_edit_success_message">Prenotazione modificata!</string>
+    <string name="landing_book_edit_error_message">Si è verificato un problema nella modifica della prenotazione</string>
     <string name="landing_book_dismiss_message">Prenotazione non effettuata!</string>
 
 <!--    Dashboard-->

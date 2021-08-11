@@ -17,6 +17,9 @@ interface ApiService{
     @POST("/api/bookings")
     suspend fun bookTable(@Body booking: Booking):Response<Booking>
 
+    @POST("/api/bookings/{bookingId}")
+    suspend fun editBooking(@Path("bookingId") bookingId: String, @Body booking: Booking):Response<Booking>
+
     @DELETE("/api/bookings/{bookingId}")
     suspend fun deleteBooking(@Path("bookingId") bookingId: String):Response<Boolean>
 

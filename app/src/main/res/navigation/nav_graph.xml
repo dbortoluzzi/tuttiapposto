@@ -105,7 +105,18 @@
         android:id="@+id/bookingsFragment"
         android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.BookingsFragment"
         android:label="@string/bookings"
-        tools:layout="@layout/fragment_bookings" />
+        tools:layout="@layout/fragment_bookings">
+
+    <action android:id="@+id/action_bookings_to_edit"
+        app:destination="@id/filterAvailabilitiesFragment"
+        app:popUpToInclusive="true"
+        app:popUpTo="@id/bookingsFragment">
+        <argument
+            android:name="requestEdit"
+            app:argType="boolean"
+            android:defaultValue="true" />
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/dashboardFragment"
