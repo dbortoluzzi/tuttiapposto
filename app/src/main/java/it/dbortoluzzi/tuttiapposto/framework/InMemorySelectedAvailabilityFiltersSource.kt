@@ -7,8 +7,7 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class InMemorySelectedAvailabilityFiltersSource @Inject constructor(): SelectedAvailabilityFiltersSource {
+class InMemorySelectedAvailabilityFiltersSource constructor(): SelectedAvailabilityFiltersSource {
 
     private var building: Building? = null
     private var room: Room? = null

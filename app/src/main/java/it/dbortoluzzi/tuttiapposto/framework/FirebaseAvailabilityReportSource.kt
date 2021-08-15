@@ -10,8 +10,7 @@ import it.dbortoluzzi.domain.util.ServiceResult.Success
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class FirebaseAvailabilityReportSource @Inject constructor(
+class FirebaseAvailabilityReportSource constructor(
         var db: FirebaseFirestore,
         private val cacheEnabled: Boolean
 ) : AvailabilityReportSource {

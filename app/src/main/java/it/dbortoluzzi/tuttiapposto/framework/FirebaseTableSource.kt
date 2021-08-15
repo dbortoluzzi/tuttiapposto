@@ -13,8 +13,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class FirebaseTableSource @Inject constructor(
+class FirebaseTableSource constructor(
         var db: FirebaseFirestore,
         private val cacheEnabled: Boolean
 ) : TablePersistenceSource {

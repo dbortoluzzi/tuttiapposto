@@ -7,8 +7,7 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class SelectedAvailabilityFiltersRepository @Inject constructor(
+class SelectedAvailabilityFiltersRepository constructor(
         private val selectedAvailabilityFiltersSource: SelectedAvailabilityFiltersSource
 ) {
 

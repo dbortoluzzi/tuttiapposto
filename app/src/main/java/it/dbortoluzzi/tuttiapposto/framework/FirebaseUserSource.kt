@@ -7,8 +7,7 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class FirebaseUserSource @Inject constructor(
+class FirebaseUserSource constructor(
         var db: FirebaseFirestore
 ) : UserPersistenceSource {
 

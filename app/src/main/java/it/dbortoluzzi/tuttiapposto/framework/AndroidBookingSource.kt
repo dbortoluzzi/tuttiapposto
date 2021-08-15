@@ -9,8 +9,7 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class AndroidBookingSource @Inject constructor(
+class AndroidBookingSource constructor(
         var apiHelper: ApiHelper
 ) : BookingPersistenceSource {
 

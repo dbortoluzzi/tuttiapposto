@@ -10,8 +10,7 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class AndroidStatisticsSource @Inject constructor(
+class AndroidStatisticsSource constructor(
         var apiHelper: ApiHelper
 ) : StatisticsPersistenceSource {
 

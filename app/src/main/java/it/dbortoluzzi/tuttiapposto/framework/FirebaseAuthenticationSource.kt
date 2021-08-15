@@ -10,8 +10,7 @@ import it.dbortoluzzi.domain.util.ServiceResult.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class FirebaseAuthenticationSource @Inject constructor(
+class FirebaseAuthenticationSource constructor(
         var mAuth: FirebaseAuth,
         var userSource: UserPersistenceSource
 ) : AuthenticationSource {

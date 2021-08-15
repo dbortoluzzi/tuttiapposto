@@ -9,8 +9,7 @@ import it.dbortoluzzi.tuttiapposto.api.toServiceResult
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class AndroidTableSource @Inject constructor(
+class AndroidTableSource constructor(
         var apiHelper: ApiHelper
 ) : AvailabilitiesSource {
 

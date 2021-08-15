@@ -15,8 +15,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class FirebaseBuildingSource @Inject constructor(
+class FirebaseBuildingSource constructor(
         var db: FirebaseFirestore,
         private val cacheEnabled: Boolean
 ) : BuildingPersistenceSource {
