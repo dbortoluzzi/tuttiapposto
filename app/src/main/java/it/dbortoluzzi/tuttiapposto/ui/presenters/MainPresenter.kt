@@ -18,8 +18,7 @@ import javax.inject.Inject
 class MainPresenter @Inject constructor(
         mView: View?,
         private val logout: Logout,
-        private val getUser: GetUser,
-        private val getAvailableTables: GetAvailableTables
+        private val getUser: GetUser
 ) : BaseMvpPresenterImpl<MainPresenter.View>(mView){
 
     interface View : BaseMvpView {

@@ -2,7 +2,6 @@ package it.dbortoluzzi.usecases
 
 import it.dbortoluzzi.data.TablesRepository
 import it.dbortoluzzi.domain.dto.TableAvailabilityRequestDto
-import it.dbortoluzzi.domain.Table
 import it.dbortoluzzi.domain.dto.TableAvailabilityResponseDto
 import it.dbortoluzzi.domain.util.ServiceResult
 import java.util.*

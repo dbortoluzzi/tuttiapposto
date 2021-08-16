@@ -1,7 +1,6 @@
 package it.dbortoluzzi.tuttiapposto.di
 
 import android.app.Activity
-import android.app.Service
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -151,7 +150,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideTablesRepository(availabilitiesSource: AvailabilitiesSource, tablePersistenceSource: TablePersistenceSource): TablesRepository {
-        return TablesRepository(availabilitiesSource, tablePersistenceSource)
+        return TablesRepositoryImpl(availabilitiesSource, tablePersistenceSource)
     }
 
     @Provides
@@ -169,7 +168,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideStatisticsRepository(statisticsPersistenceSource: StatisticsPersistenceSource): StatisticsRepository {
-        return StatisticsRepository(statisticsPersistenceSource)
+        return StatisticsRepositoryImpl(statisticsPersistenceSource)
     }
 
     @Provides

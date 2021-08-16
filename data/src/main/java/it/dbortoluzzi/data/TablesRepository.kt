@@ -5,15 +5,15 @@ import it.dbortoluzzi.domain.dto.TableAvailabilityRequestDto
 import it.dbortoluzzi.domain.dto.TableAvailabilityResponseDto
 import it.dbortoluzzi.domain.util.ServiceResult
 
-class TablesRepository(
+class TablesRepositoryImpl(
     private val availabilitiesSource: AvailabilitiesSource,
     private val tablePersistenceSource: TablePersistenceSource
-) {
+) : TablesRepository{
 
-    suspend fun findAvailableTables(tableAvailabilityRequestDto: TableAvailabilityRequestDto): ServiceResult<List<TableAvailabilityResponseDto>> =
+    override suspend fun findAvailableTables(tableAvailabilityRequestDto: TableAvailabilityRequestDto): ServiceResult<List<TableAvailabilityResponseDto>> =
             availabilitiesSource.getAvailableTables(tableAvailabilityRequestDto)
-    suspend fun getActiveTables(): ServiceResult<List<Table>> = tablePersistenceSource.getActiveTables()
-    suspend fun getActiveTablesByCompanyIdAndBuildingIdAndRoomId(companyId: String, buildingId: String, roomId: String): ServiceResult<List<Table>> =
+    override suspend fun getActiveTables(): ServiceResult<List<Table>> = tablePersistenceSource.getActiveTables()
+    override suspend fun getActiveTablesByCompanyIdAndBuildingIdAndRoomId(companyId: String, buildingId: String, roomId: String): ServiceResult<List<Table>> =
             tablePersistenceSource.getActiveTablesByCompanyIdAndBuildingIdAndRoomId(companyId, buildingId, roomId)
 
 }
@@ -29,4 +29,10 @@ interface TablePersistenceSource {
     suspend fun getActiveTables(): ServiceResult<List<Table>>
     suspend fun getActiveTablesByCompanyIdAndBuildingIdAndRoomId(companyId: String, buildingId: String, roomId: String): ServiceResult<List<Table>>
 
+}
+
+interface TablesRepository {
+    suspend fun findAvailableTables(tableAvailabilityRequestDto: TableAvailabilityRequestDto): ServiceResult<List<TableAvailabilityResponseDto>>;
+    suspend fun getActiveTables(): ServiceResult<List<Table>>
+    suspend fun getActiveTablesByCompanyIdAndBuildingIdAndRoomId(companyId: String, buildingId: String, roomId: String): ServiceResult<List<Table>>
 }
