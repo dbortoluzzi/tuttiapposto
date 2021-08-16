@@ -81,105 +81,105 @@ class AppModule {
     /*Sources*/
     @Provides
     @Singleton
-    fun authenticationSource(firebaseAuth: FirebaseAuth, userPersistenceSource: UserPersistenceSource): AuthenticationSource = FirebaseAuthenticationSource(firebaseAuth, userPersistenceSource)
+    fun provideAuthenticationSource(firebaseAuth: FirebaseAuth, userPersistenceSource: UserPersistenceSource): AuthenticationSource = FirebaseAuthenticationSource(firebaseAuth, userPersistenceSource)
 
     @Provides
     @Singleton
-    fun userSource(firebaseFirestore: FirebaseFirestore): UserPersistenceSource = FirebaseUserSource(firebaseFirestore)
+    fun provideUserPersistenceSource(firebaseFirestore: FirebaseFirestore): UserPersistenceSource = FirebaseUserSource(firebaseFirestore)
 
     @Provides
     @Singleton
-    fun companySource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): CompanyPersistenceSource = FirebaseCompanySource(firebaseFirestore, CACHE_ENABLED)
+    fun provideCompanyPersistenceSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): CompanyPersistenceSource = FirebaseCompanySource(firebaseFirestore, CACHE_ENABLED)
 
     @Provides
     @Singleton
-    fun buildingSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): BuildingPersistenceSource = FirebaseBuildingSource(firebaseFirestore, CACHE_ENABLED)
+    fun provideBuildingPersistenceSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): BuildingPersistenceSource = FirebaseBuildingSource(firebaseFirestore, CACHE_ENABLED)
 
     @Provides
     @Singleton
-    fun roomSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): RoomPersistenceSource = FirebaseRoomSource(firebaseFirestore, CACHE_ENABLED)
+    fun provideRoomPersistenceSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): RoomPersistenceSource = FirebaseRoomSource(firebaseFirestore, CACHE_ENABLED)
 
     @Provides
     @Singleton
-    fun tableSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): TablePersistenceSource = FirebaseTableSource(firebaseFirestore, CACHE_ENABLED)
+    fun provideTablePersistenceSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): TablePersistenceSource = FirebaseTableSource(firebaseFirestore, CACHE_ENABLED)
 
     @Provides
     @Singleton
-    fun availabilityReportSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): AvailabilityReportSource = FirebaseAvailabilityReportSource(firebaseFirestore, CACHE_ENABLED)
+    fun provideAvailabilityReportSource(firebaseFirestore: FirebaseFirestore, CACHE_ENABLED: Boolean): AvailabilityReportSource = FirebaseAvailabilityReportSource(firebaseFirestore, CACHE_ENABLED)
 
     @Provides
     @Singleton
-    fun androidTableSource(apiHelper: ApiHelper): AvailabilitiesSource = AndroidTableSource(apiHelper)
+    fun provideAvailabilitiesSource(apiHelper: ApiHelper): AvailabilitiesSource = AndroidTableSource(apiHelper)
 
     @Provides
     @Singleton
-    fun androidBookingSource(apiHelper: ApiHelper): BookingPersistenceSource = AndroidBookingSource(apiHelper)
+    fun provideBookingPersistenceSource(apiHelper: ApiHelper): BookingPersistenceSource = AndroidBookingSource(apiHelper)
 
     @Provides
     @Singleton
-    fun androidStatisticsSource(apiHelper: ApiHelper): StatisticsPersistenceSource = AndroidStatisticsSource(apiHelper)
+    fun provideStatisticsPersistenceSource(apiHelper: ApiHelper): StatisticsPersistenceSource = AndroidStatisticsSource(apiHelper)
 
     @Provides
     @Singleton
-    fun selectedAvailabilityFiltersSource(): SelectedAvailabilityFiltersSource = InMemorySelectedAvailabilityFiltersSource()
+    fun provideSelectedAvailabilityFiltersSource(): SelectedAvailabilityFiltersSource = InMemorySelectedAvailabilityFiltersSource()
 
     /*Repositories*/
     @Provides
     @Singleton
-    fun usersRepository(authenticationSource: AuthenticationSource): UsersRepository {
+    fun provideUsersRepository(authenticationSource: AuthenticationSource): UsersRepository {
         return UsersRepository(authenticationSource)
     }
 
     @Provides
     @Singleton
-    fun companiesRepository(companyPersistenceSource: CompanyPersistenceSource): CompaniesRepository {
+    fun provideCompaniesRepository(companyPersistenceSource: CompanyPersistenceSource): CompaniesRepository {
         return CompaniesRepository(companyPersistenceSource)
     }
 
     @Provides
     @Singleton
-    fun buildingRepository(buildingPersistenceSource: BuildingPersistenceSource): BuildingsRepository {
+    fun provideBuildingsRepository(buildingPersistenceSource: BuildingPersistenceSource): BuildingsRepository {
         return BuildingsRepository(buildingPersistenceSource)
     }
 
     @Provides
     @Singleton
-    fun roomRepository(roomPersistenceSource: RoomPersistenceSource): RoomsRepository {
+    fun provideRoomsRepository(roomPersistenceSource: RoomPersistenceSource): RoomsRepository {
         return RoomsRepository(roomPersistenceSource)
     }
 
     @Provides
     @Singleton
-    fun tableRepository(availabilitiesSource: AvailabilitiesSource, tablePersistenceSource: TablePersistenceSource): TablesRepository {
+    fun provideTablesRepository(availabilitiesSource: AvailabilitiesSource, tablePersistenceSource: TablePersistenceSource): TablesRepository {
         return TablesRepository(availabilitiesSource, tablePersistenceSource)
     }
 
     @Provides
     @Singleton
-    fun availabilityReportRepository(availabilityReportSource: AvailabilityReportSource): AvailabilityReportsRepository {
+    fun provideAvailabilityReportsRepository(availabilityReportSource: AvailabilityReportSource): AvailabilityReportsRepository {
         return AvailabilityReportsRepository(availabilityReportSource)
     }
 
     @Provides
     @Singleton
-    fun bookingRepository(bookingSource: BookingPersistenceSource): BookingsRepository {
+    fun provideBookingsRepository(bookingSource: BookingPersistenceSource): BookingsRepository {
         return BookingsRepository(bookingSource)
     }
 
     @Provides
     @Singleton
-    fun statisticsRepository(statisticsPersistenceSource: StatisticsPersistenceSource): StatisticsRepository {
+    fun provideStatisticsRepository(statisticsPersistenceSource: StatisticsPersistenceSource): StatisticsRepository {
         return StatisticsRepository(statisticsPersistenceSource)
     }
 
     @Provides
     @Singleton
-    fun filtersAvailabilitySelectedRepository(selectedAvailabilityFiltersSource: SelectedAvailabilityFiltersSource): SelectedAvailabilityFiltersRepository {
+    fun provideSelectedAvailabilityFiltersRepository(selectedAvailabilityFiltersSource: SelectedAvailabilityFiltersSource): SelectedAvailabilityFiltersRepository {
         return SelectedAvailabilityFiltersRepository(selectedAvailabilityFiltersSource)
     }
 
     @Provides
-    fun bookingNotificationService(): BookingNotificationService {
+    fun provideBookingNotificationService(): BookingNotificationService {
         return BookingNotificationService()
     }
 
@@ -265,73 +265,73 @@ class UseCasesModule {
 
     @Provides
     @Singleton
-    fun login(usersRepository: UsersRepository): Login = Login(usersRepository)
+    fun provideLogin(usersRepository: UsersRepository): Login = Login(usersRepository)
 
     @Provides
     @Singleton
-    fun register(usersRepository: UsersRepository): Register = Register(usersRepository)
+    fun provideRegister(usersRepository: UsersRepository): Register = Register(usersRepository)
 
     @Provides
     @Singleton
-    fun logout(usersRepository: UsersRepository): Logout = Logout(usersRepository)
+    fun provideLogout(usersRepository: UsersRepository): Logout = Logout(usersRepository)
 
     @Provides
     @Singleton
-    fun getUser(usersRepository: UsersRepository): GetUser = GetUser(usersRepository)
+    fun provideGetUser(usersRepository: UsersRepository): GetUser = GetUser(usersRepository)
 
     @Provides
     @Singleton
-    fun getCompanies(companiesRepository: CompaniesRepository): GetCompanies = GetCompanies(companiesRepository)
+    fun provideGetCompanies(companiesRepository: CompaniesRepository): GetCompanies = GetCompanies(companiesRepository)
 
     @Provides
     @Singleton
-    fun getBuildings(buildingsRepository: BuildingsRepository): GetBuildings = GetBuildings(buildingsRepository)
+    fun provideGetBuildings(buildingsRepository: BuildingsRepository): GetBuildings = GetBuildings(buildingsRepository)
 
     @Provides
     @Singleton
-    fun getRooms(roomsRepository: RoomsRepository): GetRooms = GetRooms(roomsRepository)
+    fun provideGetRooms(roomsRepository: RoomsRepository): GetRooms = GetRooms(roomsRepository)
 
     @Provides
     @Singleton
-    fun getRoomsByCompany(roomsRepository: RoomsRepository): GetRoomsByCompany = GetRoomsByCompany(roomsRepository)
+    fun provideGetRoomsByCompany(roomsRepository: RoomsRepository): GetRoomsByCompany = GetRoomsByCompany(roomsRepository)
 
     @Provides
     @Singleton
-    fun getTables(tablesRepository: TablesRepository): GetTables = GetTables(tablesRepository)
+    fun provideGetTables(tablesRepository: TablesRepository): GetTables = GetTables(tablesRepository)
 
     @Provides
     @Singleton
-    fun createAvailabilityReport(repository: AvailabilityReportsRepository): CreateAvailabilityReport = CreateAvailabilityReport(repository)
+    fun provideCreateAvailabilityReport(repository: AvailabilityReportsRepository): CreateAvailabilityReport = CreateAvailabilityReport(repository)
 
     @Provides
     @Singleton
-    fun getTablesWithFilters(tablesRepository: TablesRepository): GetTablesWithFilters = GetTablesWithFilters(tablesRepository)
+    fun provideGetTablesWithFilters(tablesRepository: TablesRepository): GetTablesWithFilters = GetTablesWithFilters(tablesRepository)
 
     @Provides
     @Singleton
-    fun getAvailableTables(tablesRepository: TablesRepository): GetAvailableTables = GetAvailableTables(tablesRepository)
+    fun provideGetAvailableTables(tablesRepository: TablesRepository): GetAvailableTables = GetAvailableTables(tablesRepository)
 
     @Provides
     @Singleton
-    fun createBooking(bookingsRepository: BookingsRepository): CreateBooking = CreateBooking(bookingsRepository)
+    fun provideCreateBooking(bookingsRepository: BookingsRepository): CreateBooking = CreateBooking(bookingsRepository)
 
     @Provides
     @Singleton
-    fun editBooking(bookingsRepository: BookingsRepository): EditBooking = EditBooking(bookingsRepository)
+    fun provideEditBooking(bookingsRepository: BookingsRepository): EditBooking = EditBooking(bookingsRepository)
 
     @Provides
     @Singleton
-    fun deleteBooking(bookingsRepository: BookingsRepository): DeleteBooking = DeleteBooking(bookingsRepository)
+    fun provideDeleteBooking(bookingsRepository: BookingsRepository): DeleteBooking = DeleteBooking(bookingsRepository)
 
     @Provides
     @Singleton
-    fun getBookings(bookingsRepository: BookingsRepository): GetBookings = GetBookings(bookingsRepository)
+    fun provideGetBookings(bookingsRepository: BookingsRepository): GetBookings = GetBookings(bookingsRepository)
 
     @Provides
     @Singleton
-    fun getOccupationByHour(statisticsRepository: StatisticsRepository): GetOccupationByHour = GetOccupationByHour(statisticsRepository)
+    fun provideGetOccupationByHour(statisticsRepository: StatisticsRepository): GetOccupationByHour = GetOccupationByHour(statisticsRepository)
 
     @Provides
     @Singleton
-    fun getOccupationByRoom(statisticsRepository: StatisticsRepository): GetOccupationByRoom = GetOccupationByRoom(statisticsRepository)
+    fun provideGetOccupationByRoom(statisticsRepository: StatisticsRepository): GetOccupationByRoom = GetOccupationByRoom(statisticsRepository)
 }

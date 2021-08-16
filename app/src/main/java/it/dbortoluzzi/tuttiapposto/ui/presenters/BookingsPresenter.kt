@@ -37,9 +37,6 @@ class BookingsPresenter @Inject constructor(
         fun showNetworkError()
     }
 
-    override fun onAttachView() {
-    }
-
     override fun onStartView() {
         super.onStartView()
         loadBookings()
@@ -69,7 +66,6 @@ class BookingsPresenter @Inject constructor(
         )
         view?.goToEditBooking(bookingMap)
     }
-
 
     private fun loadBookings() {
         if (PrefsValidator.isConfigured(prefs)) {
