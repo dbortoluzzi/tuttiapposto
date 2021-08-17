@@ -16,7 +16,7 @@ import java.util.*
 class UseCasesModuleTest {
 
     @Test
-    fun getAvailableTables_test() = runBlocking {
+    fun getAvailableTables_positive_test() = runBlocking {
         val fixture: TablesRepository = mock()
 
         given(fixture.findAvailableTables(any())).willSuspendableAnswer {
@@ -39,6 +39,25 @@ class UseCasesModuleTest {
             null
         )
         assertTrue(invoked.size == 1)
+    }
+
+    @Test
+    fun getAvailableTables_negative_test() = runBlocking {
+        val fixture: TablesRepository = mock()
+
+        given(fixture.findAvailableTables(any())).willSuspendableAnswer {
+            withContext(Dispatchers.Default) { ServiceResult.Error("GENERIC_ERROR") }
+        }
+
+        val invoked = GetAvailableTables(fixture).invoke(
+            "COMPANY_ID",
+            "BUILDING_ID",
+            "ROOM_ID",
+            Date(),
+            Date(),
+            null
+        )
+        assertTrue(invoked.isEmpty())
     }
 
 }
