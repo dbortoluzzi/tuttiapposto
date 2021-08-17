@@ -71,11 +71,11 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
         navUserTextView.text = userStr
 
         appBarConfiguration = AppBarConfiguration.Builder(
-                R.id.homeFragment,
+                R.id.nav_homeFragment,
                 R.id.homeNoConfigFragment,
-                R.id.bookingsFragment,
+                R.id.nav_bookingsFragment,
                 R.id.landingBookingFragment,
-                R.id.dashboardFragment) //Pass the ids of fragments from nav_graph which you d'ont want to show back button in toolbar
+                R.id.nav_dashboardFragment) //Pass the ids of fragments from nav_graph which you d'ont want to show back button in toolbar
                 .setOpenableLayout(binding.mainDrawerLayout) //Pass the drawer layout id from activity xml
                 .build()
 
@@ -90,7 +90,7 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
         visibilityNavElements(navController) //If you want to hide drawer or bottom navigation configure that in this function
 
         if (intent.getBooleanExtra(SHOW_BOOKINGS, false)) { //Just for confirmation
-            navController.navigate(R.id.bookingsFragment)
+            navController.navigate(R.id.nav_bookingsFragment)
         }
     }
 
@@ -111,7 +111,7 @@ class MainActivity : BaseMvpActivity<MainActivity, MainPresenter>(), MainPresent
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment -> {
+                R.id.nav_homeFragment -> {
                     binding.mainNavigationView.menu.findItem(R.id.action_filter).apply {
                         isVisible = true
                     }

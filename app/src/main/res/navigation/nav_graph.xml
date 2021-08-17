@@ -4,11 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/nav_homeFragment">
 
     <!--In the label field of fragment you can give the name that you want to show in the toolbar-->
     <fragment
-        android:id="@+id/homeFragment"
+        android:id="@+id/nav_homeFragment"
         android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.HomeFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home" >
@@ -16,12 +16,12 @@
         <action android:id="@+id/action_home_to_no_config"
             app:destination="@id/homeNoConfigFragment"
             app:popUpToInclusive="true"
-            app:popUpTo="@id/homeFragment"/>
+            app:popUpTo="@id/nav_homeFragment"/>
 
         <action android:id="@+id/action_home_to_filter"
             app:destination="@id/filterAvailabilitiesFragment"
             app:popUpToInclusive="true"
-            app:popUpTo="@id/homeFragment">
+            app:popUpTo="@id/nav_homeFragment">
             <argument
                 android:name="requestBooking"
                 app:argType="boolean"
@@ -31,7 +31,7 @@
         <action android:id="@+id/action_home_to_book_filter"
             app:destination="@id/filterAvailabilitiesFragment"
             app:popUpToInclusive="true"
-            app:popUpTo="@id/homeFragment">
+            app:popUpTo="@id/nav_homeFragment">
             <argument
                 android:name="requestBooking"
                 app:argType="boolean"
@@ -41,7 +41,7 @@
         <action android:id="@+id/action_home_to_book"
             app:destination="@id/landingBookingFragment"
             app:popUpToInclusive="true"
-            app:popUpTo="@id/homeFragment"/>
+            app:popUpTo="@id/nav_homeFragment"/>
     </fragment>
 
     <fragment
@@ -51,7 +51,7 @@
         tools:layout="@layout/fragment_filter_availabilities" >
 
         <action android:id="@+id/action_filter_to_home"
-            app:destination="@id/homeFragment"
+            app:destination="@id/nav_homeFragment"
             app:popUpToInclusive="true"
             app:popUpTo="@id/filterAvailabilitiesFragment"/>
 
@@ -78,7 +78,7 @@
         </action>
 
         <action android:id="@+id/action_book_to_home"
-            app:destination="@id/homeFragment"
+            app:destination="@id/nav_homeFragment"
             app:popUpToInclusive="true"
             app:popUpTo="@id/landingBookingFragment"/>
     </fragment>
@@ -90,19 +90,13 @@
         tools:layout="@layout/fragment_home_noconfig" >
 
         <action android:id="@+id/action_no_config_to_hone"
-            app:destination="@id/homeFragment"
+            app:destination="@id/nav_homeFragment"
             app:popUpToInclusive="true"
             app:popUpTo="@id/homeNoConfigFragment"/>
     </fragment>
 
     <fragment
-        android:id="@+id/locationFragment"
-        android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.LocationsFragment"
-        android:label="@string/location"
-        tools:layout="@layout/fragment_locations" />
-
-    <fragment
-        android:id="@+id/bookingsFragment"
+        android:id="@+id/nav_bookingsFragment"
         android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.BookingsFragment"
         android:label="@string/bookings"
         tools:layout="@layout/fragment_bookings">
@@ -110,7 +104,7 @@
     <action android:id="@+id/action_bookings_to_edit"
         app:destination="@id/filterAvailabilitiesFragment"
         app:popUpToInclusive="true"
-        app:popUpTo="@id/bookingsFragment">
+        app:popUpTo="@id/nav_bookingsFragment">
         <argument
             android:name="requestEdit"
             app:argType="boolean"
@@ -119,7 +113,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/dashboardFragment"
+        android:id="@+id/nav_dashboardFragment"
         android:name="it.dbortoluzzi.tuttiapposto.ui.fragments.DashboardFragment"
         android:label="@string/dashboard"
         tools:layout="@layout/fragment_dashboard" />

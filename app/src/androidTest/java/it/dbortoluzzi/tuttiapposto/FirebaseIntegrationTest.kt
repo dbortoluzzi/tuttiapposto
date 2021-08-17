@@ -23,6 +23,9 @@ class FirebaseIntegrationTest {
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
+    lateinit var authenticationSource: AuthenticationSource
+
+    @Inject
     lateinit var firebaseCompanyPersistenceSource: CompanyPersistenceSource
 
     @Inject
@@ -45,6 +48,10 @@ class FirebaseIntegrationTest {
     @Test
     fun testFirebaseIntegration() {
         runBlocking {
+            // authentication
+            val loginResult = authenticationSource.login(TestConstants.FAKE_USER, TestConstants.FAKE_PWD)
+            Assert.assertTrue("login with fake credentials is success", loginResult is ServiceResult.Success)
+
             // companies
             val activeCompaniesResult: ServiceResult<List<Company>> = firebaseCompanyPersistenceSource.getActiveCompanies()
             Assert.assertTrue("at start company result is success", activeCompaniesResult is ServiceResult.Success)

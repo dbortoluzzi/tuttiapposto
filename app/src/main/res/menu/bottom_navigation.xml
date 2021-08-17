@@ -5,17 +5,17 @@
     <!--Each item id should be same as in the nav_graph fragment id-->
 
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/nav_homeFragment"
         android:icon="@drawable/ic_home"
         android:title="@string/home" />
 
     <item
-        android:id="@+id/bookingsFragment"
+        android:id="@+id/nav_bookingsFragment"
         android:icon="@drawable/outline_bookmark_add"
         android:title="@string/bookings" />
 
     <item
-        android:id="@+id/dashboardFragment"
+        android:id="@+id/nav_dashboardFragment"
         android:icon="@drawable/ic_dashboard"
         android:title="@string/dashboard" />
 

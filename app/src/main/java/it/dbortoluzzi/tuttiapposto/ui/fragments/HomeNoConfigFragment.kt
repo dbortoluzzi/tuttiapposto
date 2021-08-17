@@ -39,7 +39,7 @@ class HomeNoConfigFragment : Fragment() {
         val navController = findNavController()
         navController.apply {
             if (PrefsValidator.isConfigured(prefs)) {
-                navigate(R.id.homeFragment)
+                navigate(R.id.nav_homeFragment)
             }
         }
     }
