@@ -1,0 +1,39 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+interface BookingPersistenceSource {
+    +suspend getBookingsBy(companyId: String ...)
+    +suspend createBooking(booking: Booking)
+}
+
+interface BookingsRepository {
+    +suspend getBookingsBy(companyId: String ...)
+    +suspend createBooking(booking: Booking)
+}
+
+interface ApiHelper {
++ suspend getBookingsBy(companyId: String ...)
++ suspend createBooking(booking: Booking)
+}
+
+BookingPersistenceSource <|--  AndroidBookingSource
+BookingsRepository <|--  BookingsRepositoryImpl
+
+class BookingsRepositoryImpl {
+    - bookingPersistenceSource: BookingPersistenceSource
+    +suspend getBookingsBy(companyId: String ...)
+    +suspend createBooking(booking: Booking)
+}
+
+class GetBookings {
+    - bookingsRepository: BookingsRepository
+    + invoke(companyId: String ...)
+}
+
+class AndroidBookingSource {
+- apiHelper: ApiHelper
+}
+
+
+@enduml
