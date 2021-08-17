@@ -126,25 +126,25 @@ class AppModule {
     @Provides
     @Singleton
     fun provideUsersRepository(authenticationSource: AuthenticationSource): UsersRepository {
-        return UsersRepository(authenticationSource)
+        return UsersRepositoryImpl(authenticationSource)
     }
 
     @Provides
     @Singleton
     fun provideCompaniesRepository(companyPersistenceSource: CompanyPersistenceSource): CompaniesRepository {
-        return CompaniesRepository(companyPersistenceSource)
+        return CompaniesRepositoryImpl(companyPersistenceSource)
     }
 
     @Provides
     @Singleton
     fun provideBuildingsRepository(buildingPersistenceSource: BuildingPersistenceSource): BuildingsRepository {
-        return BuildingsRepository(buildingPersistenceSource)
+        return BuildingsRepositoryImpl(buildingPersistenceSource)
     }
 
     @Provides
     @Singleton
     fun provideRoomsRepository(roomPersistenceSource: RoomPersistenceSource): RoomsRepository {
-        return RoomsRepository(roomPersistenceSource)
+        return RoomsRepositoryImpl(roomPersistenceSource)
     }
 
     @Provides
@@ -156,13 +156,13 @@ class AppModule {
     @Provides
     @Singleton
     fun provideAvailabilityReportsRepository(availabilityReportSource: AvailabilityReportSource): AvailabilityReportsRepository {
-        return AvailabilityReportsRepository(availabilityReportSource)
+        return AvailabilityReportsRepositoryImpl(availabilityReportSource)
     }
 
     @Provides
     @Singleton
     fun provideBookingsRepository(bookingSource: BookingPersistenceSource): BookingsRepository {
-        return BookingsRepository(bookingSource)
+        return BookingsRepositoryImpl(bookingSource)
     }
 
     @Provides
@@ -174,7 +174,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideSelectedAvailabilityFiltersRepository(selectedAvailabilityFiltersSource: SelectedAvailabilityFiltersSource): SelectedAvailabilityFiltersRepository {
-        return SelectedAvailabilityFiltersRepository(selectedAvailabilityFiltersSource)
+        return SelectedAvailabilityFiltersRepositoryImpl(selectedAvailabilityFiltersSource)
     }
 
     @Provides

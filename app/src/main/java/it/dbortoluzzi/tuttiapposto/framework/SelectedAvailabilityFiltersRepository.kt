@@ -7,51 +7,77 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
-class SelectedAvailabilityFiltersRepository constructor(
+class SelectedAvailabilityFiltersRepositoryImpl constructor(
         private val selectedAvailabilityFiltersSource: SelectedAvailabilityFiltersSource
-) {
+): SelectedAvailabilityFiltersRepository {
 
-    fun getBuilding(): Building? {
+    override fun getBuilding(): Building? {
         return selectedAvailabilityFiltersSource.getBuilding()
     }
 
-    fun getRoom(): Room? {
+    override fun getRoom(): Room? {
         return selectedAvailabilityFiltersSource.getRoom()
     }
 
-    fun getStartDate(): Date? {
+    override fun getStartDate(): Date? {
         return selectedAvailabilityFiltersSource.getStartDate()
     }
 
-    fun getEndDate(): Date? {
+    override fun getEndDate(): Date? {
         return selectedAvailabilityFiltersSource.getEndDate()
     }
 
-    fun getInterval(): Interval? {
+    override fun getInterval(): Interval? {
         return selectedAvailabilityFiltersSource.getInterval()
     }
 
-    fun setBuilding(building: Building?) {
+    override fun setBuilding(building: Building?) {
         return selectedAvailabilityFiltersSource.setBuilding(building)
     }
 
-    fun setRoom(room: Room?) {
+    override fun setRoom(room: Room?) {
         return selectedAvailabilityFiltersSource.setRoom(room)
     }
 
-    fun setStartDate(startDate: Date) {
+    override fun setStartDate(startDate: Date) {
         return selectedAvailabilityFiltersSource.setStartDate(startDate)
     }
 
-    fun setEndDate(endDate: Date) {
+    override fun setEndDate(endDate: Date) {
         return selectedAvailabilityFiltersSource.setEndDate(endDate)
     }
 
-    fun setInterval(interval: Interval) {
+    override fun setInterval(interval: Interval) {
         return selectedAvailabilityFiltersSource.setInterval(interval)
     }
 
-    fun clearAllFilters() {
+    override fun clearAllFilters() {
         return selectedAvailabilityFiltersSource.clearAllFilters();
     }
+}
+
+interface SelectedAvailabilityFiltersRepository {
+
+    fun getBuilding(): Building?
+
+    fun getRoom(): Room?
+
+    fun getStartDate(): Date?
+
+    fun getEndDate(): Date?
+
+    fun getInterval(): Interval?
+
+    fun setBuilding(building: Building?)
+
+    fun setRoom(room: Room?)
+
+    fun setStartDate(startDate: Date)
+
+    fun setEndDate(endDate: Date)
+
+    fun setInterval(interval: Interval)
+
+    fun clearAllFilters()
+
 }
