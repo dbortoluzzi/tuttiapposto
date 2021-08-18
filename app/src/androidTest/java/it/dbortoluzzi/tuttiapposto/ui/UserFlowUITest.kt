@@ -98,5 +98,10 @@ class UserFlowUITest {
             onView(withId(R.id.hour_occupation_bar_chart)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             onView(withId(R.id.room_occupation_bar_chart)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         }
+        onView(withId(R.id.main_drawer_layout)).run {
+            perform(DrawerActions.open())
+            onView(withId(R.id.navLogout)).perform(click())
+            onView(withId(R.id.LoginBtn)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        }
     }
 }

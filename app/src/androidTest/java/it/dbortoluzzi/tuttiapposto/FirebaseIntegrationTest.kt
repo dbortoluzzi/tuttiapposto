@@ -73,6 +73,10 @@ class FirebaseIntegrationTest {
             val activeTablesResult: ServiceResult<List<Table>> = firebaseTablePersistenceSource.getActiveTablesByCompanyIdAndBuildingIdAndRoomId(room.companyId, room.buildingId, room.uID)
             Assert.assertTrue("at start tables result is success", activeTablesResult is ServiceResult.Success)
             Assert.assertTrue("at start tables is not empty", (activeTablesResult as ServiceResult.Success<List<Table>>).data.isNotEmpty() )
+
+            // logout
+            val logoutResult = authenticationSource.logout()
+            Assert.assertTrue("logout is success", logoutResult is ServiceResult.Success)
         }
     }
 }
