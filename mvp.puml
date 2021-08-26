@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+interface BaseMvpView {
+    +context()
+}
+
+interface BaseMvpPresenter<in V: BaseMvpView> {
+    +onStartView(): Unit
+    +onAttachView(): Unit
+    +onDetachView(): Unit
+}
+
+BaseMvpPresenter <|--  BaseMvpPresenterImpl
+BaseMvpView <|--  BaseMvpActivity
+AppCompatActivity <|--  BaseMvpActivity
+BaseMvpView <|--  BaseMvpFragment
+Fragment <|--  BaseMvpFragment
+
+class BaseMvpPresenterImpl<V : BaseMvpView> {
+    -view: V?
+    +onStartView(): Unit
+    +onAttachView(): Unit
+    +onDetachView(): Unit
+}
+
+abstract class BaseMvpActivity<in V : BaseMvpView, T : BaseMvpPresenter<V>> {
+    -presenter: T
+}
+
+abstract class BaseMvpFragment<in V : BaseMvpView, T : BaseMvpPresenter<V>> {
+    -presenter: T
+}
+
+@enduml

@@ -3,18 +3,18 @@
 
 
 interface BookingPersistenceSource {
-    +suspend getBookingsBy(companyId: String ...)
-    +suspend createBooking(booking: Booking)
+    +suspend getBookingsBy(companyId: String ...): ServiceResult<List<Booking>>
+    +suspend createBooking(booking: Booking): ServiceResult<Booking>
 }
 
 interface BookingsRepository {
-    +suspend getBookingsBy(companyId: String ...)
-    +suspend createBooking(booking: Booking)
+    +suspend getBookingsBy(companyId: String ...): ServiceResult<List<Booking>>
+    +suspend createBooking(booking: Booking): ServiceResult<Booking>
 }
 
 interface ApiHelper {
-+ suspend getBookingsBy(companyId: String ...)
-+ suspend createBooking(booking: Booking)
++ suspend getBookingsBy(companyId: String ...): Response<List<Booking>>
++ suspend createBooking(booking: Booking): Response<Booking>
 }
 
 BookingPersistenceSource <|--  AndroidBookingSource
@@ -22,13 +22,13 @@ BookingsRepository <|--  BookingsRepositoryImpl
 
 class BookingsRepositoryImpl {
     - bookingPersistenceSource: BookingPersistenceSource
-    +suspend getBookingsBy(companyId: String ...)
-    +suspend createBooking(booking: Booking)
+    +suspend getBookingsBy(companyId: String ...): ServiceResult<List<Booking>>
+    +suspend createBooking(booking: Booking): ServiceResult<Booking>
 }
 
 class GetBookings {
     - bookingsRepository: BookingsRepository
-    + invoke(companyId: String ...)
+    + invoke(companyId: String ...): List<Booking>
 }
 
 class AndroidBookingSource {
